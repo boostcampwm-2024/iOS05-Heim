@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Application/Application.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:DataStorage/DataStorage.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Core/Core.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:DataModule/DataModule.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Domain/Domain.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Presentation/Presentation.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:NetworkModule/NetworkModule.xcodeproj">
+   </FileRef>
+</Workspace>
