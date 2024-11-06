@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Presentation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?
@@ -15,10 +16,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
-    guard let _ = (
+    guard let windowScene = (
       scene as? UIWindowScene
     ) else {
       return
     }
+    
+    window = UIWindow(
+      windowScene: windowScene
+    )
+    
+    let tabBarController = CustomTabBarController()
+    
+    let tempHomeViewController = UIViewController()
+    tempHomeViewController.view.backgroundColor = .systemBlue
+    
+    let tempStatisticsViewController = UIViewController()
+    tempStatisticsViewController.view.backgroundColor = .systemPurple
+    
+    tabBarController
+      .setViewControllers(
+        [
+          tempHomeViewController,
+          tempStatisticsViewController
+        ]
+      )
+    
+    window?.rootViewController = tabBarController
+    window?
+      .makeKeyAndVisible()
   }
 }
