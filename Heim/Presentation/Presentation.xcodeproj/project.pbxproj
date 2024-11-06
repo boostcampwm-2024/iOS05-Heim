@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4093ABB42CDB9CCA00F7E060 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; };
+		4093ABB52CDB9CCA00F7E060 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		807206302CDB50F100123BFB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8072062F2CDB50F100123BFB /* SnapKit */; };
 		B307B3FE2CD9B4B7001C5040 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B3F32CD9B4B7001C5040 /* Presentation.framework */; };
-		B307B4C12CD9B76A001C5040 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,6 +22,20 @@
 			remoteInfo = Presentation;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4093ABB62CDB9CCA00F7E060 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4093ABB52CDB9CCA00F7E060 /* Domain.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B307B3F32CD9B4B7001C5040 /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B307B4C12CD9B76A001C5040 /* Domain.framework in Frameworks */,
+				4093ABB42CDB9CCA00F7E060 /* Domain.framework in Frameworks */,
 				807206302CDB50F100123BFB /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +125,7 @@
 				B307B3EF2CD9B4B7001C5040 /* Sources */,
 				B307B3F02CD9B4B7001C5040 /* Frameworks */,
 				B307B3F12CD9B4B7001C5040 /* Resources */,
+				4093ABB62CDB9CCA00F7E060 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

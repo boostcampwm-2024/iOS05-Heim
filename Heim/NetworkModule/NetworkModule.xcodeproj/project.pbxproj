@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4093ABB72CDB9CD900F7E060 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C62CD9B7D5001C5040 /* DataModule.framework */; };
+		4093ABB82CDB9CD900F7E060 /* DataModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C62CD9B7D5001C5040 /* DataModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B307B3D92CD9B4AA001C5040 /* NetworkModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B3CE2CD9B4AA001C5040 /* NetworkModule.framework */; };
-		B307B4C72CD9B7D5001C5040 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C62CD9B7D5001C5040 /* DataModule.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,6 +21,20 @@
 			remoteInfo = NetworkModule;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4093ABB92CDB9CD900F7E060 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4093ABB82CDB9CD900F7E060 /* DataModule.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B307B3CE2CD9B4AA001C5040 /* NetworkModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NetworkModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B307B4C72CD9B7D5001C5040 /* DataModule.framework in Frameworks */,
+				4093ABB72CDB9CD900F7E060 /* DataModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +123,7 @@
 				B307B3CA2CD9B4AA001C5040 /* Sources */,
 				B307B3CB2CD9B4AA001C5040 /* Frameworks */,
 				B307B3CC2CD9B4AA001C5040 /* Resources */,
+				4093ABB92CDB9CD900F7E060 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

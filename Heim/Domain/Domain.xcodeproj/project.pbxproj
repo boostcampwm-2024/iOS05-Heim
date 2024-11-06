@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4093ABB12CDB9CC700F7E060 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B5232CD9F946001C5040 /* Core.framework */; };
+		4093ABB22CDB9CC700F7E060 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B5232CD9F946001C5040 /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B307B4482CD9B4F3001C5040 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B43D2CD9B4F3001C5040 /* Domain.framework */; };
-		B307B5242CD9F946001C5040 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B5232CD9F946001C5040 /* Core.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,6 +21,20 @@
 			remoteInfo = Domain;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4093ABB32CDB9CC700F7E060 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4093ABB22CDB9CC700F7E060 /* Core.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B307B43D2CD9B4F3001C5040 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B307B5242CD9F946001C5040 /* Core.framework in Frameworks */,
+				4093ABB12CDB9CC700F7E060 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +136,7 @@
 				B307B4392CD9B4F3001C5040 /* Sources */,
 				B307B43A2CD9B4F3001C5040 /* Frameworks */,
 				B307B43B2CD9B4F3001C5040 /* Resources */,
+				4093ABB32CDB9CC700F7E060 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

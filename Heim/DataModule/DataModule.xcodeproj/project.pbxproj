@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4093ABAE2CDB9CC300F7E060 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C32CD9B77C001C5040 /* Domain.framework */; };
+		4093ABAF2CDB9CC300F7E060 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C32CD9B77C001C5040 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B307B46D2CD9B50B001C5040 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4622CD9B50B001C5040 /* DataModule.framework */; };
-		B307B4C42CD9B77C001C5040 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C32CD9B77C001C5040 /* Domain.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,6 +21,20 @@
 			remoteInfo = DataModule;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4093ABB02CDB9CC300F7E060 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4093ABAF2CDB9CC300F7E060 /* Domain.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B307B4622CD9B50B001C5040 /* DataModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B307B4C42CD9B77C001C5040 /* Domain.framework in Frameworks */,
+				4093ABAE2CDB9CC300F7E060 /* Domain.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +123,7 @@
 				B307B45E2CD9B50B001C5040 /* Sources */,
 				B307B45F2CD9B50B001C5040 /* Frameworks */,
 				B307B4602CD9B50B001C5040 /* Resources */,
+				4093ABB02CDB9CC300F7E060 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
