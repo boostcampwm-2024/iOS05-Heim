@@ -8,11 +8,20 @@
 import Combine
 import UIKit
 
+import SnapKit
+
 class BaseViewController<T: ViewModel>: UIViewController {
   // MARK: - Properties
   var cancellable: Set<AnyCancellable> = []
   let viewModel: T
   
+  private let backgroundImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "background")
+    imageView.contentMode = .scaleAspectFill
+    return imageView
+  }()
+    
   // MARK: - Initializer
   init(viewModel: T) {
     self.viewModel = viewModel
@@ -34,8 +43,16 @@ class BaseViewController<T: ViewModel>: UIViewController {
   }
   
   // MARK: - Methods
-  func setupViews() {}
-  func setupLayoutConstraints() {}
+  func setupViews() {
+    view.addSubview(backgroundImageView)
+  }
+  
+  func setupLayoutConstraints() {
+    backgroundImageView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+  }
+  
   func bindAction() {}
   func bindState() {}
 }
