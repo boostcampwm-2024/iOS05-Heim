@@ -128,6 +128,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B307B6B82CDC7CFE001C5040 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B307B4642CD9B50B001C5040 /* DataModule */,
@@ -190,6 +191,9 @@
 			);
 			mainGroup = B307B4582CD9B50B001C5040;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B307B6B62CDC7CED001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B307B4632CD9B50B001C5040 /* Products */;
 			projectDirPath = "";
@@ -240,6 +244,10 @@
 			isa = PBXTargetDependency;
 			target = B307B4612CD9B50B001C5040 /* DataModule */;
 			targetProxy = B307B46E2CD9B50B001C5040 /* PBXContainerItemProxy */;
+		};
+		B307B6B82CDC7CFE001C5040 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B307B6B72CDC7CFE001C5040 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -511,6 +519,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B307B6B62CDC7CED001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.57.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B307B6B72CDC7CFE001C5040 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B307B6B62CDC7CED001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B307B4592CD9B50B001C5040 /* Project object */;
 }
