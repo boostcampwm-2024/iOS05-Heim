@@ -5,6 +5,9 @@
 #  Created by 정지용 on 11/7/24.
 #
 
+disabled_rules:
+  - trailing_whitespace
+
 opt_in_rules:
   - attributes
   - closure_spacing
@@ -43,9 +46,6 @@ type_body_length:
 indentation:
   indentation_width: 2
   include_comments: true
-
-trailing_whitespace:
-  ignores_empty_lines: true
 
 colon:
   flexible_right_spacing: false
