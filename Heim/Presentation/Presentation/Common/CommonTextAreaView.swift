@@ -1,5 +1,5 @@
 //
-//  CommonTextArea.swift
+//  CommonTextAreaView.swift
 //  Presentation
 //
 //  Created by 정지용 on 11/7/24.
@@ -14,7 +14,7 @@ import SnapKit
 ///
 /// UILabel에서 사용될 text를 지정하기 위해 `setText(_ text: String)`를 구현했습니다.
 /// `minHeight`을 사용하며, Constraint를 설정하는 경우를 위해 `requiredHeight()`를 구현했고, 자세한 부분은 해당 메소드의 코멘트를 확인해주세요.
-final class CommonTextArea: UIView {
+final class CommonTextAreaView: UIView {
   // MARK: - Properties
   private let gradientLayer = CAGradientLayer()
   private let whiteOverlayLayer = CALayer()
@@ -78,7 +78,7 @@ final class CommonTextArea: UIView {
 }
 
 // MARK: - Setup, Configuration UI
-private extension CommonTextArea {
+private extension CommonTextAreaView {
   func setupLayers() {
     gradientLayer.colors = [UIColor.white.cgColor, UIColor.secondary.cgColor]
     layer.addSublayer(gradientLayer)
@@ -103,7 +103,7 @@ private extension CommonTextArea {
 }
 
 // MARK: - Private Methods
-private extension CommonTextArea {
+private extension CommonTextAreaView {
   func setLineSpacing(
     lineHeightMultiple: CGFloat = 1.3
   ) {
@@ -123,7 +123,7 @@ private extension CommonTextArea {
 }
 
 // MARK: - Constants
-extension CommonTextArea {
+extension CommonTextAreaView {
   private enum Constants {
     static let cornerRadius: CGFloat = 10
     static let labelPadding: CGFloat = 16
