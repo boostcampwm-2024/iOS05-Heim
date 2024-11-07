@@ -17,7 +17,7 @@ class BaseViewController<T: ViewModel>: UIViewController {
   
   private let backgroundImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(named: "background")
+    imageView.image = .background
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
