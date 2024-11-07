@@ -12,7 +12,7 @@ class CalendarCell: UICollectionViewCell {
   static let identifier = "CalendarCell"
 
   // MARK: - UI Components
-  private lazy var dateLabel: UILabel = {
+  private var dateLabel: UILabel = {
     let view = UIView()
     let label = UILabel()
     label.textAlignment = .center
