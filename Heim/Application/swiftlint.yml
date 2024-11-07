@@ -1,0 +1,77 @@
+#
+#  swiftlint.yml
+#  Application
+#
+#  Created by 정지용 on 11/7/24.
+#
+
+opt_in_rules:
+  - attributes
+  - closure_spacing
+  - colon
+  - operator_usage_whitespace
+  - fatal_error_message
+  - trailing_closure
+  - empty_count
+  - function_default_parameter_at_end
+  - prefer_self_in_static_references
+  - identifier_name # 사용 전 Rule 확인 필요
+
+line_length:
+  warning: 120
+  error: 200
+
+type_name:
+  min_length:
+    warning: 3
+    error: 1
+  max_length:
+    warning: 40
+    error: 50
+
+identifier_name:
+  min_length: 3
+
+function_body_length:
+  warning: 50
+  error: 100
+
+type_body_length:
+  warning: 200
+  error: 400
+
+indentation:
+  indentation_width: 2
+  include_comments: true
+
+trailing_whitespace:
+  ignores_empty_lines: true
+
+colon:
+  flexible_right_spacing: false
+  apply_to_dictionaries: true
+
+operator_usage_whitespace:
+  severity: warning
+
+comma:
+  always: true
+
+type_name:
+  validates_start_with_lowercase: true
+
+control_statement:
+  severity: warning
+  if_else: false
+
+void_return:
+  severity: warning
+
+unused_declaration:
+  severity: warning
+
+implicit_return:
+  severity: error
+
+single_line_guard:
+  severity: warning
