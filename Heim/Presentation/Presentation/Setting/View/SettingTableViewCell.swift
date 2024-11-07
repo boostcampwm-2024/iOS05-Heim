@@ -23,7 +23,7 @@ final class SettingTableViewCell: UITableViewCell {
   }
   
   private let titleImageView = UIImageView()
-  private let titleLabel = HeimLabel(font: .regular, size: Constants.fontSize)
+  private let titleLabel = CommonLabel(font: .regular, size: Constants.fontSize)
   
   private let cloudSwitch: UISwitch = {
     let cloudSwitch = UISwitch()
@@ -32,7 +32,7 @@ final class SettingTableViewCell: UITableViewCell {
     return cloudSwitch
   }()
   
-  private let subLabel = HeimLabel(font: .regular, size: Constants.fontSize, textColor: .heimGray)
+  private let subLabel = CommonLabel(font: .regular, size: Constants.fontSize, textColor: .heimGray)
   weak var cloudSwitchDelegate: CloudSwitchDelegate?
   
   // MARK: - Initializer

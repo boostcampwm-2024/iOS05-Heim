@@ -1,5 +1,5 @@
 //
-//  HeimLabel.swift
+//  CommonLabel.swift
 //  Presentation
 //
 //  Created by 한상진 on 11/7/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HeimLabel: UILabel {
+final class CommonLabel: UILabel {
   
   // MARK: - Properties
   enum HeimFontStyle {
