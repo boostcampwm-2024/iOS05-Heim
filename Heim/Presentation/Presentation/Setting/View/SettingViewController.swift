@@ -69,6 +69,7 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
         guard let nameCell = self?.settingTableView.cellForRow(
           at: IndexPath(row: 0, section: 0)
         ) as? SettingTableViewCell else { return }
+        
         nameCell.updateUserName(userName)
       }
       .store(in: &cancellable)
@@ -112,7 +113,9 @@ extension SettingViewController: UITableViewDataSource {
       SettingTableViewDataSources.imageDataSource[indexPath.row], 
       SettingTableViewDataSources.titleDataSource[indexPath.row]
     )
-    let cell = tableView.dequeueReusableCell(cellType: SettingTableViewCell.self, indexPath: indexPath)
+    guard let cell = tableView.dequeueReusableCell(cellType: SettingTableViewCell.self, indexPath: indexPath) else {
+      return UITableViewCell()
+    }
     cell.configure(iconImage: iconImage, titleText: titleText)
     
     switch indexPath.row {

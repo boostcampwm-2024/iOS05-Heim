@@ -25,11 +25,13 @@ extension UITableView {
     register(viewType, forHeaderFooterViewReuseIdentifier: identifier)
   }
   
-  func dequeueReusableCell<T: UITableViewCell>(cellType: T.Type = T.self, indexPath: IndexPath) -> T {
-    return dequeueReusableCell(withIdentifier: "\(cellType)", for: indexPath) as! T
+  func dequeueReusableCell<T: UITableViewCell>(cellType: T.Type = T.self, indexPath: IndexPath) -> T? {
+    guard let cell = dequeueReusableCell(withIdentifier: "\(cellType)", for: indexPath) as? T else { return nil } 
+    return cell
   }
   
-  func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>(viewType: T.Type = T.self) -> T {
-    return dequeueReusableHeaderFooterView(withIdentifier: "\(viewType)") as! T
+  func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>(viewType: T.Type = T.self) -> T? {
+    guard let cell = dequeueReusableHeaderFooterView(withIdentifier: "\(viewType)") as? T else { return nil }
+    return cell
   }
 }
