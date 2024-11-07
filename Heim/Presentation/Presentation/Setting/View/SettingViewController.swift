@@ -53,13 +53,8 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
   override func setupLayoutConstraints() {
     super.setupLayoutConstraints()
     
-//    settingTableView.snp.makeConstraints {
-//      $0.edges.equalTo(view.safeAreaLayoutGuide)
-//    }
-    
     settingTableView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(400)
+      $0.edges.equalTo(view.safeAreaLayoutGuide)
     }
   }
   
