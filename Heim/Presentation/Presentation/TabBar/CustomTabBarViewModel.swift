@@ -12,30 +12,17 @@ import os
 final public class CustomTabBarViewModel: ViewModel {
   // MARK: - Types
   public enum Action {
-    case setViewControllers([UIViewController])
-    case selectTab(Int)
-    case centerButtonDidTap
+    case tabSelected(TabBarItem)
+    case micButtonTapped
   }
   
   public struct State {
-    var currentIndex: Int
-    var previousIndex: Int
-    var viewControllers: [UIViewController]
-    var tabItems: [(icon: String, title: String)]
+    var currentTab: TabBarItem
     
-    init(
-      currentIndex: Int = 0,
-      previousIndex: Int = 0,
-      viewControllers: [UIViewController] = [],
-      tabItems: [(icon: String, title: String)] = [
-        (icon: "house.fill", title: "Home"),
-        (icon: "chart.bar.fill", title: "통계")
-      ]
+    public init(
+      currentTab: TabBarItem = .home
     ) {
-      self.currentIndex = currentIndex
-      self.previousIndex = previousIndex
-      self.viewControllers = viewControllers
-      self.tabItems = tabItems
+      self.currentTab = currentTab
     }
   }
   
@@ -52,40 +39,25 @@ final public class CustomTabBarViewModel: ViewModel {
     _ action: Action
   ) {
     switch action {
-    case .setViewControllers(let viewControllers):
-      setViewControllers(viewControllers)
+    case .tabSelected(let tab):
+      handleTabSelection(tab)
       
-    case .selectTab(let index):
-      selectTab(at: index)
-      
-    case .centerButtonDidTap:
-      // TODO: Center Button Action 추가
-      break
+    case .micButtonTapped:
+      handleMicButtonTapped()
     }
   }
 }
 
 extension CustomTabBarViewModel {
-  private func setViewControllers(
-    _ viewControllers: [UIViewController]
+  private func handleTabSelection(
+    _ tab: TabBarItem
   ) {
-    guard viewControllers.count == state.tabItems.count else {
-      os_log("Failed to set view controllers: count mismatch with tab items")
-      return
-    }
+    guard tab != state.currentTab else { return }
     
-    state.viewControllers = viewControllers
+    self.state.currentTab = tab
   }
   
-  private func selectTab(
-    at index: Int
-  ) {
-    guard state.viewControllers.indices.contains(index) else {
-      os_log("Failed to select tab: index \(index) is out of bounds")
-      return
-    }
-    
-    state.previousIndex = state.currentIndex
-    state.currentIndex = index
+  private func handleMicButtonTapped() {
+    // TODO: Mic 버튼 클릭 시 처리할 로직 구현
   }
 }
