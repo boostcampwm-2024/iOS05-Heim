@@ -33,28 +33,11 @@ public final class CustomTabBarController: UIViewController {
     button.backgroundColor = .primary
     button.tintColor = .white
     button.layer.cornerRadius = Constants.centerButtonSize / 2
-    
-    button
-      .setImage(
-        UIImage(
-          systemName: "music.mic",
-          withConfiguration: UIImage
-            .SymbolConfiguration(
-              pointSize: Constants.centerButtonIconSize,
-              weight: .medium
-            )
-        ),
-        for: .normal
-      )
-    
-    button
-      .addTarget(
-        self,
-        action: #selector(
-          centerButtonDidTap
-        ),
-        for: .touchUpInside
-      )
+    button.setImage(
+      UIImage(systemName: "music.mic", withConfiguration: UIImage.SymbolConfiguration(pointSize: Constants.centerButtonIconSize, weight: .medium)),
+      for: .normal
+    )
+    button.addTarget(self, action: #selector(centerButtonDidTap), for: .touchUpInside)
     return button
   }()
   
@@ -75,9 +58,7 @@ public final class CustomTabBarController: UIViewController {
     _ viewControllers: [UIViewController]
   ) {
     guard viewControllers.count == 2 else {
-      fatalError(
-        "CustomTabBarController requires exactly 2 view controllers"
-      )
+      fatalError("CustomTabBarController requires exactly 2 view controllers")
     }
     
     tabItems = [
@@ -100,52 +81,28 @@ public final class CustomTabBarController: UIViewController {
   // MARK: - Navigate Methods
   private func updateSelectedViewController() {
     let previousVC = tabItems[previousIndex].viewController
-    
-    previousVC
-      .willMove(
-        toParent: nil
-      )
-    previousVC.view
-      .removeFromSuperview()
-    previousVC
-      .removeFromParent()
+    previousVC.willMove(toParent: nil)
+    previousVC.view.removeFromSuperview()
+    previousVC.removeFromParent()
     
     let currentVC = tabItems[currentIndex].viewController
-    addChild(
-      currentVC
-    )
-    view
-      .insertSubview(
-        currentVC.view,
-        belowSubview: tabBarView
-      )
+    addChild(currentVC)
+    view.insertSubview(currentVC.view, belowSubview: tabBarView)
     
-    currentVC.view.snp
-      .makeConstraints {
-        $0.edges
-          .equalToSuperview()
-      }
+    currentVC.view.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
     
-    currentVC
-      .didMove(
-        toParent: self
-      )
+    currentVC.didMove(toParent: self)
     updateButtonAppearance()
   }
   
   private func updateButtonAppearance() {
-    tabButtons
-      .enumerated()
-      .forEach {
-        index,
-        button in
-        let isSelected = index == currentIndex
-        button.tintColor = .white
-          .withAlphaComponent(
-            isSelected ? 1 : Constants.inactiveAlpha
-          )
-        button.alpha = isSelected ? 1 : Constants.inactiveAlpha
-      }
+    tabButtons.enumerated().forEach { index, button in
+      let isSelected = index == currentIndex
+      button.tintColor = .white.withAlphaComponent(isSelected ? 1 : Constants.inactiveAlpha)
+      button.alpha = isSelected ? 1 : Constants.inactiveAlpha
+    }
   }
 }
 
@@ -157,91 +114,43 @@ extension CustomTabBarController {
   }
   
   private func setupTabBar() {
-    view
-      .addSubview(
-        tabBarView
-      )
-    tabBarView.snp
-      .makeConstraints { make in
-        make.bottom.leading.trailing
-          .equalToSuperview()
-        make.height
-          .equalTo(
-            Constants.tabBarHeight
-          )
-      }
+    view.addSubview(tabBarView)
+    tabBarView.snp.makeConstraints { make in
+      make.bottom.leading.trailing.equalToSuperview()
+      make.height.equalTo(Constants.tabBarHeight)
+    }
   }
   
   private func setupCenterButton() {
-    view
-      .addSubview(
-        centerButton
-      )
-    centerButton.snp
-      .makeConstraints { make in
-        make.centerX
-          .equalToSuperview()
-        make.bottom
-          .equalTo(
-            tabBarView.snp.top
-          )
-          .offset(
-            40
-          )
-        make.width.height
-          .equalTo(
-            Constants.centerButtonSize
-          )
-      }
+    view.addSubview(centerButton)
+    centerButton.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(tabBarView.snp.top).offset(40)
+      make.width.height.equalTo(Constants.centerButtonSize)
+    }
   }
   
   private func setupTabButtons() {
     let buttonWidth = view.bounds.width / 3
     
-    tabItems
-      .enumerated()
-      .forEach {
-        index,
-        item in
-        let button = createTabButton(
-          for: item,
-          at: index
-        )
-        tabBarView
-          .addSubview(
-            button
-          )
+    tabItems.enumerated().forEach { index, item in
+      let button = createTabButton(for: item, at: index)
+      tabBarView.addSubview(button)
+      
+      button.snp.makeConstraints { make in
+        make.bottom.equalToSuperview().offset(Constants.buttonBottomOffset)
+        make.height.equalTo(Constants.buttonHeight)
+        make.width.equalTo(buttonWidth)
         
-        button.snp
-          .makeConstraints { make in
-            make.bottom
-              .equalToSuperview()
-              .offset(
-                Constants.buttonBottomOffset
-              )
-            make.height
-              .equalTo(
-                Constants.buttonHeight
-              )
-            make.width
-              .equalTo(
-                buttonWidth
-              )
-            
-            if index == 0 {
-              make.leading
-                .equalToSuperview()
-            } else {
-              make.trailing
-                .equalToSuperview()
-            }
-          }
-        
-        tabButtons
-          .append(
-            button
-          )
+        if index == 0 {
+          make.leading.equalToSuperview()
+        } else {
+          make.trailing.equalToSuperview()
+        }
       }
+      
+      tabButtons.append(button)
+    }
     
     updateButtonAppearance()
   }
@@ -256,36 +165,17 @@ extension CustomTabBarController {
     var configuration = UIButton.Configuration.plain()
     configuration.imagePlacement = .top
     configuration.imagePadding = Constants.buttonSpacing
-    configuration.image = UIImage(
-      systemName: item.icon
-    )?
-      .withConfiguration(
-        UIImage
-          .SymbolConfiguration(
-            pointSize: Constants.buttonIconSize
-          )  // 18
-      )
+    configuration.image = UIImage(systemName: item.icon)?.withConfiguration(
+      UIImage.SymbolConfiguration(pointSize: Constants.buttonIconSize)
+    )
     
     var container = AttributeContainer()
-    container.font = UIFont
-      .regularFont(
-        ofSize: Constants.buttonTitleSize
-      )
-    configuration.attributedTitle = AttributedString(
-      item.title,
-      attributes: container
-    )
+    container.font = UIFont.regularFont(ofSize: Constants.buttonTitleSize)
+    configuration.attributedTitle = AttributedString(item.title, attributes: container)
     
     button.configuration = configuration
     button.tintColor = .white
-    button
-      .addTarget(
-        self,
-        action: #selector(
-          tabButtonDidTap
-        ),
-        for: .touchUpInside
-      )
+    button.addTarget(self, action: #selector(tabButtonDidTap), for: .touchUpInside)
     
     return button
   }
@@ -306,65 +196,26 @@ extension CustomTabBarController {
     viewController.view.backgroundColor = .primary
     viewController.modalPresentationStyle = .fullScreen
     
-    let closeButton = UIButton(
-      frame: .zero
+    let closeButton = UIButton(frame: .zero)
+    closeButton.setImage(
+      UIImage(systemName: "xmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)),
+      for: .normal
     )
-    closeButton
-      .setImage(
-        UIImage(
-          systemName: "xmark.circle.fill",
-          withConfiguration: UIImage
-            .SymbolConfiguration(
-              pointSize: 28,
-              weight: .medium
-            )
-        ),
-        for: .normal
-      )
     closeButton.tintColor = .gray
-    closeButton
-      .addTarget(
-        self,
-        action: #selector(
-          dismissViewController
-        ),
-        for: .touchUpInside
-      )
+    closeButton.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
     
-    viewController.view
-      .addSubview(
-        closeButton
-      )
-    closeButton.snp
-      .makeConstraints { make in
-        make.top
-          .equalTo(
-            viewController.view.safeAreaLayoutGuide
-          )
-          .offset(
-            20
-          )
-        make.trailing
-          .equalToSuperview()
-          .offset(
-            -20
-          )
-        make.width.height
-          .equalTo(
-            32
-          )
-      }
+    viewController.view.addSubview(closeButton)
+    closeButton.snp.makeConstraints { make in
+      make.top.equalTo(viewController.view.safeAreaLayoutGuide).offset(20)
+      make.trailing.equalToSuperview().offset(-20)
+      make.width.height.equalTo(32)
+    }
     
-    present(
-      viewController,
-      animated: true
-    )
+    present(viewController, animated: true)
   }
   
   @objc private func dismissViewController() {
-    dismiss(
-      animated: true
-    )
+    dismiss(animated: true)
   }
 }
 
