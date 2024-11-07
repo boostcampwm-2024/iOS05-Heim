@@ -8,13 +8,13 @@
 import UIKit
 import SnapKit
 
-/// CommonTextView는 커스텀한 배경 색상과 오버레이를 갖춘 `UIView`의 서브클래스입니다.
+/// CommonTextArea는 커스텀한 배경 색상과 오버레이를 갖춘 `UIView`의 서브클래스입니다.
 /// 텍스트를 보여주기 위한 `UILabel`을 포함하며,  텍스트에 따라 가변적으로 높이가 변화하도록 설계되었습니다.
 /// 필요에 따라 생성 시 최소 높이를 설정할 수 있습니다.
 ///
 /// UILabel에서 사용될 text를 지정하기 위해 `setText(_ text: String)`를 구현했습니다.
-/// Constraint를 설정하는 경우를 위해 `requiredHeight()`를 구현했고, 자세한 부분은 해당 메소드의 코멘트를 확인해주세요.
-public final class CommonTextArea: UIView {
+/// `minHeight`을 사용하며, Constraint를 설정하는 경우를 위해 `requiredHeight()`를 구현했고, 자세한 부분은 해당 메소드의 코멘트를 확인해주세요.
+final class CommonTextArea: UIView {
   // MARK: - Properties
   private let gradientLayer = CAGradientLayer()
   private let whiteOverlayLayer = CALayer()
@@ -42,38 +42,8 @@ public final class CommonTextArea: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-}
-
-// MARK: - Setup, Configuration UI
-private extension CommonTextArea {
-  func setupLayers() {
-    gradientLayer.colors = [UIColor.white.cgColor, UIColor.secondary.cgColor]
-    layer.addSublayer(gradientLayer)
-    whiteOverlayLayer.backgroundColor = UIColor.white.withAlphaComponent(0.6).cgColor
-    layer.addSublayer(whiteOverlayLayer)
-  }
   
-  func setupViews() {
-    layer.cornerRadius = Constants.cornerRadius
-    layer.masksToBounds = true
-    setupLabel()
-  }
-  
-  func setupLabel() {
-    addSubview(textLabel)
-    textLabel.font = UIFont.regularFont(ofSize: Constants.fontSize)
-    
-    textLabel.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(Constants.labelPadding)
-      make.leading.equalToSuperview().inset(Constants.labelPadding)
-      make.trailing.equalToSuperview().inset(Constants.labelPadding)
-      make.bottom.equalToSuperview().inset(Constants.labelPadding)
-    }
-  }
-}
-
-// MARK: - Public Methods
-public extension CommonTextArea {
+  // MARK: - Methods
   override func layoutSubviews() {
     super.layoutSubviews()
     
@@ -107,6 +77,31 @@ public extension CommonTextArea {
   }
 }
 
+// MARK: - Setup, Configuration UI
+private extension CommonTextArea {
+  func setupLayers() {
+    gradientLayer.colors = [UIColor.white.cgColor, UIColor.secondary.cgColor]
+    layer.addSublayer(gradientLayer)
+    whiteOverlayLayer.backgroundColor = UIColor.white.withAlphaComponent(0.6).cgColor
+    layer.addSublayer(whiteOverlayLayer)
+  }
+  
+  func setupViews() {
+    layer.cornerRadius = Constants.cornerRadius
+    layer.masksToBounds = true
+    setupLabel()
+  }
+  
+  func setupLabel() {
+    addSubview(textLabel)
+    textLabel.font = UIFont.regularFont(ofSize: Constants.fontSize)
+    
+    textLabel.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(Constants.labelPadding)
+    }
+  }
+}
+
 // MARK: - Private Methods
 private extension CommonTextArea {
   func setLineSpacing(
@@ -128,8 +123,8 @@ private extension CommonTextArea {
 }
 
 // MARK: - Constants
-private extension CommonTextArea {
-  enum Constants {
+extension CommonTextArea {
+  private enum Constants {
     static let cornerRadius: CGFloat = 10
     static let labelPadding: CGFloat = 16
     static let fontSize: CGFloat = 16
