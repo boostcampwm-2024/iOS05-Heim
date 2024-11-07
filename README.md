@@ -56,7 +56,7 @@
 <br>
 
 ## 📚 설계도
-![Heim-설계도](https://github.com/user-attachments/assets/3bab18ee-2ee3-4f78-a6e3-1db0c209acda)
+![Heim-설계도](https://github.com/user-attachments/assets/cde0c955-cefa-4534-a26d-929fddc85211)
 
 <br>
 
