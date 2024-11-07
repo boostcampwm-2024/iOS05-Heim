@@ -72,7 +72,5 @@ private extension SceneDelegate {
 //    guard let appCoordinator = DIContainer.shared.resolve(type: AppCoordinator.self) else { return }
 //    self.appCoordinator = appCoordinator
 //    appCoordinator.start()
-    guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self) else { return }
-    settingCoordinator.start()
   }
 }
