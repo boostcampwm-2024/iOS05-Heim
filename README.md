@@ -67,3 +67,9 @@
 |<img src="https://avatars.githubusercontent.com/u/136614563?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/117553364?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/70135292?v=4" width=150>|<img src="https://hackmd.io/_uploads/SyoeWvcuC.png" width=150>|
 
 <br>
+
+<hr>
+
+<br>
+
+### 프로젝트 진행과 관련한 자세한 사항은 [Wiki](https://github.com/boostcampwm-2024/iOS05-Heim/wiki)를 참고해주세요!
