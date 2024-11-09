@@ -10,7 +10,6 @@ import Core
 import Domain
 
 final class SettingViewModel: ViewModel {
-  
   // MARK: - Properties
   enum Action {
     case fetchUserName

@@ -6,7 +6,6 @@
 //
 
 public protocol SettingUseCase {
-
   // MARK: - Properties
   var settingRepository: SettingRepository { get }
 
@@ -20,7 +19,6 @@ public protocol SettingUseCase {
 }
 
 public struct DefaultSettingUseCase: SettingUseCase {
-
   // MARK: - Properties
   public let settingRepository: SettingRepository
 

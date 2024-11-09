@@ -8,7 +8,6 @@
 import UIKit
 
 final class CommonLabel: UILabel {
-  
   // MARK: - Properties
   enum HeimFontStyle {
     case bold, regular

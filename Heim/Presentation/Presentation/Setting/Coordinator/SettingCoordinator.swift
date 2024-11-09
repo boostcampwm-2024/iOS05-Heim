@@ -14,7 +14,6 @@ public protocol SettingCoordinator: Coordinator {
 }
 
 public final class DefaultSettingCoordinator: SettingCoordinator {
-  
   // MARK: - Properties
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []

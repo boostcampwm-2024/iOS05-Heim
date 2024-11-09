@@ -8,7 +8,6 @@
 import Domain
 
 public final class DefaultSettingRepository: SettingRepository {
-
   // MARK: - Properties
   
   /* TODO: 추후 구현

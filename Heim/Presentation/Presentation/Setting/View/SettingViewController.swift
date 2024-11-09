@@ -9,7 +9,6 @@ import Domain
 import UIKit
 
 final class SettingViewController: BaseViewController<SettingViewModel>, Coordinatable {
-  
   // MARK: - Properties
   weak var coordinator: DefaultSettingCoordinator?
   

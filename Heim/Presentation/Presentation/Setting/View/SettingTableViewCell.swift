@@ -14,7 +14,6 @@ protocol CloudSwitchDelegate: AnyObject {
 }
 
 final class SettingTableViewCell: UITableViewCell {
-  
   // MARK: - Properties
   private enum Constants {
     static let fontSize: CGFloat = 16
