@@ -145,20 +145,20 @@ final class CalendarView: UIView {
 
   //MARK: - WeekStackViewUI
   private func setupWeekStackView() {
-    let dayOfTheWeek = ["일", "월", "화", "수", "목", "금", "토"]
+    let dayOfTheWeek = DayofWeek.allCases
 
-    for i in 0..<7 {
+    for day in dayOfTheWeek {
       let label = UILabel()
-      label.text = dayOfTheWeek[i]
+      label.text = day.rawValue
       label.textAlignment = .center
       label.textColor = .white
       label.font = UIFont.boldSystemFont(ofSize: 14)
 
       self.weekStackView.addArrangedSubview(label)
 
-      if i == 0 {
+      if day == .sunday {
         label.textColor = .red
-      } else if i == 6 {
+      } else if day == .saturday {
         label.textColor = .blue
       }
     }
