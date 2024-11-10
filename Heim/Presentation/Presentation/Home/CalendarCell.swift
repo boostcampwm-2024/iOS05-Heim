@@ -13,12 +13,10 @@ class CalendarCell: UICollectionViewCell {
 
   // MARK: - UI Components
   private var dateLabel: UILabel = {
-    let view = UIView()
     let label = UILabel()
     label.textAlignment = .center
     label.font = UIFont.regularFont(ofSize: 12)
     label.textColor = .white
-    view.addSubview(label)
     return label
   }()
 
