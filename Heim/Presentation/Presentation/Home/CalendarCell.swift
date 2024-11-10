@@ -59,11 +59,7 @@ class CalendarCell: UICollectionViewCell {
 
   func update(day: String) {
     //TODO: 수정필요 - 애초에 View가 그려지지 않도록 하는 방법 찾기
-    if day == "" {
-      self.emojiView.backgroundColor = .clear
-    } else {
-      self.emojiView.backgroundColor = UIColor(red: 173 / 255, green: 170 / 255, blue: 195 / 255, alpha: 0.7)
-    }
+    self.emojiView.backgroundColor = day.isEmpty ? .clear : UIColor(red: 173 / 255, green: 170 / 255, blue: 195 / 255, alpha: 0.7)
     self.dateLabel.text = day
   }
 }
