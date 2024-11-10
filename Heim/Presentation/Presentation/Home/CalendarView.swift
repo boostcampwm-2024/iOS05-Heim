@@ -85,13 +85,13 @@ final class CalendarView: UIView {
 
   // MARK: - Methods
   func setupViews() {
-    self.addSubview(yearLabel)
-    self.addSubview(previousMonthButton)
-    self.addSubview(nextMonthButton)
-    self.addSubview(monthLabel)
-    self.addSubview(weekStackView)
-    self.addSubview(separatorLineView)
-    self.addSubview(dayCollectionView)
+    addSubview(yearLabel)
+    addSubview(previousMonthButton)
+    addSubview(nextMonthButton)
+    addSubview(monthLabel)
+    addSubview(weekStackView)
+    addSubview(separatorLineView)
+    addSubview(dayCollectionView)
   }
 
   func setupLayoutConstraints() {
@@ -154,7 +154,7 @@ final class CalendarView: UIView {
       label.textColor = .white
       label.font = UIFont.boldSystemFont(ofSize: 14)
 
-      self.weekStackView.addArrangedSubview(label)
+      weekStackView.addArrangedSubview(label)
 
       if day == .sunday {
         label.textColor = .red
@@ -168,8 +168,8 @@ final class CalendarView: UIView {
 //MARK: UICollectionView
 extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
   private func setupCollectionView() {
-    self.dayCollectionView.delegate = self
-    self.dayCollectionView.dataSource = self
+    dayCollectionView.delegate = self
+    dayCollectionView.dataSource = self
   }
 
   public func collectionView(
@@ -180,7 +180,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
       withReuseIdentifier: CalendarCell.identifier,
       for: indexPath
     ) as? CalendarCell else { return UICollectionViewCell() }
-    cell.update(day: self.days[indexPath.row])
+    cell.update(day: days[indexPath.row])
     return cell
   }
 
@@ -188,7 +188,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return self.days.count
+    return days.count
   }
 
   //TODO: - 수정 필요(너비가 7개로 나누어 떨어지도록 수정)
@@ -197,7 +197,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath
   ) -> CGSize {
-    let width = self.dayCollectionView.frame.width / 9
+    let width = dayCollectionView.frame.width / 9
     return CGSize(width: width, height: 80)
   }
 
@@ -213,78 +213,78 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
 //MARK: - Calendar Logic
 extension CalendarView {
   private func configureCalendar() {
-    let components = self.calendar.dateComponents(
+    let components = calendar.dateComponents(
       [
         .year,
         .month
       ],
       from: Date()
     ) //현재 날짜의 년, 월
-    self.calendarDate = self.calendar.date(from: components) ?? Date() // components를 Date타입으로 변경
-    self.updateCalendar() // 타이틀과 일자 업로드
+    calendarDate = calendar.date(from: components) ?? Date() // components를 Date타입으로 변경
+    updateCalendar() // 타이틀과 일자 업로드
   }
 
   //1일이 시작되는 요일 반환
   private func startDayofTheWeek() -> Int {
-    return self.calendar.component(.weekday,from: self.calendarDate) - 1
+    return calendar.component(.weekday,from: calendarDate) - 1
   }
 
   //일자 계산
   private func endDate() -> Int {
-    return self.calendar.range(
+    return calendar.range(
       of: .day,
       in: .month,
-      for: self.calendarDate
+      for: calendarDate
     )?.count ?? Int()
   }
 
   // 년, 월 title 변경
   private func updateDateTitle() {
-    self.dateFormatter.dateFormat = "yyyy년 MM월"
-    let dateTitle = self.dateFormatter.string(from: self.calendarDate)
+    dateFormatter.dateFormat = "yyyy년 MM월"
+    let dateTitle = dateFormatter.string(from: calendarDate)
     let dateComponents = dateTitle.split(separator: " ")
-    self.yearLabel.text = String(dateComponents[0])
-    self.monthLabel.text = String(dateComponents[1])
+    yearLabel.text = String(dateComponents[0])
+    monthLabel.text = String(dateComponents[1])
   }
 
   // 해당 Month에 따른 일(day)반환
   private func updateDays() {
-    self.days.removeAll()
-    let startDayOfTheWeek = self.startDayofTheWeek()
-    let totalDays = startDayOfTheWeek + self.endDate()
+    days.removeAll()
+    let startDayOfTheWeek = startDayofTheWeek()
+    let totalDays = startDayOfTheWeek + endDate()
 
     for day in Int()..<totalDays {
       if day < startDayOfTheWeek {
-        self.days.append("")
+        days.append("")
         continue
       }
-      self.days.append("\(day - startDayOfTheWeek + 1)")
+      days.append("\(day - startDayOfTheWeek + 1)")
     }
-    self.dayCollectionView.reloadData()
+    dayCollectionView.reloadData()
   }
 
   // 달력 업데이트
   private func updateCalendar() {
-    self.updateDateTitle()
-    self.updateDays()
+    updateDateTitle()
+    updateDays()
   }
 
   // 저번달로 이동
   private func minusMonth() {
-    self.calendarDate = self.calendar.date(
+    calendarDate = calendar.date(
       byAdding: DateComponents(month: -1),
-      to: self.calendarDate
+      to: calendarDate
     ) ?? Date()
-    self.updateCalendar()
+    updateCalendar()
   }
 
   // 다음달로 이동
   private func plusMonth() {
-    self.calendarDate = self.calendar.date(
+    calendarDate = calendar.date(
       byAdding: DateComponents(month: 1),
-      to: self.calendarDate
+      to: calendarDate
     ) ?? Date()
-    self.updateCalendar()
+    updateCalendar()
   }
 }
 
