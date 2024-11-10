@@ -16,12 +16,6 @@ class CalendarView: UIView {
   private let dateFormatter = DateFormatter()
 
   // MARK: - UI Components
-  private var contentView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .clear
-    return view
-  }()
-
   private var yearLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.boldFont(ofSize: CGFloat(28))
@@ -92,29 +86,25 @@ class CalendarView: UIView {
 
   // MARK: - Methods
   func setupViews() {
-    self.addSubview(contentView)
-    contentView.addSubview(yearLabel)
-    contentView.addSubview(previousMonthButton)
-    contentView.addSubview(nextMonthButton)
-    contentView.addSubview(monthLabel)
-    contentView.addSubview(weekStackView)
-    contentView.addSubview(separatorLineView)
-    contentView.addSubview(dayCollectionView)
+    self.addSubview(yearLabel)
+    self.addSubview(previousMonthButton)
+    self.addSubview(nextMonthButton)
+    self.addSubview(monthLabel)
+    self.addSubview(weekStackView)
+    self.addSubview(separatorLineView)
+    self.addSubview(dayCollectionView)
   }
 
   func setupLayoutConstraints() {
-    contentView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
 
     yearLabel.snp.makeConstraints {
-      $0.top.equalTo(contentView).offset(92)
-      $0.left.equalTo(contentView).offset(16)
+      $0.top.equalTo(self).offset(92)
+      $0.left.equalTo(self).offset(16)
     }
 
     previousMonthButton.snp.makeConstraints {
-      $0.left.equalTo(contentView).offset(134)
-      $0.top.equalTo(contentView).offset(132)
+      $0.left.equalTo(self).offset(134)
+      $0.top.equalTo(self).offset(132)
       $0.width.equalTo(17)
       $0.height.equalTo(19)
     }
@@ -126,30 +116,30 @@ class CalendarView: UIView {
     }
 
     nextMonthButton.snp.makeConstraints {
-      $0.left.equalTo(contentView).offset(239)
-      $0.top.equalTo(contentView).offset(132)
+      $0.left.equalTo(self).offset(239)
+      $0.top.equalTo(self).offset(132)
       $0.width.equalTo(17)
       $0.height.equalTo(19)
     }
 
     weekStackView.snp.makeConstraints {
-      $0.top.equalTo(contentView).offset(199)
+      $0.top.equalTo(self).offset(199)
       $0.width.equalTo(dayCollectionView).inset(12)
       $0.height.equalTo(18)
-      $0.centerX.equalTo(contentView)
+      $0.centerX.equalTo(self)
     }
 
     separatorLineView.snp.makeConstraints {
       $0.width.equalTo(317)
       $0.height.equalTo(1)
       $0.top.equalTo(weekStackView.snp.bottom).offset(3.75)
-      $0.centerX.equalTo(contentView)
+      $0.centerX.equalTo(self)
     }
 
     dayCollectionView.snp.makeConstraints {
-      $0.top.equalTo(contentView).offset(228)
-      $0.left.equalTo(contentView).offset(24)
-      $0.right.equalTo(contentView).offset(-24)
+      $0.top.equalTo(self).offset(228)
+      $0.left.equalTo(self).offset(24)
+      $0.right.equalTo(self).offset(-24)
       $0.height.equalTo(490)
     }
   }
