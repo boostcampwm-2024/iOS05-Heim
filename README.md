@@ -56,7 +56,7 @@
 <br>
 
 ## 📚 설계도
-![Heim-설계도](https://github.com/user-attachments/assets/3bab18ee-2ee3-4f78-a6e3-1db0c209acda)
+![Heim-설계도](https://github.com/user-attachments/assets/cde0c955-cefa-4534-a26d-929fddc85211)
 
 <br>
 
@@ -67,3 +67,9 @@
 |<img src="https://avatars.githubusercontent.com/u/136614563?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/117553364?v=4" width=150>|<img src="https://avatars.githubusercontent.com/u/70135292?v=4" width=150>|<img src="https://hackmd.io/_uploads/SyoeWvcuC.png" width=150>|
 
 <br>
+
+<hr>
+
+<br>
+
+### 프로젝트 진행과 관련한 자세한 사항은 [Wiki](https://github.com/boostcampwm-2024/iOS05-Heim/wiki)를 참고해주세요!
