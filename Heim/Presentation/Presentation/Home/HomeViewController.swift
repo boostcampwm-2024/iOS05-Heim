@@ -11,7 +11,7 @@ import SnapKit
 public class HomeViewController: UIViewController {
 
   // MARK: - UI Components
-  private var contentView = CalendarView()
+  private var calendarView = CalendarView()
 
   private let backgroundImageView: UIImageView = {
     let imageView = UIImageView()
@@ -29,7 +29,7 @@ public class HomeViewController: UIViewController {
   // MARK: - Methods
   func setupViews() {
     view.addSubview(backgroundImageView)
-    view.addSubview(contentView)
+    view.addSubview(calendarView)
   }
 
   func setupLayoutConstraints() {
@@ -37,7 +37,7 @@ public class HomeViewController: UIViewController {
       $0.edges.equalToSuperview()
     }
 
-    contentView.snp.makeConstraints {
+    calendarView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
   }

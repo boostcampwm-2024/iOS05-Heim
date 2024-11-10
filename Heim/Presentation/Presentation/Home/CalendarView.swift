@@ -40,7 +40,6 @@ class CalendarView: UIView {
   private let monthLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.text = "12월"
     label.font = UIFont.boldFont(ofSize: CGFloat(24))
     label.textColor = .white
     return label
