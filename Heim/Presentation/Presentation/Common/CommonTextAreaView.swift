@@ -30,9 +30,7 @@ final class CommonTextAreaView: UIView {
   }()
   
   // MARK: - Initializer
-  public init(
-    min height: CGFloat = 0
-  ) {
+  public init(min height: CGFloat = 0) {
     self.minHeight = height
     super.init(frame: .zero)
     setupLayers()
@@ -104,17 +102,15 @@ private extension CommonTextAreaView {
 
 // MARK: - Private Methods
 private extension CommonTextAreaView {
-  func setLineSpacing(
-    lineHeightMultiple: CGFloat = 1.3
-  ) {
+  func setLineSpacing() {
     let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineHeightMultiple = lineHeightMultiple
+    paragraphStyle.lineHeightMultiple = Constants.lineHeightMultiple
     
     let attributedString = NSAttributedString(
       string: textLabel.text ?? "",
       attributes: [
         .paragraphStyle: paragraphStyle,
-        .font: textLabel.font ?? UIFont.systemFont(ofSize: 16)
+        .font: textLabel.font ?? UIFont.systemFont(ofSize: Constants.fontSize)
       ]
     )
     
@@ -123,10 +119,11 @@ private extension CommonTextAreaView {
 }
 
 // MARK: - Constants
-extension CommonTextAreaView {
-  private enum Constants {
+private extension CommonTextAreaView {
+  enum Constants {
     static let cornerRadius: CGFloat = 10
     static let labelPadding: CGFloat = 16
     static let fontSize: CGFloat = 16
+    static let lineHeightMultiple: CGFloat = 1.3
   }
 }
