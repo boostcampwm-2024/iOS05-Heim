@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CalendarView: UIView {
+final class CalendarView: UIView {
   // MARK: - Calendar Properties
   private let calendar = Calendar.current // 현재의 지역 및 설정에 맞는 Calendar 객체
   private var calendarDate = Date() // 달력에 표시될 날짜
