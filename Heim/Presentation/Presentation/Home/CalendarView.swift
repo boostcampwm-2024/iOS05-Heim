@@ -16,7 +16,7 @@ final class CalendarView: UIView {
   private let dateFormatter = DateFormatter()
 
   // MARK: - UI Components
-  private var yearLabel: UILabel = {
+  private let yearLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.boldFont(ofSize: CGFloat(28))
     label.textColor = .white
@@ -60,7 +60,7 @@ final class CalendarView: UIView {
     return view
   }()
 
-  private var dayCollectionView: UICollectionView = {
+  private let dayCollectionView: UICollectionView = {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     collectionView.register(
       CalendarCell.self,

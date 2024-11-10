@@ -12,7 +12,7 @@ class CalendarCell: UICollectionViewCell {
   static let identifier = "CalendarCell"
 
   // MARK: - UI Components
-  private var dateLabel: UILabel = {
+  private let dateLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
     label.font = UIFont.regularFont(ofSize: 12)
@@ -20,7 +20,7 @@ class CalendarCell: UICollectionViewCell {
     return label
   }()
 
-  private var emojiView: UIView = {
+  private let emojiView: UIView = {
     let view = UIView()
     view.frame.size = CGSize(width: 40, height: 40)
     view.layer.cornerRadius = view.frame.width / 2

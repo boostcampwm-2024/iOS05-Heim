@@ -11,7 +11,7 @@ import SnapKit
 public class HomeViewController: UIViewController {
 
   // MARK: - UI Components
-  private var calendarView = CalendarView()
+  private let calendarView = CalendarView()
 
   private let backgroundImageView: UIImageView = {
     let imageView = UIImageView()
