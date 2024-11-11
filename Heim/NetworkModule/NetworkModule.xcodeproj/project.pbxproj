@@ -124,11 +124,11 @@
 				B307B3CB2CD9B4AA001C5040 /* Frameworks */,
 				B307B3CC2CD9B4AA001C5040 /* Resources */,
 				4093ABB92CDB9CD900F7E060 /* Embed Frameworks */,
+				409DB4892CE20AE7006E0E24 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B307B6C12CDC7D59001C5040 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B307B3D02CD9B4AA001C5040 /* NetworkModule */,
@@ -222,6 +222,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		409DB4892CE20AE7006E0E24 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"/opt/homebrew/bin:$PATH\"\n\nSWIFTLINT_CONFIG=\"${PROJECT_DIR}/../.swiftlint.yml\"\n\nif which swiftlint >/dev/null; then\n  swiftlint --config \"$SWIFTLINT_CONFIG\"\nelse\n  echo \"warning: SwiftLint not installed. Please install it via Homebrew.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B307B3CA2CD9B4AA001C5040 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -245,10 +265,6 @@
 			target = B307B3CD2CD9B4AA001C5040 /* NetworkModule */;
 			targetProxy = B307B3DA2CD9B4AA001C5040 /* PBXContainerItemProxy */;
 		};
-		B307B6C12CDC7D59001C5040 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = B307B6C02CDC7D59001C5040 /* SwiftLintBuildToolPlugin */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -259,12 +275,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -299,12 +316,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -530,14 +548,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		B307B6C02CDC7D59001C5040 /* SwiftLintBuildToolPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B307B6BD2CDC7D4E001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = "plugin:SwiftLintBuildToolPlugin";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B307B3C52CD9B4AA001C5040 /* Project object */;
 }
