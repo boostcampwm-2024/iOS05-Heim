@@ -49,7 +49,10 @@ final class CustomTabBarView: UIView {
     button.layer.borderColor = UIColor.white.cgColor
     button.setImage(
       // TODO: #9 브랜치 병합 시 수정
-      UIImage(systemName: "music.mic", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)),
+      UIImage(
+        systemName: "music.mic",
+        withConfiguration: UIImage.SymbolConfiguration(pointSize: Constants.centerButtonSize)
+      ),
       for: .normal
     )
     button.addTarget(self, action: #selector(centerButtonDidTap), for: .touchUpInside)
@@ -78,12 +81,12 @@ final class CustomTabBarView: UIView {
   private func setupConstraints() {
     tabBarView.snp.makeConstraints {
       $0.bottom.leading.trailing.equalToSuperview()
-      $0.height.equalTo(90)
+      $0.height.equalTo(Constants.tabBarHeight)
     }
     
     centerButton.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.bottom.equalTo(tabBarView.snp.top).offset(60)
+      $0.bottom.equalTo(tabBarView.snp.top).offset(Constants.centerButtonBottomOffset)
       $0.width.height.equalTo(Constants.centerButtonSize)
     }
   }
@@ -170,10 +173,12 @@ final class CustomTabBarView: UIView {
 // MARK: - Constants
 private extension CustomTabBarView {
   enum Constants {
+    static let tabBarHeight: CGFloat = 90
     static let tabBarCornerRadius: CGFloat = 20
     static let centerButtonSize: CGFloat = 80
     static let centerButtonIconSize: CGFloat = 40
     static let centerButtonBorderWidth: CGFloat = 1
+    static let centerButtonBottomOffset: CGFloat = 60
     static let buttonIconSize: CGFloat = 18
     static let buttonTitleSize: CGFloat = 10
     static let buttonSpacing: CGFloat = 5
