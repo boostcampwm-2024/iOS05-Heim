@@ -8,8 +8,8 @@
 import UIKit
 import SnapKit
 
-// TODO: TabBar Coordinator에서 선언 후 사용할 예정
-enum TabBarItem: CaseIterable {
+enum TabBarItem {
+  // TODO: TabBar Coordinator에서 선언 후 사용할 예정
   case home
   case mic
   case statistic
@@ -24,7 +24,7 @@ enum TabBarItem: CaseIterable {
 }
 
 protocol CustomTabBarViewDelegate: AnyObject {
-  func didButtonTap(_ item: TabBarItem)
+  func buttonDidTap(_ tabBarView: CustomTabBarView, _ item: TabBarItem)
 }
 
 final class CustomTabBarView: UIView {
@@ -45,6 +45,8 @@ final class CustomTabBarView: UIView {
     button.backgroundColor = .primary
     button.tintColor = .white
     button.layer.cornerRadius = Constants.centerButtonSize / 2
+    button.layer.borderWidth = Constants.centerButtonBorderWidth
+    button.layer.borderColor = UIColor.white.cgColor
     button.setImage(
       // TODO: #9 브랜치 병합 시 수정
       UIImage(systemName: "music.mic", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)),
@@ -156,12 +158,12 @@ final class CustomTabBarView: UIView {
   // MARK: - Action Methods
   @objc private func tabButtonDidTap(_ sender: UIButton) {
     let item: TabBarItem = sender.tag == 0 ? .home : .statistic
-    delegate?.didButtonTap(item)
+    delegate?.buttonDidTap(self, item)
     updateButtonAppearance(selectedIndex: sender.tag)
   }
   
   @objc private func centerButtonDidTap() {
-    delegate?.didButtonTap(.mic)
+    delegate?.buttonDidTap(self, .mic)
   }
 }
 
@@ -171,6 +173,7 @@ private extension CustomTabBarView {
     static let tabBarCornerRadius: CGFloat = 20
     static let centerButtonSize: CGFloat = 80
     static let centerButtonIconSize: CGFloat = 40
+    static let centerButtonBorderWidth: CGFloat = 1
     static let buttonIconSize: CGFloat = 18
     static let buttonTitleSize: CGFloat = 10
     static let buttonSpacing: CGFloat = 5

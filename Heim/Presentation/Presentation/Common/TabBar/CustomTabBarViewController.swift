@@ -29,6 +29,7 @@ final class CustomTabBarViewController: BaseViewController<CustomTabBarViewModel
   
   override func bindState() {
     viewModel.$state
+      .receive(on: DispatchQueue.main)
       .sink { [weak self] state in
         self?.updateUI(with: state)
       }
@@ -43,7 +44,11 @@ extension CustomTabBarViewController {
 }
 
 extension CustomTabBarViewController: CustomTabBarViewDelegate {
-  func didButtonTap(_ item: TabBarItem) {
-    (item == .mic) ? viewModel.action(.micButtonTapped) : viewModel.action(.tabSelected(item))
+  func buttonDidTap(_ tabBarView: CustomTabBarView, _ item: TabBarItem) {
+    if item == .mic {
+      viewModel.action(.micButtonDidTap)
+    } else {
+      viewModel.action(.tabButtonDidTap(item))
+    }
   }
 }

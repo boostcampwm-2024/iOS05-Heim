@@ -5,53 +5,48 @@
 //  Created by 박성근 on 11/7/24.
 //
 
-import UIKit
 import Combine
 import os
 
 final class CustomTabBarViewModel: ViewModel {
   // MARK: - Types
   enum Action {
-    case tabSelected(TabBarItem)
-    case micButtonTapped
+    case tabButtonDidTap(TabBarItem)
+    case micButtonDidTap
   }
   
   struct State {
     var currentTab: TabBarItem
-    
-    init(currentTab: TabBarItem = .home) {
-      self.currentTab = currentTab
-    }
   }
   
   // MARK: - Properties
-  @Published private(set) public var state: State
+  @Published var state: State
   
   // TODO: Usecase protocol을 주입받아 사용할 수 있도록 수정
-  public init() {
-    self.state = State()
+  init() {
+    self.state = State(currentTab: .home)
   }
   
   // MARK: - Action Handler
-  public func action(_ action: Action) {
+  func action(_ action: Action) {
     switch action {
-    case .tabSelected(let tab):
+    case .tabButtonDidTap(let tab):
       handleTabSelection(tab)
       
-    case .micButtonTapped:
+    case .micButtonDidTap:
       handleMicButtonTapped()
     }
   }
 }
 
-extension CustomTabBarViewModel {
-  private func handleTabSelection(_ tab: TabBarItem) {
+private extension CustomTabBarViewModel {
+  func handleTabSelection(_ tab: TabBarItem) {
     guard tab != state.currentTab else { return }
     
     self.state.currentTab = tab
   }
   
-  private func handleMicButtonTapped() {
+  func handleMicButtonTapped() {
     // TODO: Mic 버튼 클릭 시 처리할 로직 구현
   }
 }
