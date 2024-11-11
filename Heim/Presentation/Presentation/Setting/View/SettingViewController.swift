@@ -72,6 +72,20 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
         nameCell.updateUserName(userName)
       }
       .store(in: &cancellable)
+    
+    viewModel.$state
+      .map { $0.isConnectedCloud }
+      .receive(on: DispatchQueue.main)
+      .removeDuplicates()
+      .sink { [weak self] isConnected in
+        guard let cloudCell = self?.settingTableView.cellForRow(
+          at: IndexPath(row: 1, section: 0)
+        ) as? SettingTableViewCell else { return }
+        
+        cloudCell.setupCloudSwitch(isOn: isConnected)
+        print(isConnected)
+      }
+      .store(in: &cancellable)
   }
 }
 
@@ -121,7 +135,6 @@ extension SettingViewController: UITableViewDataSource {
     case 0: // 이름
       cell.setupNameLabel(name: viewModel.state.userName)
     case 1: // iCloud 동기화
-      cell.setupCloudSwitch(isOn: viewModel.state.isConnectedCloud)
       cell.cloudSwitchDelegate = self
     case 4: // 앱 버전
       cell.setupVersionLabel()
