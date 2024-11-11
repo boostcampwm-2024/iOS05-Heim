@@ -32,6 +32,7 @@ final class SettingTableViewCell: UITableViewCell {
   }()
   
   private let subLabel = CommonLabel(font: .regular, size: Constants.fontSize, textColor: .heimGray)
+  
   weak var cloudSwitchDelegate: CloudSwitchDelegate?
   
   // MARK: - Initializer
