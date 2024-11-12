@@ -21,4 +21,18 @@ extension UIColor {
     blue: 160 / 255,
     alpha: 1.0
   )
+  
+  static let heimGray = UIColor(
+    red: 163 / 255,
+    green: 163 / 255,
+    blue: 163 / 255,
+    alpha: 1.0
+  )
+  
+  static let heimBlue = UIColor(
+    red: 28 / 255,
+    green: 100 / 255,
+    blue: 234 / 255,
+    alpha: 1.0
+  )
 }

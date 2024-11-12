@@ -24,7 +24,7 @@ public final class DIContainer: DIContainable {
   }
   
   public func resolve<T>(type: T.Type) -> T? {
-    let service = services["\(type)"] as? T
+    let service = services["\(type)"]?(self) as? T
     
     if service == nil {
       Logger.log(message: "\(#file) - \(#line): \(#function) - \(type) resolve error")
