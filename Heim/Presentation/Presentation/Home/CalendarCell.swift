@@ -44,6 +44,12 @@ class CalendarCell: UICollectionViewCell {
     setupViews()
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    dateLabel.text = ""
+    emojiView.backgroundColor = .clear
+  }
+
   // MARK: - Methods
   private func setupViews() {
     self.addSubview(stackView)
@@ -56,7 +62,7 @@ class CalendarCell: UICollectionViewCell {
       $0.height.equalTo(40)
     }
   }
-
+  
   func update(day: String) {
     //TODO: 수정필요 - 애초에 View가 그려지지 않도록 하는 방법 찾기
     self.emojiView.backgroundColor = day.isEmpty ? .clear : UIColor(red: 173 / 255, green: 170 / 255, blue: 195 / 255, alpha: 0.7)
