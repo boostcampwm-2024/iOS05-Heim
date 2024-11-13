@@ -18,15 +18,25 @@ final class CalendarView: UIView {
   // MARK: - UI Components
   private let yearLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.boldFont(ofSize: CGFloat(28))
+    label.font = UIFont.boldFont(ofSize: LayoutContants.boldFontSizeOne)
     label.textColor = .white
     return label
   }()
 
+  private let monthStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .horizontal
+    stackView.distribution = .fillProportionally
+    stackView.alignment = .center
+    return stackView
+  }()
+
   private let previousMonthButton: UIButton = {
     let button = UIButton()
+    //TODO: 에셋 파일 추가
     button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
     button.tintColor = .white
+    //TODO: 버튼 이미지 24 x 24로 꽉차게 적용 
     return button
   }()
 
@@ -40,7 +50,7 @@ final class CalendarView: UIView {
   private let monthLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.font = UIFont.boldFont(ofSize: CGFloat(24))
+    label.font = UIFont.boldFont(ofSize: LayoutContants.boldFontSizeTwo)
     label.textColor = .white
     return label
   }()
@@ -49,14 +59,12 @@ final class CalendarView: UIView {
     let stackView = UIStackView()
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
-    stackView.spacing = 38
     return stackView
   }()
 
-  //TODO: 길이를 고정값으로 할지 결정 필요
   private let separatorLineView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor(red: 233 / 255.0, green: 235 / 255.0, blue: 137 / 255.0 , alpha: 0.3)
+    view.backgroundColor = .whiteGray
     return view
   }()
 
@@ -74,6 +82,7 @@ final class CalendarView: UIView {
     super.init(frame: frame)
     setupViews()
     setupLayoutConstraints()
+    setupMonthStackView()
     setupWeekStackView()
     setupCollectionView()
     configureCalendar()
@@ -86,6 +95,7 @@ final class CalendarView: UIView {
   // MARK: - Methods
   func setupViews() {
     addSubview(yearLabel)
+    addSubview(monthStackView)
     addSubview(previousMonthButton)
     addSubview(nextMonthButton)
     addSubview(monthLabel)
@@ -97,49 +107,44 @@ final class CalendarView: UIView {
   func setupLayoutConstraints() {
 
     yearLabel.snp.makeConstraints {
-      $0.top.equalTo(self).offset(92)
-      $0.left.equalTo(self).offset(16)
+      $0.top.equalTo(self.safeAreaLayoutGuide)
+      $0.left.equalTo(self).offset(LayoutContants.defaultPadding)
     }
 
     previousMonthButton.snp.makeConstraints {
-      $0.left.equalTo(self).offset(134)
-      $0.top.equalTo(self).offset(132)
-      $0.width.equalTo(17)
-      $0.height.equalTo(19)
-    }
-
-    monthLabel.snp.makeConstraints {
-      $0.left.equalTo(previousMonthButton.snp.right).offset(14)
-      $0.right.equalTo(nextMonthButton.snp.left).offset(-14)
-      $0.centerY.equalTo(previousMonthButton)
+      $0.width.equalTo(LayoutContants.buttonSize)
+      $0.height.equalTo(LayoutContants.buttonSize)
     }
 
     nextMonthButton.snp.makeConstraints {
-      $0.left.equalTo(self).offset(239)
-      $0.top.equalTo(self).offset(132)
-      $0.width.equalTo(17)
-      $0.height.equalTo(19)
+      $0.width.equalTo(LayoutContants.buttonSize)
+      $0.height.equalTo(LayoutContants.buttonSize)
+    }
+
+    monthStackView.snp.makeConstraints {
+      $0.top.equalTo(yearLabel.snp.bottom).offset(LayoutContants.defaultPadding)
+      $0.left.equalTo(yearLabel.snp.right).offset(LayoutContants.stackViewLeftPadding * -1)
+      $0.centerX.equalTo(self)
     }
 
     weekStackView.snp.makeConstraints {
-      $0.top.equalTo(self).offset(199)
-      $0.width.equalTo(dayCollectionView).inset(12)
-      $0.height.equalTo(18)
+      $0.top.equalTo(monthStackView.snp.bottom).offset(LayoutContants.weekStackViewTop)
+      $0.width.equalTo(UIScreen.main.bounds.width - 48)
       $0.centerX.equalTo(self)
     }
 
     separatorLineView.snp.makeConstraints {
-      $0.width.equalTo(317)
-      $0.height.equalTo(1)
-      $0.top.equalTo(weekStackView.snp.bottom).offset(3.75)
+      $0.width.equalTo(weekStackView)
+      $0.height.equalTo(LayoutContants.lineHeight)
+      $0.top.equalTo(weekStackView.snp.bottom).offset(LayoutContants.lineViewBottom)
       $0.centerX.equalTo(self)
     }
-
+    
     dayCollectionView.snp.makeConstraints {
-      $0.top.equalTo(self).offset(228)
-      $0.left.equalTo(self).offset(24)
-      $0.right.equalTo(self).offset(-24)
-      $0.height.equalTo(490)
+      $0.top.equalTo(separatorLineView).offset(LayoutContants.dayCollectionViewTop)
+      $0.left.equalTo(self).offset(LayoutContants.stackViewLeftPadding)
+      $0.right.equalTo(self).offset(LayoutContants.stackViewLeftPadding * -1)
+      $0.height.equalTo(UIScreen.main.bounds.height * 1 / 2 )
     }
   }
 
@@ -152,7 +157,7 @@ final class CalendarView: UIView {
       label.text = day.rawValue
       label.textAlignment = .center
       label.textColor = .white
-      label.font = UIFont.boldSystemFont(ofSize: 14)
+      label.font = UIFont.boldSystemFont(ofSize: LayoutContants.boldFontSizeFour)
 
       weekStackView.addArrangedSubview(label)
 
@@ -162,6 +167,12 @@ final class CalendarView: UIView {
         label.textColor = .blue
       }
     }
+  }
+  //MARK: - MonthStackViewUI
+  private func setupMonthStackView() {
+    monthStackView.addArrangedSubview(previousMonthButton)
+    monthStackView.addArrangedSubview(monthLabel)
+    monthStackView.addArrangedSubview(nextMonthButton)
   }
 }
 
@@ -198,7 +209,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     sizeForItemAt indexPath: IndexPath
   ) -> CGSize {
     let width = dayCollectionView.frame.width / 9
-    return CGSize(width: width, height: 80)
+    return CGSize(width: width, height: dayCollectionView.bounds.height / 5)
   }
 
   public func collectionView(
@@ -288,4 +299,18 @@ extension CalendarView {
   }
 }
 
-
+private extension CalendarView {
+  enum LayoutContants {
+    static let defaultPadding: CGFloat = 16
+    static let boldFontSizeOne: CGFloat = 28
+    static let boldFontSizeTwo: CGFloat = 24
+    static let boldFontSizeThree: CGFloat = 20
+    static let boldFontSizeFour: CGFloat = 14
+    static let buttonSize: CGFloat = 24
+    static let stackViewLeftPadding: CGFloat = 24
+    static let lineHeight: CGFloat = 1
+    static let lineViewBottom: CGFloat = 4
+    static let dayCollectionViewTop: CGFloat = 10
+    static let weekStackViewTop: CGFloat = 30
+  }
+}
