@@ -11,8 +11,17 @@ import SnapKit
 
 final class CommonAlertView: UIView {
   // MARK: - Properties
-  private let titleLabel: CommonLabel = CommonLabel(font: .bold, size: 20, textColor: .heimBlue)
-  private var messageLabel: CommonLabel? = CommonLabel(font: .regular, size: LayoutConstants.defaultPadding, textColor: .black)
+  private let titleLabel: CommonLabel = CommonLabel(
+    font: .bold, 
+    size: LayoutConstants.titleLabelFontSize, 
+    textColor: .heimBlue
+  )
+  
+  private var messageLabel: CommonLabel? = CommonLabel(
+    font: .regular, 
+    size: LayoutConstants.messageLabelFontSize, 
+    textColor: .black
+  )
   
   private let labelContainerView: UIView = {
     let view = UIView()
@@ -70,6 +79,8 @@ final class CommonAlertView: UIView {
 // MARK: - Private Extenion
 private extension CommonAlertView {
   enum LayoutConstants {
+    static let titleLabelFontSize: CGFloat = 20
+    static let messageLabelFontSize: CGFloat = 16
     static let defaultPadding: CGFloat = 16
     static let titleLabelPadding: CGFloat = 48
     static let buttonStackViewHeightRatio: CGFloat = 0.066
