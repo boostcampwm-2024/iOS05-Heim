@@ -35,4 +35,11 @@ extension UIColor {
     blue: 234 / 255,
     alpha: 1.0
   )
+  
+  static let dim = UIColor(
+    red: 37 / 255,
+    green: 37 / 255,
+    blue: 37 / 255,
+    alpha: 0.6
+  )
 }
