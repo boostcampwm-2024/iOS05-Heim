@@ -15,14 +15,14 @@ class CalendarCell: UICollectionViewCell {
   private let dateLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.font = UIFont.regularFont(ofSize: 12)
+    label.font = UIFont.regularFont(ofSize: LayoutContants.fontSize)
     label.textColor = .white
     return label
   }()
 
   private let emojiView: UIView = {
     let view = UIView()
-    view.frame.size = CGSize(width: 40, height: 40)
+    view.frame.size = CGSize(width: LayoutContants.emojiSize, height: LayoutContants.emojiSize)
     view.layer.cornerRadius = view.frame.width / 2
     return view
   }()
@@ -59,7 +59,7 @@ class CalendarCell: UICollectionViewCell {
     }
 
     emojiView.snp.makeConstraints {
-      $0.height.equalTo(40)
+      $0.height.equalTo(LayoutContants.emojiSize)
     }
   }
   
@@ -67,5 +67,13 @@ class CalendarCell: UICollectionViewCell {
     //TODO: 수정필요 - 애초에 View가 그려지지 않도록 하는 방법 찾기
     self.emojiView.backgroundColor = day.isEmpty ? .clear : .whiteGray
     self.dateLabel.text = day
+  }
+}
+
+private extension CalendarCell {
+  enum LayoutContants {
+    static let fontSize: CGFloat = 14
+    static let emojiSize: CGFloat = 40
+
   }
 }
