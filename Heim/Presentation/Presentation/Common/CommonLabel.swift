@@ -35,4 +35,42 @@ final class CommonLabel: UILabel {
   required init?(coder: NSCoder) {
     super.init(frame: .zero)
   }
+  
+  func setupLineSpacing() {
+    guard isLineBroken() else { return }
+    
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = font.lineHeight * 0.5
+    paragraphStyle.alignment = textAlignment
+    
+    let attributedString = NSAttributedString(
+      string: text ?? "",
+      attributes: [
+        .paragraphStyle: paragraphStyle,
+        .font: font ?? UIFont()
+      ]
+    )
+    
+    attributedText = attributedString
+  }
+  
+  func updateTextKeepingAttributes(_ newText: String) {
+    guard let currentAttributedText = attributedText else {
+      text = newText
+      return
+    }
+    
+    let newAttributedText = NSMutableAttributedString(attributedString: currentAttributedText)
+    newAttributedText.mutableString.setString(newText)
+    attributedText = newAttributedText
+  }
+}
+
+private extension CommonLabel {
+  func isLineBroken() -> Bool {
+    let size = CGSize(width: frame.width, height: .greatestFiniteMagnitude)
+    let neededSize = sizeThatFits(size)
+    
+    return neededSize.height > frame.height
+  }
 }
