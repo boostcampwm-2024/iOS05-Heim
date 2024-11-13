@@ -15,7 +15,7 @@ public class HomeViewController: UIViewController {
 
   private let backgroundImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(named: "Background")
+    imageView.image = .background
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
