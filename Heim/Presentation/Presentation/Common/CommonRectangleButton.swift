@@ -8,7 +8,7 @@
 import UIKit
 
 final class CommonRectangleButton: UIButton {
-  public init(
+  init(
     title: String = "", 
     fontStyle: UIFont, 
     titleColor: UIColor = .white, 
