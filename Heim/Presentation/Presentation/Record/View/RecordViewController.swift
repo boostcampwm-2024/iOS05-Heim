@@ -54,7 +54,10 @@ extension RecordViewController: RecordViewDelegate {
     return screen()?.bounds.height ?? UIScreen.main.bounds.height
   }
   
-  func buttonDidTap(_ recordingView: RecordView, _ item: RecordViewButtonItem) {
+  func buttonDidTap(
+    _ recordingView: RecordView,
+    _ item: RecordViewButtonItem
+  ) {
     // TODO: 버튼의 종류에 따른 기능 구현
   }
 }

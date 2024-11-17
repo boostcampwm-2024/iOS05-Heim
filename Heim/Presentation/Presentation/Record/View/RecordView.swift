@@ -17,13 +17,17 @@ enum RecordViewButtonItem {
 }
 
 protocol RecordViewDelegate: AnyObject {
-  func buttonDidTap(_ recordingView: RecordView, _ item: RecordViewButtonItem)
+  func buttonDidTap(
+    _ recordingView: RecordView,
+    _ item: RecordViewButtonItem
+  )
   func screenHeight() -> CGFloat
 }
 
 final class RecordView: UIView {
   // MARK: - Properties
   weak var delegate: RecordViewDelegate?
+  
   private var recordingButtons: [UIButton] = []
   
   // MARK: - UI Components
