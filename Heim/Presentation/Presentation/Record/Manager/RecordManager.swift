@@ -41,22 +41,21 @@ final class RecordManager {
   }
   
   // TODO: 언제 setupSpeech를 부를지? 값은 어떻게 Usecase에서 판단할지
-  public func setupSpeech() async -> Bool {
+  public func setupSpeech() async {
     let authStatus = await withCheckedContinuation { continuation in
       SFSpeechRecognizer.requestAuthorization { status in
         continuation.resume(returning: status)
       }
     }
     
+    // TODO: 에러 핸들링
     switch authStatus {
     case .authorized:
-      // TODO: 재생 / 일시정지 버튼 활성화
-      return true
+      return
     case .denied, .restricted, .notDetermined:
-      // TODO: Alert 버튼
-      return false
+      return
     @unknown default:
-      return false
+      return
     }
   }
   
