@@ -17,7 +17,7 @@ extension UIView {
       return
     }
     
-    var cornerMask: CACornerMask = .init()
+    var cornerMask = CACornerMask()
     
     corners.forEach { corner in
       switch corner {

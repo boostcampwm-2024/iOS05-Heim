@@ -50,7 +50,12 @@ final class CommonAlertView: UIView {
   }()
   
   // MARK: - Initializer
-  init(title: String, message: String, leftButtonTitle: String, rightbuttonTitle: String) {
+  init(
+    title: String, 
+    message: String, 
+    leftButtonTitle: String, 
+    rightbuttonTitle: String
+  ) {
     titleLabel.text = title
     messageLabel?.text = message
     leftButton.setTitle(leftButtonTitle, for: .normal)
