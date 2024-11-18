@@ -13,6 +13,10 @@
 		4093ABAB2CDB9CBE00F7E060 /* NetworkModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B51E2CD9F87A001C5040 /* NetworkModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4093ABAC2CDB9CBF00F7E060 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4BB2CD9B6D6001C5040 /* Presentation.framework */; };
 		4093ABAD2CDB9CBF00F7E060 /* Presentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4BB2CD9B6D6001C5040 /* Presentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B3B0E2242CE5EC6200480104 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B0E2232CE5EC6200480104 /* DataModule.framework */; };
+		B3B0E2262CE5EC6200480104 /* DataStorage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B0E2252CE5EC6200480104 /* DataStorage.framework */; };
+		B3B0E2282CE5EC6200480104 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B0E2272CE5EC6200480104 /* Domain.framework */; };
+		B3B0E22A2CE5EC6200480104 /* NetworkModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B0E2292CE5EC6200480104 /* NetworkModule.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,11 @@
 		B307B4BB2CD9B6D6001C5040 /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B51E2CD9F87A001C5040 /* NetworkModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NetworkModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B5202CD9F881001C5040 /* DataStorage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataStorage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B0E2212CE5EC4A00480104 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B0E2232CE5EC6200480104 /* DataModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B0E2252CE5EC6200480104 /* DataStorage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataStorage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B0E2272CE5EC6200480104 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B0E2292CE5EC6200480104 /* NetworkModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NetworkModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -98,6 +107,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3B0E2242CE5EC6200480104 /* DataModule.framework in Frameworks */,
+				B3B0E2262CE5EC6200480104 /* DataStorage.framework in Frameworks */,
+				B3B0E2282CE5EC6200480104 /* Domain.framework in Frameworks */,
+				B3B0E22A2CE5EC6200480104 /* NetworkModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +147,11 @@
 		B307B4BA2CD9B6D6001C5040 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B3B0E2232CE5EC6200480104 /* DataModule.framework */,
+				B3B0E2252CE5EC6200480104 /* DataStorage.framework */,
+				B3B0E2272CE5EC6200480104 /* Domain.framework */,
+				B3B0E2292CE5EC6200480104 /* NetworkModule.framework */,
+				B3B0E2212CE5EC4A00480104 /* Domain.framework */,
 				B307B5202CD9F881001C5040 /* DataStorage.framework */,
 				B307B51E2CD9F87A001C5040 /* NetworkModule.framework */,
 				B307B4BB2CD9B6D6001C5040 /* Presentation.framework */,
@@ -342,6 +360,8 @@
 /* Begin XCBuildConfiguration section */
 		B307B4B02CD9B5AD001C5040 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B307B4882CD9B5AB001C5040 /* Application */;
+			baseConfigurationReferenceRelativePath = Resource/Application.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -375,6 +395,8 @@
 		};
 		B307B4B12CD9B5AD001C5040 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B307B4882CD9B5AB001C5040 /* Application */;
+			baseConfigurationReferenceRelativePath = Resource/Application.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -408,6 +430,8 @@
 		};
 		B307B4B22CD9B5AD001C5040 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B307B4882CD9B5AB001C5040 /* Application */;
+			baseConfigurationReferenceRelativePath = Resource/Application.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -471,6 +495,8 @@
 		};
 		B307B4B32CD9B5AD001C5040 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B307B4882CD9B5AB001C5040 /* Application */;
+			baseConfigurationReferenceRelativePath = Resource/Application.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -527,6 +553,8 @@
 		};
 		B307B4B52CD9B5AD001C5040 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B307B4882CD9B5AB001C5040 /* Application */;
+			baseConfigurationReferenceRelativePath = Resource/Application.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -546,6 +574,8 @@
 		};
 		B307B4B62CD9B5AD001C5040 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B307B4882CD9B5AB001C5040 /* Application */;
+			baseConfigurationReferenceRelativePath = Resource/Application.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;

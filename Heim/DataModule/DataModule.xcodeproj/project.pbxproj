@@ -10,6 +10,7 @@
 		4093ABAE2CDB9CC300F7E060 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C32CD9B77C001C5040 /* Domain.framework */; };
 		4093ABAF2CDB9CC300F7E060 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C32CD9B77C001C5040 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B307B46D2CD9B50B001C5040 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4622CD9B50B001C5040 /* DataModule.framework */; };
+		B3B0E27D2CEB3F0900480104 /* ApiConfiguration.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,11 +41,25 @@
 		B307B4622CD9B50B001C5040 /* DataModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B46C2CD9B50B001C5040 /* DataModuleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B4C32CD9B77C001C5040 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiConfiguration.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B33ABED62CEB58C9005CDE18 /* Exceptions for "DataModule" folder in "DataModule" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B307B4612CD9B50B001C5040 /* DataModule */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B307B4642CD9B50B001C5040 /* DataModule */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B33ABED62CEB58C9005CDE18 /* Exceptions for "DataModule" folder in "DataModule" target */,
+			);
 			path = DataModule;
 			sourceTree = "<group>";
 		};
@@ -78,6 +93,7 @@
 		B307B4582CD9B50B001C5040 = {
 			isa = PBXGroup;
 			children = (
+				B3B0E27C2CEB3F0900480104 /* config */,
 				B307B4642CD9B50B001C5040 /* DataModule */,
 				B307B4702CD9B50B001C5040 /* DataModuleTests */,
 				B307B4C22CD9B77C001C5040 /* Frameworks */,
@@ -100,6 +116,14 @@
 				B307B4C32CD9B77C001C5040 /* Domain.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B3B0E27C2CEB3F0900480104 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */,
+			);
+			path = config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3B0E27D2CEB3F0900480104 /* ApiConfiguration.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +296,7 @@
 /* Begin XCBuildConfiguration section */
 		B307B4762CD9B50B001C5040 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -284,6 +310,7 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DataModule/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
@@ -312,6 +339,7 @@
 		};
 		B307B4772CD9B50B001C5040 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -325,6 +353,7 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DataModule/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
@@ -352,6 +381,7 @@
 		};
 		B307B4782CD9B50B001C5040 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -418,6 +448,7 @@
 		};
 		B307B4792CD9B50B001C5040 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3B0E27B2CEB3F0900480104 /* ApiConfiguration.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -482,6 +513,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.DataModuleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -498,6 +530,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.DataModuleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

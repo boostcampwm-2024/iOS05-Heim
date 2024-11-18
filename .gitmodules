@@ -1,0 +1,3 @@
+[submodule "Heim/DataModule/config"]
+	path = Heim/DataModule/config
+	url = git@github.com:clxxrlove/iOS05-Heim-config.git
