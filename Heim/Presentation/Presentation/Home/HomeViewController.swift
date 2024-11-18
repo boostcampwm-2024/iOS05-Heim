@@ -15,7 +15,7 @@ public class HomeViewController: UIViewController {
 
   private let backgroundImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(named: "Background")
+    imageView.image = .background
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
@@ -27,12 +27,12 @@ public class HomeViewController: UIViewController {
   }
 
   // MARK: - Methods
-  func setupViews() {
+  private func setupViews() {
     view.addSubview(backgroundImageView)
     view.addSubview(calendarView)
   }
 
-  func setupLayoutConstraints() {
+  private func setupLayoutConstraints() {
     backgroundImageView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -42,4 +42,3 @@ public class HomeViewController: UIViewController {
     }
   }
 }
-
