@@ -107,7 +107,7 @@ final class CalendarView: UIView {
   private func setupLayoutConstraints() {
     yearLabel.snp.makeConstraints {
       $0.top.equalTo(self.safeAreaLayoutGuide)
-      $0.left.equalTo(self).offset(LayoutContants.defaultPadding)
+      $0.left.equalToSuperview().offset(LayoutContants.defaultPadding)
     }
 
     previousMonthButton.snp.makeConstraints {
@@ -123,26 +123,27 @@ final class CalendarView: UIView {
     monthStackView.snp.makeConstraints {
       $0.top.equalTo(yearLabel.snp.bottom).offset(LayoutContants.defaultPadding)
       $0.left.equalTo(yearLabel.snp.right).offset(LayoutContants.stackViewLeftPadding * -1)
-      $0.centerX.equalTo(self)
+      $0.centerX.equalToSuperview()
     }
 
     weekStackView.snp.makeConstraints {
       $0.top.equalTo(monthStackView.snp.bottom).offset(LayoutContants.weekStackViewTop)
       $0.width.equalTo(UIScreen.main.bounds.width - 48)
-      $0.centerX.equalTo(self)
+      $0.centerX.equalToSuperview()
+      $0.centerX.equalToSuperview()
     }
 
     separatorLineView.snp.makeConstraints {
       $0.width.equalTo(weekStackView)
       $0.height.equalTo(LayoutContants.lineHeight)
       $0.top.equalTo(weekStackView.snp.bottom).offset(LayoutContants.lineViewBottom)
-      $0.centerX.equalTo(self)
+      $0.centerX.equalToSuperview()
     }
     
     dayCollectionView.snp.makeConstraints {
       $0.top.equalTo(separatorLineView).offset(LayoutContants.dayCollectionViewTop)
-      $0.left.equalTo(self).offset(LayoutContants.stackViewLeftPadding)
-      $0.right.equalTo(self).offset(LayoutContants.stackViewLeftPadding * -1)
+      $0.left.equalToSuperview().offset(LayoutContants.stackViewLeftPadding)
+      $0.right.equalToSuperview().offset(LayoutContants.stackViewLeftPadding * -1)
       $0.height.equalTo(UIScreen.main.bounds.height * 1 / 2 )
     }
   }
