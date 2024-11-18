@@ -27,12 +27,12 @@ public class HomeViewController: UIViewController {
   }
 
   // MARK: - Methods
-  func setupViews() {
+  private func setupViews() {
     view.addSubview(backgroundImageView)
     view.addSubview(calendarView)
   }
 
-  func setupLayoutConstraints() {
+  private func setupLayoutConstraints() {
     backgroundImageView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }

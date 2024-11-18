@@ -93,7 +93,7 @@ final class CalendarView: UIView {
   }
 
   // MARK: - Methods
-  func setupViews() {
+  private func setupViews() {
     addSubview(yearLabel)
     addSubview(monthStackView)
     addSubview(previousMonthButton)
@@ -104,8 +104,7 @@ final class CalendarView: UIView {
     addSubview(dayCollectionView)
   }
 
-  func setupLayoutConstraints() {
-
+  private func setupLayoutConstraints() {
     yearLabel.snp.makeConstraints {
       $0.top.equalTo(self.safeAreaLayoutGuide)
       $0.left.equalTo(self).offset(LayoutContants.defaultPadding)
