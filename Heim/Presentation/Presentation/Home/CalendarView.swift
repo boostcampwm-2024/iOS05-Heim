@@ -18,7 +18,7 @@ final class CalendarView: UIView {
   // MARK: - UI Components
   private let yearLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.boldFont(ofSize: LayoutContants.boldFontSizeOne)
+    label.font = UIFont.boldFont(ofSize: LayoutContants.yearFontSize)
     label.textColor = .white
     return label
   }()
@@ -50,7 +50,7 @@ final class CalendarView: UIView {
   private let monthLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.font = UIFont.boldFont(ofSize: LayoutContants.boldFontSizeTwo)
+    label.font = UIFont.boldFont(ofSize: LayoutContants.monthFontSize)
     label.textColor = .white
     return label
   }()
@@ -127,7 +127,8 @@ final class CalendarView: UIView {
 
     weekStackView.snp.makeConstraints {
       $0.top.equalTo(monthStackView.snp.bottom).offset(LayoutContants.weekStackViewTop)
-      $0.width.equalTo(UIScreen.main.bounds.width - 48)
+      //TODO: 익스텐션 추후 적용
+      $0.width.equalTo(UIScreen.main.bounds.width - LayoutContants.weekStackPadding)
       $0.centerX.equalToSuperview()
     }
 
@@ -142,6 +143,7 @@ final class CalendarView: UIView {
       $0.top.equalTo(separatorLineView).offset(LayoutContants.dayCollectionViewTop)
       $0.left.equalToSuperview().offset(LayoutContants.stackViewLeftPadding)
       $0.right.equalToSuperview().offset(LayoutContants.stackViewLeftPadding * -1)
+      //TODO: 익스텐션 추후 적용
       $0.height.equalTo(UIScreen.main.bounds.height * 1 / 2 )
     }
   }
@@ -155,7 +157,7 @@ final class CalendarView: UIView {
       label.text = day.rawValue
       label.textAlignment = .center
       label.textColor = .white
-      label.font = UIFont.boldSystemFont(ofSize: LayoutContants.boldFontSizeFour)
+      label.font = UIFont.boldSystemFont(ofSize: LayoutContants.dayFontSize)
 
       weekStackView.addArrangedSubview(label)
 
@@ -300,10 +302,10 @@ extension CalendarView {
 private extension CalendarView {
   enum LayoutContants {
     static let defaultPadding: CGFloat = 16
-    static let boldFontSizeOne: CGFloat = 28
-    static let boldFontSizeTwo: CGFloat = 24
-    static let boldFontSizeThree: CGFloat = 20
-    static let boldFontSizeFour: CGFloat = 14
+    static let weekStackPadding: CGFloat = 48
+    static let yearFontSize: CGFloat = 28
+    static let monthFontSize: CGFloat = 24
+    static let dayFontSize: CGFloat = 14
     static let buttonSize: CGFloat = 24
     static let stackViewLeftPadding: CGFloat = 24
     static let lineHeight: CGFloat = 1
