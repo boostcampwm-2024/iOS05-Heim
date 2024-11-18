@@ -12,8 +12,6 @@ import SnapKit
 final class AlertViewController: UIViewController {
   // MARK: - Properties
   private let alertView: CommonAlertView
-  private var leftButtonAction: () -> Void = {}
-  private var rightButtonAction: () -> Void = {}
   
   // MARK: - Initializer
   init(title: String, message: String, leftButtonTitle: String, rightbuttonTitle: String) {
