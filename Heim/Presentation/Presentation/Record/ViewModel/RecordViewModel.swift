@@ -56,7 +56,6 @@ final class RecordViewModel: ViewModel {
   
   func setup() async {
     await recordManager.setupSpeech()
-    // TODO: Handle authorization status
   }
 }
 
@@ -71,7 +70,6 @@ private extension RecordViewModel {
   
   func handleStopRecording() {
     recordManager.stopRecording()
-//    print(recordManager.recognizedText)
     state.isRecording = false
     state.canMoveToNext = true
     state.isPaused = true

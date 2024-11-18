@@ -59,8 +59,7 @@ final class RecordManager {
     }
   }
   
-  // TODO: 현재 audioRecorder가 Stop되면 바로 설정한 URL에 m4a 파일이 저장됨.
-  // 이를 어떻게 파일만 들고 나중에 저장할 수 있을 지 추후 수정해야함.
+  // TODO: 현재 audioRecorder가 Stop되면 바로 설정한 URL에 m4a 파일이 저장됨. -> 데이터로 변환 필요
   public func setupAudioRecorder() {
     let audioFileName = getAudioFileURL()
     
@@ -75,7 +74,7 @@ final class RecordManager {
       audioRecorder = try AVAudioRecorder(url: audioFileName, settings: settings)
       audioRecorder?.prepareToRecord()
     } catch {
-      print("Audio Recorder Settings error")
+      // TODO: 에러 핸들링
     }
   }
   
