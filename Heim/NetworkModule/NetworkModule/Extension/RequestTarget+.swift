@@ -14,7 +14,7 @@ extension RequestTarget {
   }
   
   func makeURLRequest() throws -> URLRequest {
-    var request: URLRequest = try URLRequest(path, query: query)
+    var request: URLRequest = try URLRequest(baseURL + path, query: query)
     
     request.makeURLHeaders(headers)
     request.httpMethod = method.rawValue
