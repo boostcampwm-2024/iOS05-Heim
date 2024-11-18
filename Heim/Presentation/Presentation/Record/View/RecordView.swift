@@ -156,6 +156,20 @@ final class RecordView: UIView {
     nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
   }
   
+  func updatePlayButtonImage(isPlaying: Bool) {
+    let imageName = isPlaying ? "stop.fill" : "play.fill"
+    playButton.setImage(UIImage(systemName: imageName), for: .normal)
+  }
+  
+  func updateTimeLabel(text: String) {
+    timeLabel.text = text
+  }
+  
+  func updateNextButton(isEnabled: Bool) {
+    nextButton.isEnabled = isEnabled
+    nextButton.backgroundColor = isEnabled ? .primary : .secondary
+  }
+  
   // MARK: - Actions
   @objc private func closeButtonTapped() {
     delegate?.buttonDidTap(self, .close)
