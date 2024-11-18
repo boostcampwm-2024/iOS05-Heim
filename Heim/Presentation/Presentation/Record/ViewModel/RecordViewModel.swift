@@ -23,7 +23,6 @@ final class RecordViewModel: ViewModel {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
-    var recognizedText: String = ""
     var isPaused: Bool = false  // 일시정지 상태 확인
   }
   
@@ -34,6 +33,7 @@ final class RecordViewModel: ViewModel {
   // MARK: - Initializer
   init() {
     self.state = State()
+    // TODO: 주입 방식 수정 고민
     self.recordManager = RecordManager(
       recognizedText: "",
       minuteAndSeconds: 0
@@ -71,7 +71,6 @@ private extension RecordViewModel {
   
   func handleStopRecording() {
     recordManager.stopRecording()
-    state.recognizedText = recordManager.recognizedText
 //    print(recordManager.recognizedText)
     state.isRecording = false
     state.canMoveToNext = true
