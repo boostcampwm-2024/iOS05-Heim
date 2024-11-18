@@ -44,9 +44,22 @@
 		B33AC1B12CEE16DC005CDE18 /* ApiConfiguration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiConfiguration.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B33ABED62CEB58C9005CDE18 /* Exceptions for "DataModule" folder in "DataModule" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B307B4612CD9B50B001C5040 /* DataModule */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B307B4642CD9B50B001C5040 /* DataModule */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B33ABED62CEB58C9005CDE18 /* Exceptions for "DataModule" folder in "DataModule" target */,
+			);
 			path = DataModule;
 			sourceTree = "<group>";
 		};
@@ -500,6 +513,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.DataModuleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -516,6 +530,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.DataModuleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
