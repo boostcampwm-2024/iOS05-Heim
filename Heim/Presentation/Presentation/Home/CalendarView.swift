@@ -122,14 +122,12 @@ final class CalendarView: UIView {
 
     monthStackView.snp.makeConstraints {
       $0.top.equalTo(yearLabel.snp.bottom).offset(LayoutContants.defaultPadding)
-      $0.left.equalTo(yearLabel.snp.right).offset(LayoutContants.stackViewLeftPadding * -1)
       $0.centerX.equalToSuperview()
     }
 
     weekStackView.snp.makeConstraints {
       $0.top.equalTo(monthStackView.snp.bottom).offset(LayoutContants.weekStackViewTop)
       $0.width.equalTo(UIScreen.main.bounds.width - 48)
-      $0.centerX.equalToSuperview()
       $0.centerX.equalToSuperview()
     }
 
