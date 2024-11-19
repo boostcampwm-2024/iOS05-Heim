@@ -34,10 +34,7 @@ final class RecordViewModel: ViewModel {
   init() {
     self.state = State()
     // TODO: 주입 방식 수정 고민
-    self.recordManager = RecordManager(
-      recognizedText: "",
-      minuteAndSeconds: 0
-    )
+    self.recordManager = RecordManager()
   }
   
   // MARK: - Methods
@@ -55,25 +52,37 @@ final class RecordViewModel: ViewModel {
   }
   
   func setup() async {
-    await recordManager.setupSpeech()
+    do {
+      try await recordManager.setupSpeech()
+    } catch {
+      // TODO: 에러 처리
+    }
   }
 }
 
 // MARK: - Private Extenion
 private extension RecordViewModel {
   func handleStartRecording() {
-    recordManager.startRecording()
-    state.isRecording = true
-    state.canMoveToNext = false
-    startTimeObservation()
+    do {
+      try recordManager.startRecording()
+      state.isRecording = true
+      state.canMoveToNext = false
+      startTimeObservation()
+    } catch {
+      // TODO: 에러 던지기
+    }
   }
   
   func handleStopRecording() {
-    recordManager.stopRecording()
-    state.isRecording = false
-    state.canMoveToNext = true
-    state.isPaused = true
-    stopTimeObservation()
+    do {
+      try recordManager.stopRecording()
+      state.isRecording = false
+      state.canMoveToNext = true
+      state.isPaused = true
+      stopTimeObservation()
+    } catch {
+      // TODO: 에러 던지기
+    }
   }
   
   func handleRefresh() {

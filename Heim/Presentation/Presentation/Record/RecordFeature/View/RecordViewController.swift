@@ -80,10 +80,6 @@ final class RecordViewController: BaseViewController<RecordViewModel>, Coordinat
 }
 
 extension RecordViewController: RecordViewDelegate {
-  func screenHeight() -> CGFloat {
-    return screen()?.bounds.height ?? UIScreen.main.bounds.height
-  }
-  
   func buttonDidTap(
     _ recordingView: RecordView,
     _ item: RecordViewButtonItem

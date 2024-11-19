@@ -21,7 +21,6 @@ protocol RecordViewDelegate: AnyObject {
     _ recordingView: RecordView,
     _ item: RecordViewButtonItem
   )
-  func screenHeight() -> CGFloat
 }
 
 final class RecordView: UIView {
@@ -111,7 +110,7 @@ final class RecordView: UIView {
   
   private func setupLayoutConstraints() {
     // MARK: - 스크린 높이를 가져온다.
-    let screenHeight = delegate?.screenHeight() ?? UIScreen.main.bounds.height
+    let screenHeight = UIApplication.screenHeight
     
     closeButton.snp.makeConstraints {
       $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(LayoutConstants.topPadding)

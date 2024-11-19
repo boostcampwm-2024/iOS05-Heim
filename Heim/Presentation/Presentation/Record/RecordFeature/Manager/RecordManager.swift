@@ -11,44 +11,36 @@ import AVFoundation
 
 final class RecordManager {
   // MARK: - 음성 인식을 위한 Properties
-  let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR"))
-  var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-  var recognitionTask: SFSpeechRecognitionTask?
-  private let audioEngine = AVAudioEngine()
-  public var recognizedText: String = ""
+  private let speechRecognizer: SFSpeechRecognizer
+  private let audioEngine: AVAudioEngine
+  
+  private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+  private var recognitionTask: SFSpeechRecognitionTask?
   
   // MARK: - 음성 녹음을 위한 Properties
-  var audioRecorder: AVAudioRecorder?
-  
-  // MARK: - 타이머
+  private var audioRecorder: AVAudioRecorder?
   private var timer: Timer?
-  public var minuteAndSeconds: Int
   
-  init(
-    recognitionRequest: SFSpeechAudioBufferRecognitionRequest? = nil,
-    recognitionTask: SFSpeechRecognitionTask? = nil,
-    recognizedText: String,
-    audioRecorder: AVAudioRecorder? = nil,
-    timer: Timer? = nil,
-    minuteAndSeconds: Int
-  ) {
-    self.recognitionRequest = recognitionRequest
-    self.recognitionTask = recognitionTask
-    self.recognizedText = recognizedText
-    self.audioRecorder = audioRecorder
-    self.timer = timer
-    self.minuteAndSeconds = minuteAndSeconds
+  // MARK: - 인식된 텍스트, 경과한 시간
+  private(set) var recognizedText: String
+  private(set) var minuteAndSeconds: Int
+  
+  init(locale: Locale = Locale(identifier: "ko-KR")) {
+    self.speechRecognizer = SFSpeechRecognizer(locale: locale)!
+    self.audioEngine = AVAudioEngine()
+    self.recognizedText = ""
+    self.minuteAndSeconds = 0
   }
   
-  // TODO: 언제 setupSpeech를 부를지? 값은 어떻게 Usecase에서 판단할지
-  public func setupSpeech() async {
+  // MARK: - 녹음과정 준비
+  func setupSpeech() async throws {
     let authStatus = await withCheckedContinuation { continuation in
       SFSpeechRecognizer.requestAuthorization { status in
         continuation.resume(returning: status)
       }
     }
     
-    // TODO: 에러 핸들링
+    // TODO: 에러 핸들링(.authorized 제외) -> Merge 이후 수정 예정
     switch authStatus {
     case .authorized:
       return
@@ -60,9 +52,7 @@ final class RecordManager {
   }
   
   // TODO: 현재 audioRecorder가 Stop되면 바로 설정한 URL에 m4a 파일이 저장됨. -> 데이터로 변환 필요
-  public func setupAudioRecorder() {
-    let audioFileName = getAudioFileURL()
-    
+  func setupAudioRecorder() throws {
     let settings: [String: Any] = [
       AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
       AVSampleRateKey: 12000,
@@ -70,46 +60,28 @@ final class RecordManager {
       AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
-    do {
-      audioRecorder = try AVAudioRecorder(url: audioFileName, settings: settings)
-      audioRecorder?.prepareToRecord()
-    } catch {
-      // TODO: 에러 핸들링
-    }
+    audioRecorder = try AVAudioRecorder(url: getAudioFileURL(), settings: settings)
+    audioRecorder?.prepareToRecord()
   }
   
-  public func startRecording() {
+  func startRecording() throws {
     if recognitionRequest == nil {
       // MARK: - 새로운 녹음 시작
-      setupNewRecording()
+      try setupNewRecording()
     } else {
       // MARK: - 일시중지 된 상태에서 다시 재개
-      do {
-        try audioEngine.start()
-        
-        // 타이머 재시작
-        timer = Timer.scheduledTimer(
-          withTimeInterval: 1.0,
-          repeats: true
-        ) { [weak self] _ in
-          guard let self = self else { return }
-          self.minuteAndSeconds += 1
-        }
-      } catch {
-        // TODO: 에러 처리
-      }
+      try resumeRecording()
     }
   }
   
   // MARK: - 일시중지
-  public func stopRecording() {
+  func stopRecording() {
     audioEngine.pause()
-    
     timer?.invalidate()
     timer = nil
   }
   
-  public func resetAll() {
+  func resetAll() {
     audioEngine.stop()
     
     audioEngine.inputNode.removeTap(onBus: 0)
@@ -131,28 +103,26 @@ final class RecordManager {
 }
 
 private extension RecordManager {
+  // MARK: - 녹음 재개
+  func resumeRecording() throws {
+    try audioEngine.start()
+    startTimer()
+  }
+  
   // MARK: - 새롭게 시작되는 레코딩 설정 + 시작과정
-  func setupNewRecording() {
+  func setupNewRecording() throws {
     minuteAndSeconds = 0
     
     // 타이머 시작
-    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-      guard let self = self else { return }
-      self.minuteAndSeconds += 1
-    }
+    startTimer()
     
     // 오디오 세션 설정
     let audioSession = AVAudioSession.sharedInstance()
-    do {
-      try audioSession.setCategory(.record, mode: .measurement)
-      try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-    } catch {
-      // TODO: 에러 처리
-      return
-    }
+    try audioSession.setCategory(.record, mode: .measurement)
+    try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
     
     // 오디오 레코더 설정
-    setupAudioRecorder()
+    try setupAudioRecorder()
     audioRecorder?.record()
     
     // 음성 인식 요청 설정
@@ -175,16 +145,14 @@ private extension RecordManager {
     
     audioEngine.prepare()
     
-    do {
-      try audioEngine.start()
-    } catch {
-      // TODO: 에러 처리
-      return
-    }
+    try audioEngine.start()
     
     // 음성 인식 작업 시작
-    recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
-      guard let self = self else { return }
+    recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
+      guard let self = self else {
+        // TODO: 에러로 변경
+        return
+      }
       
       if let result = result {
         self.recognizedText = result.bestTranscription.formattedString
@@ -202,5 +170,11 @@ private extension RecordManager {
   func getAudioFileURL() -> URL {
     let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     return documentsPath.appendingPathComponent("recoding.m4a")
+  }
+  
+  func startTimer() {
+    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+      self?.minuteAndSeconds += 1
+    }
   }
 }
