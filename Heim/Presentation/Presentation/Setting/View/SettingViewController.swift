@@ -12,11 +12,6 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
   // MARK: - Properties
   weak var coordinator: DefaultSettingCoordinator?
   
-  private enum SettingTableViewDataSources {
-    static let imageDataSource: [UIImage] = [.smileIcon, .cloudIcon, .trashIcon, .trashIcon, .infoIcon, .helpIcon]
-    static let titleDataSource: [String] = ["이름", "iCloud 동기화", "캐시 삭제", "데이터 초기화", "앱 버전", "문의하기"]
-  }
-  
   private let settingTableView: UITableView = {
     let tableView = UITableView(frame: .zero)
     tableView.backgroundColor = .clear
@@ -25,6 +20,8 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
     tableView.separatorStyle = .none
     return tableView
   }()
+  
+  private let settingTableViewDataSources = SettingItem.defaultItems()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -83,7 +80,6 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
         ) as? SettingTableViewCell else { return }
         
         cloudCell.setupCloudSwitch(isOn: isConnected)
-        print(isConnected)
       }
       .store(in: &cancellable)
   }
@@ -122,10 +118,12 @@ extension SettingViewController: UITableViewDataSource {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    let (iconImage, titleText) = (
-      SettingTableViewDataSources.imageDataSource[indexPath.row], 
-      SettingTableViewDataSources.titleDataSource[indexPath.row]
-    )
+    guard indexPath.row < settingTableViewDataSources.count else { return UITableViewCell() }
+    
+    let imageTitle = settingTableViewDataSources[indexPath.row].icon.rawValue
+    let iconImage = UIImage.presentationAsset(named: imageTitle, bundleClassType: Self.self)
+    let titleText = settingTableViewDataSources[indexPath.row].title
+    
     guard let cell = tableView.dequeueReusableCell(cellType: SettingTableViewCell.self, indexPath: indexPath) else {
       return UITableViewCell()
     }
