@@ -14,7 +14,12 @@ final class AlertViewController: UIViewController {
   private let alertView: CommonAlertView
   
   // MARK: - Initializer
-  init(title: String, message: String, leftButtonTitle: String, rightbuttonTitle: String) {
+  init(
+    title: String, 
+    message: String, 
+    leftButtonTitle: String, 
+    rightbuttonTitle: String
+  ) {
     alertView = CommonAlertView(
       title: title,
       message: message,
