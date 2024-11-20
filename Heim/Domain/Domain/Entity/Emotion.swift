@@ -24,4 +24,3 @@ public enum Emotion: String, Codable {
     self = try Emotion(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .none
   }
 }
-
