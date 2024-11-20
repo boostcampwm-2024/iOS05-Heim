@@ -9,6 +9,7 @@ import Foundation
 
 public struct Voice: Codable {
   public let audioBuffer: Data
+  
   public init(audioBuffer: Data) {
     self.audioBuffer = audioBuffer
   }

@@ -23,14 +23,14 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
   public let diaryRepository: DiaryRepository
 
   // MARK: - Initializer
-  public init(localStorageRepository: DiaryRepository) {
-    self.diaryRepository = localStorageRepository
+  public init(diaryRepository: DiaryRepository) {
+    self.diaryRepository = diaryRepository
   }
 
   // MARK: - Methods
   public func readDiary(hashValue: String) async throws -> Diary {
     // TODO: repository에서 받아오는 걸로 수정 필요
-    return Diary(emotion: .anger, emotionReport: EmotionReport(text: "임시파일"), voice: Voice(audioBuffer: Data()), summary: Summary(text: "임시요약"))
+    return try await diaryRepository.readDiary(hashValue: hashValue)
   }
   
   public func saveDiary(hashValue: String, data: Diary) async throws {
