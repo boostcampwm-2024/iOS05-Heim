@@ -10,6 +10,7 @@ import Domain
 import UIKit
 
 public protocol DiaryDetailCoordinator: Coordinator {
+  func start(timeStamp: String)
   // MARK: - 추천음악 감상하기로 이동
   func pushMusicRecommendationView()
   // MARK: - 하임이의 답장 보러가기 이동
@@ -30,9 +31,11 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   // MARK: - Methods
-  public func start() {
-//    guard let diaryDetailViewController = diaryDetailViewController(date: String) else { return }
-//    navigationController.pushViewController(diaryDetailViewController, animated: true)
+  public func start() {}
+  
+  public func start(timeStamp: String) {
+    guard let diaryDetailViewController = diaryDetailViewController(timeStamp) else { return }
+    navigationController.pushViewController(diaryDetailViewController, animated: true)
   }
   
   public func didFinish() {
@@ -40,27 +43,28 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    <#code#>
+    // TODO: 화면 연결
   }
   
   public func pushHeimReplyView() {
-    <#code#>
+    // TODO: 화면 연결
   }
   
   public func pushDiaryReplayView() {
-    <#code#>
+    // TODO: 화면 연결
   }
   
 }
 
 // MARK: - Private
 private extension DefaultDiaryDetailCoordinator {
-//  func diaryDetailViewController() -> SettingViewController? {
-//    guard let settingUseCase = DIContainer.shared.resolve(type: SettingUseCase.self) else { return nil }
-//    
-//    let viewModel = SettingViewModel(useCase: settingUseCase)
-//    let viewController = SettingViewController(viewModel: viewModel)
-//    viewController.coordinator = self
-//    return viewController
-//  }
+  func diaryDetailViewController(_ timeStamp: String) -> DiaryDetailViewController? {
+    // TODO: TimeStamp, UseCase 주입
+    
+    // guard let dataStorageUseCase = DIContainer.shared.resolve(type: DataStorageUseCase.self) else { return nil }
+    let viewModel = DiaryDetailViewModel(timeStamp: timeStamp)
+    let viewController = DiaryDetailViewController(viewModel: viewModel)
+    viewController.coordinator = self
+    return viewController
+  }
 }
