@@ -18,3 +18,9 @@ public struct SummaryPromptGenerator: PromptGenerating {
     return injectInputContext(with: wrapInputContext(for: input))
   }
 }
+
+private extension SummaryPromptGenerator {
+  func injectInputContext(with input: String) -> String {
+    return prompt.replacingOccurrences(of: "{{\\PROMPT_PAYLOAD\\}}", with: input)
+  }
+}

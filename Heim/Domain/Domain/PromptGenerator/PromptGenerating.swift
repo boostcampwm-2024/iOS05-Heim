@@ -35,8 +35,4 @@ extension PromptGenerating {
   func wrapInputContext(for input: String) -> String {
     return "\n$%^$%^\(input)$%^$%^"
   }
-  
-  func injectInputContext(with input: String) -> String {
-    return prompt.replacingOccurrences(of: "{{\\PROMPT_PAYLOAD\\}}", with: input)
-  }
 }
