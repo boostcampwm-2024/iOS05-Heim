@@ -10,13 +10,13 @@ import Foundation
 
 public final class DefaultDiaryRepository: DiaryRepository {
   // MARK: - Properties
-  private let localStorageProvider: LocalStorageProvider
+  private let localStorage: LocalStorage
   private let jsonEncoder = JSONEncoder()
   private let jsonDecoder = JSONDecoder()
   
   // MARK: - Initializer
-  public init(localStorageProvider: LocalStorageProvider) {
-    self.localStorageProvider = localStorageProvider
+  public init(localStorage: LocalStorage) {
+    self.localStorage = localStorage
   }
   
   // MARK: - Methods
@@ -35,10 +35,10 @@ public final class DefaultDiaryRepository: DiaryRepository {
   public func saveDiary(hashValue: String, data: Diary) async throws {
     // TODO: 로직 구현 필요
     let encodedData = try jsonEncoder.encode(data)
-    try localStorageProvider.saveDiary(hashValue: hashValue, data: encodedData)
+    try localStorage.saveDiary(hashValue: hashValue, data: encodedData)
   }
   
   public func deleteDiary(hashValue: String) async throws {
-    try localStorageProvider.deleteDiary(hashValue: hashValue)
+    try localStorage.deleteDiary(hashValue: hashValue)
   }
 }

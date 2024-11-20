@@ -7,8 +7,7 @@
 
 import Foundation
 
-// TODO: 네이밍 고민
-public protocol LocalStorageProvider {
+public protocol LocalStorage {
   func readDiary(hashValue: String) throws -> Data
   func saveDiary(hashValue: String, data: Data) throws
   func deleteDiary(hashValue: String) throws
