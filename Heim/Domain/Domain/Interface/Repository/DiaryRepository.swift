@@ -6,8 +6,8 @@
 //
 
 public protocol DiaryRepository {
-  func readDiary(hashValue: String) async throws -> Diary
-  func saveDiary(hashValue: String, data: Diary) async throws
-  func deleteDiary(hashValue: String) async throws
+  func readDiary(timeStamp: String) async throws -> Diary
+  func saveDiary(timeStamp: String, data: Diary) async throws
+  func deleteDiary(timeStamp: String) async throws
 }
 

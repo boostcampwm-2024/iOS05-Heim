@@ -12,10 +12,10 @@ public protocol DiaryUseCase {
   var diaryRepository: DiaryRepository { get }
 
   // MARK: - Methods
-  func readDiary(hashValue: String) async throws -> Diary
-  func saveDiary(hashValue: String, data: Diary) async throws
+  func readDiary(timeStamp: String) async throws -> Diary
+  func saveDiary(timeStamp: String, data: Diary) async throws
   // TODO: 인덱스 접근 고려
-  func deleteDiary(hashValue: String) async throws
+  func deleteDiary(timeStamp: String) async throws
 }
 
 public struct DefaultDiaryUseCase: DiaryUseCase {
@@ -28,19 +28,19 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
   }
 
   // MARK: - Methods
-  public func readDiary(hashValue: String) async throws -> Diary {
+  public func readDiary(timeStamp: String) async throws -> Diary {
     // TODO: 로직 확인 필요
-    return try await diaryRepository.readDiary(hashValue: hashValue)
+    return try await diaryRepository.readDiary(timeStamp: timeStamp)
   }
   
-  public func saveDiary(hashValue: String, data: Diary) async throws {
+  public func saveDiary(timeStamp: String, data: Diary) async throws {
     // TODO: 로직 확인 필요
-    try await diaryRepository.saveDiary(hashValue: hashValue, data: data)
+    try await diaryRepository.saveDiary(timeStamp: timeStamp, data: data)
   }
   
-  public func deleteDiary(hashValue: String) async throws {
+  public func deleteDiary(timeStamp: String) async throws {
     // TODO: 로직 확인 필요
-    try await diaryRepository.deleteDiary(hashValue: hashValue)
+    try await diaryRepository.deleteDiary(timeStamp: timeStamp)
   }
   
 

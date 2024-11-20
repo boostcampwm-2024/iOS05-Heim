@@ -10,17 +10,17 @@ import Foundation
 
 public final class DefaultDiaryRepository: DiaryRepository {
   // MARK: - Properties
-  private let localStorage: LocalStorage
+  private let localStorage: DataStorage
   private let jsonEncoder = JSONEncoder()
   private let jsonDecoder = JSONDecoder()
   
   // MARK: - Initializer
-  public init(localStorage: LocalStorage) {
+  public init(localStorage: DataStorage) {
     self.localStorage = localStorage
   }
   
   // MARK: - Methods
-  public func readDiary(hashValue: String) async throws -> Diary {
+  public func readDiary(timeStamp: String) async throws -> Diary {
     // TODO: 로직 구현 필요
     // let data = try localStorageProvider.readDiary(hashValue: hashValue)
     // return try jsonDecoder.decode(Diary.self, from: data)
@@ -33,15 +33,15 @@ public final class DefaultDiaryRepository: DiaryRepository {
   }
   
   public func saveDiary(
-    hashValue: String,
+    timeStamp: String,
     data: Diary
   ) async throws {
     // TODO: 로직 구현 필요
     let encodedData = try jsonEncoder.encode(data)
-    try localStorage.saveDiary(timeStamp: hashValue, data: encodedData)
+    try localStorage.saveDiary(timeStamp: timeStamp, data: encodedData)
   }
   
-  public func deleteDiary(hashValue: String) async throws {
-    try localStorage.deleteDiary(hashValue: hashValue)
+  public func deleteDiary(timeStamp: String) async throws {
+    try localStorage.deleteDiary(timeStamp: timeStamp)
   }
 }

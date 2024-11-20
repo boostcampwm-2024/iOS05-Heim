@@ -5,62 +5,55 @@
 //  Created by 박성근 on 11/20/24.
 //
 
+import Domain
 import DataModule
 import Foundation
 
 // TODO: 한단계 더 추상화를 해야할까?
-public final class DefaultLocalStorage: LocalStorage {
-  
+public final class DefaultLocalStorage: DataStorage {
+
   // MARK: - Properties
   private let fileManager: FileManager
-  // TODO: baseURL 수정
   private var baseURL: URL
-  
+  private let encoder = JSONEncoder()
   public init() {
     self.fileManager =  FileManager.default
     self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
-  
-  private func diaryDirectoryPath() throws {
-    let documentDirectoryPath = try fileManager.url(
-      for: .documentDirectory,
-      in: .userDomainMask,
-      appropriateFor: nil,
-      create: true
-    )
-  }
-  
-  public func readDiary(hashValue: String) throws -> Data {
-    // TODO: hashValue를 split하는 로직 구현
+
+  public func readDiary<T: Decodable>(timeStamp: String) throws -> T {
+    // TODO: timeStamp를 split하는 로직 구현
     let directory = "20241120"
     let fileName = "161610"
     let url: URL
-    
+
     // 파일이 진짜루에요 가짜루에요
     if #available(iOS 16.0, *) {
       url = baseURL.appending(path: directory, directoryHint: .isDirectory)
     } else {
       url = baseURL.appendingPathComponent(directory, isDirectory: true)
     }
-    
+
     let fileURL = url.appendingPathComponent(fileName)
-    
-    guard !fileManager.fileExists(atPath: fileURL.path) else {
-      throw NSError()
+
+    guard fileManager.fileExists(atPath: fileURL.path) else {
+      throw IOError.readError
     }
-    
-    guard let data = fileManager.contents(atPath: fileURL.path) else {
-      throw NSError()
+
+    guard let jsonData = fileManager.contents(atPath: fileURL.path) else {
+      throw IOError.readError
     }
-    
+
+    let data = try decoder.decode(T.self, from: jsonData)
+
     return data
   }
-  
+
   public func saveDiary<T>(
     timeStamp: String,
     data: T
   ) throws where T: Codable {
-    // TODO: hashValue를 split하는 로직 구현
+    // TODO: timeStamp를 split하는 로직 구현
     let directory = "20241120"
     let fileName = "161610"
     let url: URL
@@ -88,6 +81,25 @@ public final class DefaultLocalStorage: LocalStorage {
     // 파일 진짜루에요 가짜루에요
     // 있으면 지우기
     // 없으면 리턴
+    let fileURL = url.appendingPathComponent(fileName)
+
+    // 파일이 이미 없는 경우 성공
+    guard fileManager.fileExists(atPath: fileURL.path) else {
+      return
+    }
+
+    // 파일 삭제
+    try fileManager.removeItem(at: fileURL)
+
+    // 디렉토리가 비어있다면 디렉토리도 삭제
+    let directoryContents = try fileManager.contentsOfDirectory(
+      at: url,
+      includingPropertiesForKeys: nil
+    )
+
+    if directoryContents.isEmpty {
+      try fileManager.removeItem(at: url)
+    }
   }
 }
 
