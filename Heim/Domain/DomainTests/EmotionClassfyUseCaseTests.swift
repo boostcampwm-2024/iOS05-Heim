@@ -10,17 +10,17 @@ import XCTest
 
 final class EmotionClassfyUseCaseTests: XCTestCase {
   // MARK: - Properties
-  var defaultemotionClassfyUseCase: EmotionClassifyUseCase!
+  var emotionClassfyUseCase: EmotionClassifyUseCase!
 
   // MARK: - TestCycle
   override func setUp() {
     super.setUp()
 
-    defaultemotionClassfyUseCase = DefaultEmotionClassifyUseCase()
+    emotionClassfyUseCase = DefaultEmotionClassifyUseCase()
   }
 
   override func tearDown() {
-    defaultemotionClassfyUseCase = nil
+    emotionClassfyUseCase = nil
 
     super.tearDown()
   }
@@ -36,7 +36,7 @@ final class EmotionClassfyUseCaseTests: XCTestCase {
     
     do {
       // When
-      let emotion = try await defaultemotionClassfyUseCase.validate(mockTextInput)
+      let emotion = try await emotionClassfyUseCase.validate(mockTextInput)
       
       // Then
       XCTAssertNotEqual(emotion, .none)
