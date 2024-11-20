@@ -10,4 +10,11 @@ public struct Diary: Codable {
   public let emotionReport: EmotionReport
   public let voice: Voice
   public let summary: Summary
+
+  public init(emotion: Emotion, emotionReport: EmotionReport, voice: Voice, summary: Summary) {
+    self.emotion = emotion
+    self.emotionReport = emotionReport
+    self.voice = voice
+    self.summary = summary
+  }
 }
