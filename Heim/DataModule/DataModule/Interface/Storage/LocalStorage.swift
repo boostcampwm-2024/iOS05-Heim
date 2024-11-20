@@ -9,6 +9,6 @@ import Foundation
 
 public protocol LocalStorage {
   func readDiary(hashValue: String) throws -> Data
-  func saveDiary(hashValue: String, data: Data) throws
+  func saveDiary<T: Codable>(timeStamp: String, data: T) throws
   func deleteDiary(hashValue: String) throws
 }

@@ -10,6 +10,7 @@ import Foundation
 
 // TODO: 한단계 더 추상화를 해야할까?
 public final class DefaultLocalStorage: LocalStorage {
+  
   // MARK: - Properties
   private let fileManager: FileManager
   // TODO: baseURL 수정
@@ -34,23 +35,30 @@ public final class DefaultLocalStorage: LocalStorage {
     return Data()
   }
 
-  public func saveDiary(
-    hashValue: String,
-    data: Data
-  ) throws {
-    // TODO: 로직 구현
+  public func saveDiary<T>(
+    timeStamp: String,
+    data: T
+  ) throws where T: Codable {
+    // TODO: hashValue를 split하는 로직 구현
     let directory = "20241120"
     let fileName = "161610"
+    let url: URL
 
-    // appending 관련하여 버전별로 처리
-    // TODO: Path를 split하여서 디렉토리를 만들어여함
+    // 디렉토리 생성 관련, appending 메서드를 버전별로 처리
     if #available(iOS 16.0, *) {
-      let url = baseURL.appending(path: directory, directoryHint: .isDirectory)
+      url = baseURL.appending(path: directory, directoryHint: .isDirectory)
       try createDirectoryIfNeeded(at: url)
     } else {
-      let url = baseURL.appendingPathComponent(directory, isDirectory: true)
+      url = baseURL.appendingPathComponent(directory, isDirectory: true)
       try createDirectoryIfNeeded(at: url)
     }
+    
+    // MARK: - Data to JSON
+    let json = try JSONEncoder().encode(data)
+    
+    // MARK: - Save File
+    let fileURL = url.appendingPathComponent(fileName)
+    fileManager.createFile(atPath: fileURL.path, contents: json)
   }
 
   public func deleteDiary(hashValue: String) throws {

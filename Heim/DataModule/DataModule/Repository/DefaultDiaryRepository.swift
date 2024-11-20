@@ -38,7 +38,7 @@ public final class DefaultDiaryRepository: DiaryRepository {
   ) async throws {
     // TODO: 로직 구현 필요
     let encodedData = try jsonEncoder.encode(data)
-    try localStorage.saveDiary(hashValue: hashValue, data: encodedData)
+    try localStorage.saveDiary(timeStamp: hashValue, data: encodedData)
   }
   
   public func deleteDiary(hashValue: String) async throws {
