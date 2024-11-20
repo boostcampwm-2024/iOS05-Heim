@@ -11,7 +11,10 @@ public struct GeminiGenerateRequestDTO: Encodable {
   public let contents: [RequestContent]
   public let generationConfig: GenerationConfig
   
-  public init(contents: [RequestContent], generationConfig: GenerationConfig) {
+  public init(
+    contents: [RequestContent],
+    generationConfig: GenerationConfig
+  ) {
     self.contents = contents
     self.generationConfig = generationConfig
   }
@@ -42,7 +45,13 @@ public struct GenerationConfig: Encodable {
   public let maxOutputTokens: Int
   public let responseMimeType: String
   
-  public init(temparature: Double, topK: Int, topP: Double, maxOutputTokens: Int, responseMimeType: String) {
+  public init(
+    temparature: Double,
+    topK: Int,
+    topP: Double,
+    maxOutputTokens: Int,
+    responseMimeType: String
+  ) {
     self.temperature = temparature
     self.topK = topK
     self.topP = topP
