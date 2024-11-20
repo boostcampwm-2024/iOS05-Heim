@@ -26,6 +26,11 @@ public struct EmotionPromptGenerator: PromptGenerating {
   }
 }
 
+private extension EmotionPromptGenerator {
+  func injectInputContext(with input: String) -> String {
+    return prompt.replacingOccurrences(of: "{{\\PROMPT_PAYLOAD\\}}", with: input)
+  }
+}
 
 private extension Emotion {
   var emotionPrompt: String {
