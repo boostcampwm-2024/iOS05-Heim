@@ -10,23 +10,35 @@ import Foundation
 
 public final class DefaultDiaryRepository: DiaryRepository {
   // MARK: - Properties
-  // TODO: 추후 구현
-  /*
-   private let localStorage: LocalStorage
-   private let cloudStorage: CloudStorage
-   */
-
+  private let localStorageProvider: LocalStorageProvider
+  private let jsonEncoder = JSONEncoder()
+  private let jsonDecoder = JSONDecoder()
+  
+  // MARK: - Initializer
+  public init(localStorageProvider: LocalStorageProvider) {
+    self.localStorageProvider = localStorageProvider
+  }
+  
   // MARK: - Methods
   public func readDiary(hashValue: String) async throws -> Diary {
-    // TODO: local / cloud Storage를 이용한 read
-    return Diary(emotion: .anger, emotionReport: EmotionReport(text: "임시파일"), voice: Voice(audioBuffer: Data()), summary: Summary(text: "임시요약"))
+    // TODO: 로직 구현 필요
+    // let data = try localStorageProvider.readDiary(hashValue: hashValue)
+    // return try jsonDecoder.decode(Diary.self, from: data)
+    return Diary(
+      emotion: .anger,
+      emotionReport: EmotionReport(text: "나 화났다"),
+      voice: Voice(audioBuffer: Data()),
+      summary: Summary(text: "화난 거 요약")
+    )
   }
   
   public func saveDiary(hashValue: String, data: Diary) async throws {
-
+    // TODO: 로직 구현 필요
+    let encodedData = try jsonEncoder.encode(data)
+    try localStorageProvider.saveDiary(hashValue: hashValue, data: encodedData)
   }
   
   public func deleteDiary(hashValue: String) async throws {
-
+    try localStorageProvider.deleteDiary(hashValue: hashValue)
   }
 }
