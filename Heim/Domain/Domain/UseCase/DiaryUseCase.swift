@@ -29,19 +29,14 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
 
   // MARK: - Methods
   public func readDiary(timeStamp: String) async throws -> Diary {
-    // TODO: 로직 확인 필요
     return try await diaryRepository.readDiary(timeStamp: timeStamp)
   }
   
   public func saveDiary(timeStamp: String, data: Diary) async throws {
-    // TODO: 로직 확인 필요
     try await diaryRepository.saveDiary(timeStamp: timeStamp, data: data)
   }
   
   public func deleteDiary(timeStamp: String) async throws {
-    // TODO: 로직 확인 필요
     try await diaryRepository.deleteDiary(timeStamp: timeStamp)
   }
-  
-
 }

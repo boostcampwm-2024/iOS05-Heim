@@ -10,4 +10,3 @@ public protocol DiaryRepository {
   func saveDiary(timeStamp: String, data: Diary) async throws
   func deleteDiary(timeStamp: String) async throws
 }
-

@@ -10,12 +10,12 @@ import Foundation
 
 public final class DefaultDiaryRepository: DiaryRepository {
   // MARK: - Properties
-  private let dataStorage: DataStorage
+  private let dataStorage: DataStorageInterface
   private let jsonEncoder = JSONEncoder()
   private let jsonDecoder = JSONDecoder()
   
   // MARK: - Initializer
-  public init(dataStorage: DataStorage) {
+  public init(dataStorage: DataStorageInterface) {
     self.dataStorage = dataStorage
   }
   

@@ -9,9 +9,7 @@ import Domain
 import DataModule
 import Foundation
 
-// TODO: 한단계 더 추상화를 해야할까?
-public final class DefaultLocalStorage: DataStorage {
-
+public final class DefaultLocalStorage: DataStorageInterface {
   // MARK: - Properties
   private let fileManager: FileManager
   private var baseURL: URL
@@ -19,17 +17,14 @@ public final class DefaultLocalStorage: DataStorage {
   private let decoder = JSONDecoder()
 
   public init() {
-    self.fileManager =  FileManager.default
+    self.fileManager = FileManager.default
     self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
 
   public func readDiary<T: Decodable>(timeStamp: String) throws -> T {
-    // TODO: timeStamp를 split하는 로직 구현
-    let directory = "20241120"
-    let fileName = "161610"
+    let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
 
-    // 파일이 진짜루에요 가짜루에요
     if #available(iOS 16.0, *) {
       url = baseURL.appending(path: directory, directoryHint: .isDirectory)
     } else {
@@ -58,9 +53,7 @@ public final class DefaultLocalStorage: DataStorage {
     timeStamp: String,
     data: T
   ) throws where T: Codable {
-    // TODO: timeStamp를 split하는 로직 구현
-    let directory = "20241120"
-    let fileName = "161610"
+    let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
 
     // 디렉토리 생성 관련, appending 메서드를 버전별로 처리
@@ -78,16 +71,13 @@ public final class DefaultLocalStorage: DataStorage {
 
       let fileURL = url.appendingPathComponent(fileName)
       fileManager.createFile(atPath: fileURL.path, contents: encodingData)
-
     } catch {
       throw IOError.writeError
     }
   }
 
   public func deleteDiary(timeStamp: String) throws {
-    // TODO: timeStamp를 split하는 로직 구현
-    let directory = "20241120"
-    let fileName = "161610"
+    let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
 
     if #available(iOS 16.0, *) {
@@ -116,10 +106,11 @@ public final class DefaultLocalStorage: DataStorage {
       try fileManager.removeItem(at: url)
     }
   }
+
+  //TODO: - 캐시삭제 구현 예정
 }
 
 private extension DefaultLocalStorage {
-  // TODO: - url 파싱하는 과정 필요 (년도_월_일로 한정한다)
   func createDirectoryIfNeeded(at url: URL) throws {
     var isDirectory: ObjCBool = false
 
@@ -130,5 +121,16 @@ private extension DefaultLocalStorage {
     } catch {
       throw IOError.writeError
     }
+  }
+
+  func parseTimeStamp(_ timeStamp: String) throws -> (String, String) {
+    guard timeStamp.count == 14 else {
+      throw IOError.readError
+    }
+
+    let directory = String(timeStamp.prefix(8))
+    let fileName = String(timeStamp.suffix(6))
+
+    return (directory, fileName)
   }
 }
