@@ -37,14 +37,14 @@ final class DiaryDetailView: UIView {
   
   private let dateLabel: UILabel = {
     let label = UILabel()
-    label.font = .boldFont(ofSize: 28)
+    label.font = .boldFont(ofSize: LayoutConstants.dateLabelFontSize)
     label.textColor = .white
     return label
   }()
   
   private let descriptionLabel: UILabel = {
     let label = UILabel()
-    label.font = .regularFont(ofSize: 20)
+    label.font = .regularFont(ofSize: LayoutConstants.descriptionLabelFontSize)
     label.textColor = .white
     return label
   }()
@@ -59,7 +59,7 @@ final class DiaryDetailView: UIView {
   private lazy var buttonStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
-    stackView.spacing = 16
+    stackView.spacing = LayoutConstants.buttonStackSpacing
     stackView.distribution = .fillEqually
     return stackView
   }()
@@ -69,7 +69,7 @@ final class DiaryDetailView: UIView {
     button.setTitle("추천 음악 감상하기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .primary
-    button.layer.cornerRadius = 16
+    button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(musicRecomendationButtonTapped), for: .touchUpInside)
     return button
   }()
@@ -79,7 +79,7 @@ final class DiaryDetailView: UIView {
     button.setTitle("하임이의 답장 보러가기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .primary
-    button.layer.cornerRadius = 16
+    button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(heimReplyButtonTapped), for: .touchUpInside)
     return button
   }()
@@ -89,24 +89,28 @@ final class DiaryDetailView: UIView {
     button.setTitle("나의 이야기 다시듣기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .primary
-    button.layer.cornerRadius = 16
+    button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(replayVoiceButtonTapped), for: .touchUpInside)
     return button
   }()
-
+  
   // MARK: - Initialize
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupViews()
     setupLayoutConstraints()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - Public Methods
-  func configure(date: String, description: String, content: String) {
+  func configure(
+    date: String,
+    description: String,
+    content: String
+  ) {
     dateLabel.text = date
     descriptionLabel.text = description
     textArea.setText(content)
@@ -127,7 +131,7 @@ private extension DiaryDetailView {
       buttonStackView.addArrangedSubview($0)
     }
   }
-
+  
   func setupLayoutConstraints() {
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -139,42 +143,41 @@ private extension DiaryDetailView {
     }
     
     dateLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(16)
-      $0.leading.equalToSuperview().offset(16)
+      $0.top.equalToSuperview().offset(LayoutConstants.contentInset)
+      $0.leading.equalToSuperview().offset(LayoutConstants.contentInset)
     }
     
     descriptionLabel.snp.makeConstraints {
-      $0.top.equalTo(dateLabel.snp.bottom).offset(16)
+      $0.top.equalTo(dateLabel.snp.bottom).offset(LayoutConstants.verticalSpacing)
       $0.leading.equalTo(dateLabel)
     }
     
     characterImageView.snp.makeConstraints {
-      $0.top.equalTo(descriptionLabel.snp.bottom).offset(16)
+      $0.top.equalTo(descriptionLabel.snp.bottom).offset(LayoutConstants.verticalSpacing)
       $0.centerX.equalToSuperview()
-      $0.size.equalTo(160)
+      $0.size.equalTo(LayoutConstants.characterImageSize)
     }
     
     textArea.snp.makeConstraints {
-      $0.top.equalTo(characterImageView.snp.bottom).offset(16)
-      $0.leading.trailing.equalToSuperview().inset(16)
+      $0.top.equalTo(characterImageView.snp.bottom).offset(LayoutConstants.verticalSpacing)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.contentInset)
     }
     
     buttonStackView.snp.makeConstraints {
-      $0.top.equalTo(textArea.snp.bottom).offset(16)
-      $0.leading.trailing.equalToSuperview().inset(16)
-      $0.bottom.equalToSuperview().offset(-16)
+      $0.top.equalTo(textArea.snp.bottom).offset(LayoutConstants.verticalSpacing)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.contentInset)
+      $0.bottom.equalToSuperview().offset(-LayoutConstants.contentInset)
     }
     
     [musicRecomendationButton, heimReplyButton, replayVoiceButton].forEach {
+      $0.layer.cornerRadius = LayoutConstants.buttonCornerRadius
       $0.snp.makeConstraints {
-        $0.height.equalTo(50)
+        $0.height.equalTo(LayoutConstants.buttonHeight)
       }
     }
   }
-}
-
-// MARK: - Actions
-private extension DiaryDetailView {
+  
+  // MARK: - Action Methods
   @objc func musicRecomendationButtonTapped() {
     delegate?.buttonDidTap(self, .musicRecomendation)
   }
@@ -185,5 +188,20 @@ private extension DiaryDetailView {
   
   @objc func replayVoiceButtonTapped() {
     delegate?.buttonDidTap(self, .replayVoice)
+  }
+}
+
+private extension DiaryDetailView {
+  enum LayoutConstants {
+    static let dateLabelFontSize: CGFloat = 28
+    static let descriptionLabelFontSize: CGFloat = 20
+    
+    static let buttonHeight: CGFloat = 50
+    static let buttonCornerRadius: CGFloat = 16
+    static let characterImageSize: CGFloat = 160
+    
+    static let contentInset: CGFloat = 16
+    static let verticalSpacing: CGFloat = 16
+    static let buttonStackSpacing: CGFloat = 16
   }
 }

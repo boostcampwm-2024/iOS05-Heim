@@ -58,6 +58,7 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
   override func bindState() {
     super.bindState()
     
+    // TODO: state를 통해 configure를 사용할 예정
     viewModel.$state
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
