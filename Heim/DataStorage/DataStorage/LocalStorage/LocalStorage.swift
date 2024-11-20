@@ -15,12 +15,12 @@ public final class DefaultLocalStorage: LocalStorage {
   private let fileManager: FileManager
   // TODO: baseURL 수정
   private var baseURL: URL
-
+  
   public init() {
     self.fileManager =  FileManager.default
     self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
-
+  
   private func diaryDirectoryPath() throws {
     let documentDirectoryPath = try fileManager.url(
       for: .documentDirectory,
@@ -29,12 +29,33 @@ public final class DefaultLocalStorage: LocalStorage {
       create: true
     )
   }
-
+  
   public func readDiary(hashValue: String) throws -> Data {
-    // TODO: 로직 구현
-    return Data()
+    // TODO: hashValue를 split하는 로직 구현
+    let directory = "20241120"
+    let fileName = "161610"
+    let url: URL
+    
+    // 파일이 진짜루에요 가짜루에요
+    if #available(iOS 16.0, *) {
+      url = baseURL.appending(path: directory, directoryHint: .isDirectory)
+    } else {
+      url = baseURL.appendingPathComponent(directory, isDirectory: true)
+    }
+    
+    let fileURL = url.appendingPathComponent(fileName)
+    
+    guard !fileManager.fileExists(atPath: fileURL.path) else {
+      throw NSError()
+    }
+    
+    guard let data = fileManager.contents(atPath: fileURL.path) else {
+      throw NSError()
+    }
+    
+    return data
   }
-
+  
   public func saveDiary<T>(
     timeStamp: String,
     data: T
@@ -43,7 +64,7 @@ public final class DefaultLocalStorage: LocalStorage {
     let directory = "20241120"
     let fileName = "161610"
     let url: URL
-
+    
     // 디렉토리 생성 관련, appending 메서드를 버전별로 처리
     if #available(iOS 16.0, *) {
       url = baseURL.appending(path: directory, directoryHint: .isDirectory)
@@ -60,9 +81,13 @@ public final class DefaultLocalStorage: LocalStorage {
     let fileURL = url.appendingPathComponent(fileName)
     fileManager.createFile(atPath: fileURL.path, contents: json)
   }
-
+  
   public func deleteDiary(hashValue: String) throws {
     // TODO: 디렉토리 지우기
+    // hashValue를 split해서 경로 찾기
+    // 파일 진짜루에요 가짜루에요
+    // 있으면 지우기
+    // 없으면 리턴
   }
 }
 
