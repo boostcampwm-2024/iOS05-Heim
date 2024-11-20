@@ -15,11 +15,9 @@ public final class DefaultLocalStorage: LocalStorage {
   // TODO: baseURL 수정
   private var baseURL: URL
 
-  // TODO: init에서의 throws는 어디에서 처리?, 분명히 FileManager url 선언에서의 오류처리는 해야함.
   public init() {
     self.fileManager =  FileManager.default
-    self.baseURL = FileManager.default.urls(for: .documentDirectory,
-                                            in: .userDomainMask)[0]
+    self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
 
   private func diaryDirectoryPath() throws {
@@ -36,7 +34,10 @@ public final class DefaultLocalStorage: LocalStorage {
     return Data()
   }
 
-  public func saveDiary(hashValue: String, data: Data) throws {
+  public func saveDiary(
+    hashValue: String,
+    data: Data
+  ) throws {
     // TODO: 로직 구현
     let directory = "20241120"
     let fileName = "161610"
