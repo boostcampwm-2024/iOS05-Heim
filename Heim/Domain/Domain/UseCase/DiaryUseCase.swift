@@ -29,16 +29,18 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
 
   // MARK: - Methods
   public func readDiary(hashValue: String) async throws -> Diary {
-    // TODO: repository에서 받아오는 걸로 수정 필요
+    // TODO: 로직 확인 필요
     return try await diaryRepository.readDiary(hashValue: hashValue)
   }
   
   public func saveDiary(hashValue: String, data: Diary) async throws {
-    // TODO: 수정 필요
+    // TODO: 로직 확인 필요
+    try await diaryRepository.saveDiary(hashValue: hashValue, data: data)
   }
   
   public func deleteDiary(hashValue: String) async throws {
-    // TODO: 수정 필요
+    // TODO: 로직 확인 필요
+    try await diaryRepository.deleteDiary(hashValue: hashValue)
   }
   
 
