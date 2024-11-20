@@ -16,6 +16,8 @@ public final class DefaultLocalStorage: DataStorage {
   private let fileManager: FileManager
   private var baseURL: URL
   private let encoder = JSONEncoder()
+  private let decoder = JSONDecoder()
+
   public init() {
     self.fileManager =  FileManager.default
     self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -44,9 +46,12 @@ public final class DefaultLocalStorage: DataStorage {
       throw IOError.readError
     }
 
-    let data = try decoder.decode(T.self, from: jsonData)
-
-    return data
+    do {
+      let data = try decoder.decode(T.self, from: jsonData)
+      return data
+    } catch {
+      throw IOError.readError
+    }
   }
 
   public func saveDiary<T>(
@@ -57,7 +62,7 @@ public final class DefaultLocalStorage: DataStorage {
     let directory = "20241120"
     let fileName = "161610"
     let url: URL
-    
+
     // 디렉토리 생성 관련, appending 메서드를 버전별로 처리
     if #available(iOS 16.0, *) {
       url = baseURL.appending(path: directory, directoryHint: .isDirectory)
@@ -66,21 +71,31 @@ public final class DefaultLocalStorage: DataStorage {
       url = baseURL.appendingPathComponent(directory, isDirectory: true)
       try createDirectoryIfNeeded(at: url)
     }
-    
-    // MARK: - Data to JSON
-    let json = try JSONEncoder().encode(data)
-    
-    // MARK: - Save File
-    let fileURL = url.appendingPathComponent(fileName)
-    fileManager.createFile(atPath: fileURL.path, contents: json)
+
+    // MARK: - Create File
+    do {
+      let encodingData = try encoder.encode(data)
+
+      let fileURL = url.appendingPathComponent(fileName)
+      fileManager.createFile(atPath: fileURL.path, contents: encodingData)
+
+    } catch {
+      throw IOError.writeError
+    }
   }
-  
-  public func deleteDiary(hashValue: String) throws {
-    // TODO: 디렉토리 지우기
-    // hashValue를 split해서 경로 찾기
-    // 파일 진짜루에요 가짜루에요
-    // 있으면 지우기
-    // 없으면 리턴
+
+  public func deleteDiary(timeStamp: String) throws {
+    // TODO: timeStamp를 split하는 로직 구현
+    let directory = "20241120"
+    let fileName = "161610"
+    let url: URL
+
+    if #available(iOS 16.0, *) {
+      url = baseURL.appending(path: directory, directoryHint: .isDirectory)
+    } else {
+      url = baseURL.appendingPathComponent(directory, isDirectory: true)
+    }
+
     let fileURL = url.appendingPathComponent(fileName)
 
     // 파일이 이미 없는 경우 성공
@@ -107,8 +122,13 @@ private extension DefaultLocalStorage {
   // TODO: - url 파싱하는 과정 필요 (년도_월_일로 한정한다)
   func createDirectoryIfNeeded(at url: URL) throws {
     var isDirectory: ObjCBool = false
-    if !fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) {
-      try fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+
+    do {
+      if !fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) {
+        try fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+      }
+    } catch {
+      throw IOError.writeError
     }
   }
 }
