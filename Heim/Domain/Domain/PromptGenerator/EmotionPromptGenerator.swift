@@ -79,8 +79,7 @@ private extension Emotion {
         또한, 스스로에게 작은 도전을 설정하고 이를 통해 기쁨을 찾는 방법을 제공하세요.
         """
       case .none:
-        // TODO: NSError -> 감정이 제대로 넘어오지 않은 경우의 예외 처리가 필요
-        throw NSError()
+        throw GenerativeAIError.invalidEmotion
       }
     }
   }
