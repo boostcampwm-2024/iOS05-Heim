@@ -36,4 +36,8 @@ public struct DefaultNetworkProvider: NetworkProvider {
     
     return responseDTO
   }
+  
+  public func makeURL(target: any DataModule.RequestTarget) throws -> URL? {
+    return try target.makeURLRequest().url
+  }
 }
