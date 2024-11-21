@@ -12,6 +12,7 @@ import Domain
 final class DiaryDetailViewModel: ViewModel {
   // MARK: - Properties
   enum Action {
+    case fetchDiary
     case musicRecommendation
     case heimReply
     case replayVoice
@@ -26,21 +27,25 @@ final class DiaryDetailViewModel: ViewModel {
   
   @Published var state: State
   // private let useCase: DataStorageUseCase
-  private let timeStamp: String
+  private let diary: Diary
   
   // MARK: - Initializer
   init(
     // useCase: DataStorageUseCase
-    timeStamp: String
+    diary: Diary
   ) {
     // self.useCase = useCase
     state = State()
-    self.timeStamp = timeStamp
+    self.diary = diary
   }
   
   // MARK: - Methods
   func action(_ action: Action) {
     switch action {
+    case .fetchDiary:
+      Task {
+        await setUp()
+      }
     case .musicRecommendation, .heimReply, .replayVoice, .close:
       break
     }
@@ -48,15 +53,9 @@ final class DiaryDetailViewModel: ViewModel {
   
   // TODO: 기능 구현
   func setUp() async {
-    state.date = timeStamp
-//    do {
-//      let diary = try await useCase.readDiary(timeStamp: timeStamp)
-//      state.date = timeStamp // 20241121만 추출하도록
-//      state.description = diary.emotion
-//      state.content = diary.Summary.text
-//    } catch {
-//      // TODO: Error Handling
-//    }
+//    state.date = diary.date
+//    state.description = diary.emotion.rawValue
+//    state.content = diary.summary.text
   }
 }
 

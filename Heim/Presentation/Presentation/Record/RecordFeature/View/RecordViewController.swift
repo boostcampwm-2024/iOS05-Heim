@@ -18,9 +18,6 @@ final class RecordViewController: BaseViewController<RecordViewModel>, Coordinat
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    Task {
-      await viewModel.setup()
-    }
   }
   
   override func viewDidDisappear(_ animated: Bool) {

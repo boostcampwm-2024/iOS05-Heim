@@ -10,7 +10,7 @@ import Domain
 import UIKit
 
 public protocol DiaryDetailCoordinator: Coordinator {
-  func start(timeStamp: String)
+  func start(diary: Diary)
   // MARK: - 추천음악 감상하기로 이동
   func pushMusicRecommendationView()
   // MARK: - 하임이의 답장 보러가기 이동
@@ -33,8 +33,8 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   // MARK: - Methods
   public func start() {}
   
-  public func start(timeStamp: String) {
-    guard let diaryDetailViewController = diaryDetailViewController(timeStamp) else { return }
+  public func start(diary: Diary) {
+    guard let diaryDetailViewController = diaryDetailViewController(diary) else { return }
     navigationController.pushViewController(diaryDetailViewController, animated: true)
   }
   
@@ -58,11 +58,11 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
 
 // MARK: - Private
 private extension DefaultDiaryDetailCoordinator {
-  func diaryDetailViewController(_ timeStamp: String) -> DiaryDetailViewController? {
+  func diaryDetailViewController(_ diary: Diary) -> DiaryDetailViewController? {
     // TODO: TimeStamp, UseCase 주입
     
     // guard let dataStorageUseCase = DIContainer.shared.resolve(type: DataStorageUseCase.self) else { return nil }
-    let viewModel = DiaryDetailViewModel(timeStamp: timeStamp)
+    let viewModel = DiaryDetailViewModel(diary: diary)
     let viewController = DiaryDetailViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController

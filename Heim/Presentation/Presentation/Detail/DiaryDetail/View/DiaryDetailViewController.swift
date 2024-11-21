@@ -21,9 +21,7 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
     setupViews()
     setupLayoutConstraints()
     setupNavigationBar()
-    Task {
-      await viewModel.setUp()
-    }
+    viewModel.action(.fetchDiary)
   }
   
   override func setupViews() {
