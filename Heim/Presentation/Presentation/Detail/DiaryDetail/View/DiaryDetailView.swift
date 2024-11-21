@@ -27,7 +27,7 @@ final class DiaryDetailView: UIView {
   weak var delegate: DiaryDetailViewDelegate?
   private let textArea = CommonTextAreaView()
   
-  private lazy var scrollView: UIScrollView = {
+  private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
     scrollView.showsVerticalScrollIndicator = false
     return scrollView
@@ -37,26 +37,26 @@ final class DiaryDetailView: UIView {
   
   private let dateLabel: UILabel = {
     let label = UILabel()
-    label.font = .boldFont(ofSize: LayoutConstants.dateLabelFontSize)
+    label.font = .boldFont(ofSize: LayoutConstants.title1)
     label.textColor = .white
     return label
   }()
   
   private let descriptionLabel: UILabel = {
     let label = UILabel()
-    label.font = .regularFont(ofSize: LayoutConstants.descriptionLabelFontSize)
+    label.font = .regularFont(ofSize: LayoutConstants.title3)
     label.textColor = .white
     return label
   }()
   
   private let characterImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
+    imageView.image = .recordRabbit
     imageView.contentMode = .scaleAspectFit
     return imageView
   }()
   
-  private lazy var buttonStackView: UIStackView = {
+  private let buttonStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
     stackView.spacing = LayoutConstants.buttonStackSpacing
@@ -64,7 +64,7 @@ final class DiaryDetailView: UIView {
     return stackView
   }()
   
-  private lazy var musicRecomendationButton: UIButton = {
+  private let musicRecomendationButton: UIButton = {
     let button = UIButton()
     button.setTitle("추천 음악 감상하기", for: .normal)
     button.setTitleColor(.white, for: .normal)
@@ -74,7 +74,7 @@ final class DiaryDetailView: UIView {
     return button
   }()
   
-  private lazy var heimReplyButton: UIButton = {
+  private let heimReplyButton: UIButton = {
     let button = UIButton()
     button.setTitle("하임이의 답장 보러가기", for: .normal)
     button.setTitleColor(.white, for: .normal)
@@ -84,7 +84,7 @@ final class DiaryDetailView: UIView {
     return button
   }()
   
-  private lazy var replayVoiceButton: UIButton = {
+  private let replayVoiceButton: UIButton = {
     let button = UIButton()
     button.setTitle("나의 이야기 다시듣기", for: .normal)
     button.setTitleColor(.white, for: .normal)
@@ -193,8 +193,8 @@ private extension DiaryDetailView {
 
 private extension DiaryDetailView {
   enum LayoutConstants {
-    static let dateLabelFontSize: CGFloat = 28
-    static let descriptionLabelFontSize: CGFloat = 20
+    static let title1: CGFloat = 28
+    static let title3: CGFloat = 20
     
     static let buttonHeight: CGFloat = 50
     static let buttonCornerRadius: CGFloat = 16
