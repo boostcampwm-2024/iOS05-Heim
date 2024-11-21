@@ -1,5 +1,5 @@
 //
-//  SpotifyOAuthRepository.swift
+//  DefaultSpotifyOAuthRepository.swift
 //  DataModule
 //
 //  Created by 정지용 on 11/21/24.
