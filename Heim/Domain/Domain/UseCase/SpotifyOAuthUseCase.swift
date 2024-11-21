@@ -14,6 +14,7 @@ protocol SpotifyOAuthUseCase {
     code authorizationCode: String,
     plainText: String
   ) async throws -> Bool
+  
   func generateCodeChallenge() -> (
     challenge: String,
     verifier: String
