@@ -9,7 +9,7 @@ import Domain
 import DataModule
 import Foundation
 
-public final class DefaultLocalStorage: DataStorageInterface {
+public struct DefaultLocalStorage: DataStorageModule {
   // MARK: - Properties
   private let fileManager: FileManager
   private var baseURL: URL
@@ -21,7 +21,7 @@ public final class DefaultLocalStorage: DataStorageInterface {
     self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
   
-  public func readDiary<T: Decodable>(timeStamp: String) throws -> T {
+  public func readData<T: Decodable>(timeStamp: String) async throws -> T {
     let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
     
@@ -49,14 +49,13 @@ public final class DefaultLocalStorage: DataStorageInterface {
     }
   }
   
-  public func saveDiary<T: Encodable>(
+  public func saveData<T: Encodable>(
     timeStamp: String,
     data: T
-  ) throws {
+  ) async throws {
     let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
     
-    // 디렉토리 생성 관련, appending 메서드를 버전별로 처리
     if #available(iOS 16.0, *) {
       url = baseURL.appending(path: directory, directoryHint: .isDirectory)
       try createDirectoryIfNeeded(at: url)
@@ -75,7 +74,7 @@ public final class DefaultLocalStorage: DataStorageInterface {
     }
   }
   
-  public func deleteDiary(timeStamp: String) throws {
+  public func deleteData(timeStamp: String) async throws {
     let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
     
