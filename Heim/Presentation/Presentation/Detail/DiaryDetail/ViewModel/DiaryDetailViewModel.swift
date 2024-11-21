@@ -16,7 +16,6 @@ final class DiaryDetailViewModel: ViewModel {
     case musicRecommendation
     case heimReply
     case replayVoice
-    case close
   }
   
   struct State: Equatable {
@@ -46,7 +45,7 @@ final class DiaryDetailViewModel: ViewModel {
       Task {
         await setUp()
       }
-    case .musicRecommendation, .heimReply, .replayVoice, .close:
+    case .musicRecommendation, .heimReply, .replayVoice:
       break
     }
   }

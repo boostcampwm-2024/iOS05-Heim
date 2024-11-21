@@ -69,6 +69,7 @@ final class DiaryDetailView: UIView {
     button.setTitle("추천 음악 감상하기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .primary
+    button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(musicRecomendationButtonTapped), for: .touchUpInside)
     return button
@@ -79,6 +80,7 @@ final class DiaryDetailView: UIView {
     button.setTitle("하임이의 답장 보러가기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .primary
+    button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(heimReplyButtonTapped), for: .touchUpInside)
     return button
@@ -89,6 +91,7 @@ final class DiaryDetailView: UIView {
     button.setTitle("나의 이야기 다시듣기", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .primary
+    button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(replayVoiceButtonTapped), for: .touchUpInside)
     return button
@@ -203,5 +206,6 @@ private extension DiaryDetailView {
     static let contentInset: CGFloat = 16
     static let verticalSpacing: CGFloat = 16
     static let buttonStackSpacing: CGFloat = 16
+    static let buttonLabelFontSize: CGFloat = 18
   }
 }

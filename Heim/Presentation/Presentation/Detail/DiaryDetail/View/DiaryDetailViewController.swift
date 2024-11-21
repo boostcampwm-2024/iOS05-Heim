@@ -38,14 +38,14 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
   }
   
   private func setupNavigationBar() {
-    let closeButton = UIBarButtonItem(
+    let deleteButton = UIBarButtonItem(
       image: UIImage(systemName: "xmark.fill"),
       style: .plain,
       target: self,
-      action: #selector(closeButtonTapped)
+      action: #selector(deleteButtonTapped)
     )
-    closeButton.tintColor = UIColor.white
-    navigationItem.rightBarButtonItem = closeButton
+    deleteButton.tintColor = UIColor.white
+    navigationItem.rightBarButtonItem = deleteButton
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -82,8 +82,8 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
       .store(in: &cancellable)
   }
   
-  @objc private func closeButtonTapped() {
-    coordinator?.didFinish()
+  @objc private func deleteButtonTapped() {
+    // TODO: 삭제 로직
   }
 }
 
