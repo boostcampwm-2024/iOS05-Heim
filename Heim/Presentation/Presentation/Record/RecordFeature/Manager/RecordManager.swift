@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import Domain
 import UIKit
 import Speech
 
@@ -51,9 +52,9 @@ final class RecordManager {
     case .authorized:
       return
     case .denied, .restricted, .notDetermined:
-      return
+      throw RecordingError.permissionError
     @unknown default:
-      return
+      throw RecordingError.permissionError
     }
   }
   
@@ -66,8 +67,12 @@ final class RecordManager {
       AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
-    audioRecorder = try AVAudioRecorder(url: getAudioFileURL(), settings: settings)
-    audioRecorder?.prepareToRecord()
+    do {
+      audioRecorder = try AVAudioRecorder(url: getAudioFileURL(), settings: settings)
+      audioRecorder?.prepareToRecord()
+    } catch {
+      throw RecordingError.audioError
+    }
   }
   
   func startRecording() throws {
@@ -111,65 +116,73 @@ final class RecordManager {
 private extension RecordManager {
   // MARK: - 녹음 재개
   func resumeRecording() throws {
-    try audioEngine.start()
-    startTimer()
+    do {
+      try audioEngine.start()
+      startTimer()
+    } catch {
+      throw RecordingError.audioError
+    }
   }
   
   // MARK: - 새롭게 시작되는 레코딩 설정 + 시작과정
   func setupNewRecording() throws {
     minuteAndSeconds = 0
     
-    // 타이머 시작
-    startTimer()
-    
-    // 오디오 세션 설정
-    let audioSession = AVAudioSession.sharedInstance()
-    try audioSession.setCategory(.record, mode: .measurement)
-    try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-    
-    // 오디오 레코더 설정
-    try setupAudioRecorder()
-    audioRecorder?.record()
-    
-    // 음성 인식 요청 설정
-    recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-    
-    guard let recognitionRequest = recognitionRequest else {
-      // TODO: 에러처리
-      return
-    }
-    
-    recognitionRequest.shouldReportPartialResults = true
-    
-    // 오디오 엔진 설정
-    let inputNode = audioEngine.inputNode
-    let recordingFormat = inputNode.outputFormat(forBus: 0)
-    
-    inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-      self.recognitionRequest?.append(buffer)
-    }
-    
-    audioEngine.prepare()
-    
-    try audioEngine.start()
-    
-    // 음성 인식 작업 시작
-    recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
-      guard let self = self else {
-        // TODO: 에러로 변경
+    do {
+      // 타이머 시작
+      startTimer()
+      
+      // 오디오 세션 설정
+      let audioSession = AVAudioSession.sharedInstance()
+      try audioSession.setCategory(.record, mode: .measurement)
+      try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+      
+      // 오디오 레코더 설정
+      try setupAudioRecorder()
+      audioRecorder?.record()
+      
+      // 음성 인식 요청 설정
+      recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+      
+      guard let recognitionRequest = recognitionRequest else {
+        // TODO: 에러처리
         return
       }
       
-      if let result = result {
-        self.recognizedText = result.bestTranscription.formattedString
+      recognitionRequest.shouldReportPartialResults = true
+      
+      // 오디오 엔진 설정
+      let inputNode = audioEngine.inputNode
+      let recordingFormat = inputNode.outputFormat(forBus: 0)
+      
+      inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+        self.recognitionRequest?.append(buffer)
       }
       
-      if error != nil {
-        self.audioEngine.stop()
-        inputNode.removeTap(onBus: 0)
-        self.recognitionRequest = nil
-        self.recognitionTask = nil
+      audioEngine.prepare()
+      
+      try audioEngine.start()
+      
+      // 음성 인식 작업 시작
+      recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
+        guard let self = self else {
+          // TODO: 에러로 변경
+          return
+        }
+        
+        if let result = result {
+          self.recognizedText = result.bestTranscription.formattedString
+        }
+        
+        if error != nil {
+          self.audioEngine.stop()
+          inputNode.removeTap(onBus: 0)
+          self.recognitionRequest = nil
+          self.recognitionTask = nil
+        }
       }
+    } catch {
+      throw RecordingError.audioError
     }
   }
   

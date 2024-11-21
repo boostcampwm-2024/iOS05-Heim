@@ -23,7 +23,7 @@ final class RecordViewModel: ViewModel {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
-    var isPaused: Bool = false  // 일시정지 상태 확인
+    var isPaused: Bool = false
   }
   
   @Published var state: State
@@ -33,7 +33,6 @@ final class RecordViewModel: ViewModel {
   // MARK: - Initializer
   init() {
     self.state = State()
-    // TODO: 주입 방식 수정 고민
     self.recordManager = RecordManager()
   }
   
@@ -55,7 +54,7 @@ final class RecordViewModel: ViewModel {
     do {
       try await recordManager.setupSpeech()
     } catch {
-      // TODO: 에러 처리
+      // TODO: 사용자에게 에러 전달
     }
   }
 }
@@ -69,20 +68,16 @@ private extension RecordViewModel {
       state.canMoveToNext = false
       startTimeObservation()
     } catch {
-      // TODO: 에러 던지기
+      // TODO: 사용자에게 에러 전달
     }
   }
   
   func handleStopRecording() {
-    do {
-      try recordManager.stopRecording()
-      state.isRecording = false
-      state.canMoveToNext = true
-      state.isPaused = true
-      stopTimeObservation()
-    } catch {
-      // TODO: 에러 던지기
-    }
+    recordManager.stopRecording()
+    state.isRecording = false
+    state.canMoveToNext = true
+    state.isPaused = true
+    stopTimeObservation()
   }
   
   func handleRefresh() {
@@ -97,7 +92,7 @@ private extension RecordViewModel {
   }
   
   func startTimeObservation() {
-    stopTimeObservation() // 기존 타이머가 있다면 제거
+    stopTimeObservation()
     
     if !state.isPaused {
       state.timeText = "00:00"
@@ -105,7 +100,6 @@ private extension RecordViewModel {
     state.isPaused = false
     
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-      // TODO: 에러 처리
       guard let self = self else { return }
       self.state.timeText = self.recordManager.formattedTime
     }
