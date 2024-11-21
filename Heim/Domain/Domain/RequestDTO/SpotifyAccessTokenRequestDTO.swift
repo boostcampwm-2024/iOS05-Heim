@@ -6,11 +6,11 @@
 //
 
 public struct SpotifyAccessTokenRequestDTO: Encodable {
-  public let clientId: String
-  public let grantType: String
-  public let code: String
-  public let redirectUri: String
-  public let codeVerifier: String
+  private let clientId: String
+  private let grantType: String
+  private let code: String
+  private let redirectUri: String
+  private let codeVerifier: String
   
   public init(
     clientId: String,

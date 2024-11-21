@@ -13,12 +13,12 @@ import Foundation
 ///
 /// 사용 시 인스턴스를 생성하고 .toSnakeCaseDictionary를 사용하세요.
 /// - 해당 API가 요구하는 파라미터의 네이밍은 snake_case로 되어있습니다.
-public struct SpotifyAuthorizeRequestDTO: Encodable {
-  public let responseType: String
-  public let clientId: String
-  public let codeChallengeMethod: String
-  public let codeChallenge: String
-  public let redirectUri: String
+public struct SpotifyAuthorizeRequestDTO {
+  private let responseType: String
+  private let clientId: String
+  private let codeChallengeMethod: String
+  private let codeChallenge: String
+  private let redirectUri: String
   
   public init(
     responseType: String,
@@ -32,14 +32,6 @@ public struct SpotifyAuthorizeRequestDTO: Encodable {
     self.codeChallengeMethod = codeChallengeMethod
     self.codeChallenge = codeChallenge
     self.redirectUri = redirectUri
-  }
-  
-  enum CodingKeys: String, CodingKey {
-    case responseType = "response_type"
-    case clientId = "client_id"
-    case codeChallengeMethod = "code_challenge_method"
-    case codeChallenge = "code_challenge"
-    case redirectUri = "redirect_uri"
   }
   
   public func toSnakeCaseDictionary() -> [String: Any] {
