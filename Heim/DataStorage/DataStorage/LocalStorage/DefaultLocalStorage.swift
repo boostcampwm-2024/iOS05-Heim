@@ -49,10 +49,10 @@ public final class DefaultLocalStorage: DataStorageInterface {
     }
   }
   
-  public func saveDiary<T>(
+  public func saveDiary<T: Encodable>(
     timeStamp: String,
     data: T
-  ) throws where T: Codable {
+  ) throws {
     let (directory, fileName) = try parseTimeStamp(timeStamp)
     let url: URL
     
