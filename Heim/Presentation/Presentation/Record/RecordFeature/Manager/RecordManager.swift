@@ -5,9 +5,9 @@
 //  Created by 박성근 on 11/18/24.
 //
 
+import AVFoundation
 import UIKit
 import Speech
-import AVFoundation
 
 final class RecordManager {
   // MARK: - 음성 인식을 위한 Properties
@@ -24,6 +24,12 @@ final class RecordManager {
   // MARK: - 인식된 텍스트, 경과한 시간
   private(set) var recognizedText: String
   private(set) var minuteAndSeconds: Int
+  
+  var formattedTime: String {
+    let minutes = minuteAndSeconds / 60
+    let seconds = minuteAndSeconds % 60
+    return String(format: "%02d:%02d", minutes, seconds)
+  }
   
   init(locale: Locale = Locale(identifier: "ko-KR")) {
     self.speechRecognizer = SFSpeechRecognizer(locale: locale)!

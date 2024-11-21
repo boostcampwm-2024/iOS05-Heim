@@ -48,7 +48,7 @@ final class RecordView: UIView {
   
   private let timeLabel: UILabel = {
     let label = UILabel()
-    label.text = "00:12"
+    label.text = "00:00"
     label.font = .regularFont(ofSize: LayoutConstants.timeLabelFontSize)
     label.textColor = .white
     return label
@@ -141,7 +141,6 @@ final class RecordView: UIView {
     }
     
     nextButton.snp.makeConstraints {
-      $0.centerX.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.horizontalPadding)
       $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-LayoutConstants.bottomPadding)
       $0.height.equalTo(LayoutConstants.nextButtonHeight)

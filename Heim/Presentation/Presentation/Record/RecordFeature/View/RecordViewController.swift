@@ -25,7 +25,6 @@ final class RecordViewController: BaseViewController<RecordViewModel>, Coordinat
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    coordinator?.didFinish()
   }
   
   override func setupViews() {

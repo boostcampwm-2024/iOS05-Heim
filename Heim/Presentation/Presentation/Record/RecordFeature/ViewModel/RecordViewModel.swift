@@ -105,11 +105,9 @@ private extension RecordViewModel {
     state.isPaused = false
     
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+      // TODO: 에러 처리
       guard let self = self else { return }
-      let minutes = self.recordManager.minuteAndSeconds / 60
-      let seconds = self.recordManager.minuteAndSeconds % 60
-      let timeText = String(format: "%02d:%02d", minutes, seconds)
-      self.state.timeText = String(format: "%02d:%02d", minutes, seconds)
+      self.state.timeText = self.recordManager.formattedTime
     }
   }
   

@@ -18,7 +18,7 @@ public final class DefaultRecordCoordinator: RecordCoordinator {
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
-
+  
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -27,7 +27,8 @@ public final class DefaultRecordCoordinator: RecordCoordinator {
   // MARK: - Methods
   public func start() {
     guard let recordViewController = createRecordViewController() else { return }
-    navigationController.pushViewController(recordViewController, animated: true)
+    recordViewController.modalPresentationStyle = .fullScreen
+    navigationController.present(recordViewController, animated: true)
   }
   
   public func didFinish() {
