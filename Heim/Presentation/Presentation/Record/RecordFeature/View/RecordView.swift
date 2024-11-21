@@ -32,7 +32,7 @@ final class RecordView: UIView {
   // MARK: - UI Components
   private let closeButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(systemName: "xmark"), for: .normal)
+    button.setImage(.xmark, for: .normal)
     button.tintColor = .white
     button.backgroundColor = .secondary
     button.layer.cornerRadius = LayoutConstants.closeButtonSize / 2
@@ -41,7 +41,7 @@ final class RecordView: UIView {
   
   private let characterImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
+    imageView.image = .recordRabbit
     imageView.contentMode = .scaleAspectFit
     return imageView
   }()
@@ -64,14 +64,14 @@ final class RecordView: UIView {
   
   private let playButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(systemName: "play.fill"), for: .normal)
+    button.setImage(.playFill, for: .normal)
     button.tintColor = .white
     return button
   }()
   
   private let refreshButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(systemName: "arrow.clockwise"), for: .normal)
+    button.setImage(.arrowClockwise, for: .normal)
     button.tintColor = .white
     return button
   }()
@@ -97,6 +97,25 @@ final class RecordView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func updatePlayButtonImage(isPlaying: Bool) {
+    if isPlaying {
+      playButton.setImage(.stopFill, for: .normal)
+    } else {
+      playButton.setImage(.playFill, for: .normal)
+    }
+  }
+  
+  func updateTimeLabel(text: String) {
+    timeLabel.text = text
+  }
+  
+  func updateNextButton(isEnabled: Bool) {
+    nextButton.isEnabled = isEnabled
+    nextButton.backgroundColor = isEnabled ? .primary : .secondary
+  }
+}
+
+private extension RecordView {
   // MARK: - Setup
   private func setupViews() {
     [closeButton, characterImageView, timeLabel, buttonStackView, nextButton].forEach {
@@ -154,20 +173,6 @@ final class RecordView: UIView {
     nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
   }
   
-  func updatePlayButtonImage(isPlaying: Bool) {
-    let imageName = isPlaying ? "stop.fill" : "play.fill"
-    playButton.setImage(UIImage(systemName: imageName), for: .normal)
-  }
-  
-  func updateTimeLabel(text: String) {
-    timeLabel.text = text
-  }
-  
-  func updateNextButton(isEnabled: Bool) {
-    nextButton.isEnabled = isEnabled
-    nextButton.backgroundColor = isEnabled ? .primary : .secondary
-  }
-  
   // MARK: - Actions
   @objc private func closeButtonTapped() {
     delegate?.buttonDidTap(self, .close)
@@ -186,6 +191,7 @@ final class RecordView: UIView {
   }
 }
 
+// MARK: - LayoutConstants
 private extension RecordView {
   enum LayoutConstants {
     // Button sizes
