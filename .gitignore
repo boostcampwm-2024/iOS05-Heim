@@ -112,3 +112,4 @@ iOSInjectionProject/
 
 # Custom
 .DS_Store
+Heim/DataModule/config/*
