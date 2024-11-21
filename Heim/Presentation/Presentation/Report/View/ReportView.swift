@@ -51,7 +51,12 @@ final class ReportView: UIView {
     label.textAlignment = .center
     return label
   }()
-  //TODO: 그래프
+  
+  private let graphView: UIView = {
+    let graphView = GraphView()
+    return graphView
+  }()
+
   private let replyStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
@@ -88,10 +93,11 @@ private extension ReportView {
     self.backgroundColor = .clear
     addSubview(recordReportStackView)
     addSubview(emotionLabel)
+    addSubview(graphView)
   }
 
   func setupRecordReportStackView() {
-    [titleLabel,totalReportView].forEach {
+    [titleLabel, totalReportView].forEach {
       recordReportStackView.addArrangedSubview($0)
     }
   }
@@ -100,16 +106,21 @@ private extension ReportView {
     recordReportStackView.snp.makeConstraints {
       $0.top.equalTo(self.safeAreaLayoutGuide)
       $0.centerX.equalToSuperview()
-      //TODO: 머지 된후 entension으로 수정예정 
+      //TODO: entension으로 수정예정
       $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
       $0.bottom.equalTo(emotionLabel.snp.top).offset(-48)
-
     }
 
     emotionLabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
     }
 
+    graphView.snp.makeConstraints {
+      $0.top.equalTo(emotionLabel.snp.bottom).offset(32)
+      $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
+      $0.width.equalTo((UIScreen.main.bounds.width - 128))
+      $0.centerX.equalToSuperview()
+    }
   }
 }
 
