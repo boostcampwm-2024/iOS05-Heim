@@ -108,8 +108,5 @@ private extension ReportCountView {
     static let bodyOne: CGFloat = 16
     static let bodyTwo: CGFloat = 24
     static let bodyThree: CGFloat = 12
-
-
   }
 }
-
