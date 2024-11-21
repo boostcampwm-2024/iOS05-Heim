@@ -80,6 +80,7 @@ final class RecordView: UIView {
     let button = UIButton()
     button.setTitle("오늘의 감정 분석하기!", for: .normal)
     button.setTitleColor(.white, for: .normal)
+    button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.backgroundColor = .primary
     button.layer.cornerRadius = LayoutConstants.nextButtonCornerRadius
     return button
@@ -219,5 +220,6 @@ private extension RecordView {
     
     // Font size
     static let timeLabelFontSize: CGFloat = 30
+    static let buttonLabelFontSize: CGFloat = 18
   }
 }

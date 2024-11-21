@@ -35,6 +35,10 @@ final class RecordViewModel: ViewModel {
     self.state = State()
     // TODO: 주입 방식 수정 고민
     self.recordManager = RecordManager()
+    
+    Task {
+      try await recordManager.setupSpeech()
+    }
   }
   
   // MARK: - Methods
@@ -48,14 +52,6 @@ final class RecordViewModel: ViewModel {
       handleRefresh()
     case .moveToNext:
       handleMoveToNext()
-    }
-  }
-  
-  func setup() async {
-    do {
-      try await recordManager.setupSpeech()
-    } catch {
-      // TODO: 에러 처리
     }
   }
 }
