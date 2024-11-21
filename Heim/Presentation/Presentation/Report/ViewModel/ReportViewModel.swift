@@ -19,12 +19,11 @@ final class ReportViewModel: ViewModel {
   struct State: Equatable {
     var emotion: String
   }
-
-  let usecase: ReportUseCase
+  //TODO: useCase 구현
+  //let usecase: ReportUseCase
   @Published var state: State
 
-  init(usecase: ReportUseCase) {
-    self.usecase = usecase
+  init() {
     self.state = State(emotion: "기쁨")
   }
 
@@ -38,13 +37,13 @@ final class ReportViewModel: ViewModel {
 // MARK: - Private Extenion
 private extension ReportViewModel {
   func fetchEmotion() {
-    Task {
-      do {
-        let emotion = try await usecase.fetchEmotions()
-        state.emotion = emotion
-      } catch {
-        //TODO: 에러처리
-      }
-    }
+    //TODO: 기능 구현
+//    Task {
+//      do {
+//        let emotion = try await usecase.fetchEmotions()
+//        state.emotion = emotion
+//      } catch {
+//      }
+//    }
   }
 }
