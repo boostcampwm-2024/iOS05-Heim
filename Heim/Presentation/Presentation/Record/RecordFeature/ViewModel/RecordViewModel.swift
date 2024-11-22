@@ -34,6 +34,10 @@ final class RecordViewModel: ViewModel {
   init() {
     self.state = State()
     self.recordManager = RecordManager()
+    
+    Task {
+      try await recordManager.setupSpeech()
+    }
   }
   
   // MARK: - Methods
@@ -47,14 +51,6 @@ final class RecordViewModel: ViewModel {
       handleRefresh()
     case .moveToNext:
       handleMoveToNext()
-    }
-  }
-  
-  func setup() async {
-    do {
-      try await recordManager.setupSpeech()
-    } catch {
-      // TODO: 사용자에게 에러 전달
     }
   }
 }
