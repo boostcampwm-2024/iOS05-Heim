@@ -10,18 +10,70 @@ import UIKit
 final class GraphView: UIView {
 
   let emotionCharts: [Chart] =
-  [Chart(value: 0.2, color: .red),
-   Chart(value: 0.3, color: .blue),
+  [Chart(value: 0.1, color: .red),
+   Chart(value: 1.0, color: .blue),
    Chart(value: 0.3, color: .white),
-   Chart(value: 0.1, color: .yellow),
-   Chart(value: 0.18, color: .black),
-   Chart(value: 0.4, color: .black),
-   Chart(value: 0.3, color: .brown) ]
+   Chart(value: 0.7, color: .yellow),
+   Chart(value: 0.6, color: .black),
+   Chart(value: 0.5, color: .orange),
+   Chart(value: 0.5, color: .brown)]
+
+  private var emotionEmojis: [UIImageView] = []
+
+  let fear1: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+    return imageView
+  }()
+
+  let fear2: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+    return imageView
+  }()
+
+  let fear3: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+    return imageView
+  }()
+
+  let fear4: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+
+    return imageView
+  }()
+
+  let fear5: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+    return imageView
+  }()
+
+  let fear6: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+    return imageView
+  }()
+
+  let fear7: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "splashRabbit")
+    return imageView
+  }()
 
   private let graphStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .horizontal
-    stackView.spacing = 16
+    stackView.spacing = LayoutContants.defaultPadding
+    stackView.distribution = .fillEqually
+    return stackView
+  }()
+
+  private let emotionStack: UIStackView = {
+    let stackView = UIStackView()
+    stackView.spacing = LayoutContants.defaultPadding
     stackView.distribution = .fillEqually
     return stackView
   }()
@@ -34,7 +86,8 @@ final class GraphView: UIView {
     super.init(frame: frame)
     setupViews()
     setupGraphStackView()
-
+    setupEmojiStackView()
+    setupLayoutConstraints()
   }
 
   //  init(emotionCharts: [Chart]) {
@@ -48,7 +101,7 @@ final class GraphView: UIView {
 private extension GraphView {
   func setupViews() {
     addSubview(graphStackView)
-
+    addSubview(emotionStack)
   }
 
   func setupGraphStackView() {
@@ -56,9 +109,29 @@ private extension GraphView {
       let barView = BarView(chart: $0)
       graphStackView.addArrangedSubview(barView)
     }
+  }
 
+  func setupEmojiStackView() {
+    [fear1, fear2, fear3, fear4, fear5, fear6, fear7].forEach {
+      emotionEmojis.append($0)
+    }
+
+    emotionEmojis.forEach {
+      emotionStack.addArrangedSubview($0)
+    }
+  }
+
+  func setupLayoutConstraints() {
     graphStackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
+      $0.height.equalTo(self.snp.height).multipliedBy(0.7)
+    }
+
+    emotionStack.snp.makeConstraints {
+      $0.top.equalTo(graphStackView.snp.bottom).offset(LayoutContants.defaultPadding)
+      $0.leading.trailing.equalTo(graphStackView)
+      $0.height.equalTo(self.snp.height).multipliedBy(0.2)
     }
   }
 }

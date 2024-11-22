@@ -13,7 +13,7 @@ final class ReportCountView: UIView {
     let stackView = UIStackView()
     stackView.axis = .horizontal
     stackView.spacing = LayoutContants.defaultPadding * 2
-    stackView.distribution = .fill
+    stackView.distribution = .fillEqually
 
     let labelOne = UILabel()
     labelOne.text = "전체"
@@ -41,7 +41,6 @@ final class ReportCountView: UIView {
 
     let totalCount = UILabel()
     totalCount.text = "10"
-
     let continuousCount = UILabel()
     continuousCount.text = "30"
 
@@ -57,8 +56,6 @@ final class ReportCountView: UIView {
     }
     return stackView
   }()
-
-
 
 
   // MARK: - Initialize
@@ -85,12 +82,13 @@ private extension ReportCountView {
   func setupTotalRecordStackView() {
     countTitleStackView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(LayoutContants.defaultPadding)
+
+//      $0.width.equalToSuperview()
       $0.centerX.equalToSuperview()
     }
 
     countStackView.snp.makeConstraints {
       $0.top.equalTo(countTitleStackView.snp.bottom).offset(LayoutContants.defaultPadding)
-//      $0.bottom.equalToSuperview().offset(-LayoutContants.defaultPadding)
       $0.width.equalToSuperview()
       $0.centerX.equalToSuperview()
     }

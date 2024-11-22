@@ -11,14 +11,14 @@ import SnapKit
 final class ReportView: UIView {
 
   // MARK: - Properties
-  let userName = "성근"
+  var userName = "성근"
+  var emotion = "슬픔"
 
   // MARK: - UI Components
   private let recordReportStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
     stackView.spacing = 10
-//    stackView.backgroundColor = .brown
     stackView.distribution = .fillEqually
     return stackView
   }()
@@ -108,7 +108,7 @@ private extension ReportView {
       $0.centerX.equalToSuperview()
       //TODO: entension으로 수정예정
       $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
-      $0.bottom.equalTo(emotionLabel.snp.top).offset(-48)
+      $0.bottom.equalTo(emotionLabel.snp.top).offset(-32)
     }
 
     emotionLabel.snp.makeConstraints {
@@ -116,7 +116,7 @@ private extension ReportView {
     }
 
     graphView.snp.makeConstraints {
-      $0.top.equalTo(emotionLabel.snp.bottom).offset(32)
+      $0.top.equalTo(emotionLabel.snp.bottom).offset(16)
       $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
       $0.width.equalTo((UIScreen.main.bounds.width - 128))
       $0.centerX.equalToSuperview()
