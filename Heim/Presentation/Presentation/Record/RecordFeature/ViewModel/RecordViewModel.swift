@@ -16,14 +16,14 @@ final class RecordViewModel: ViewModel {
     case startRecording
     case stopRecording
     case refresh
-    case moveToNext
   }
   
-  struct State: Equatable {
+  struct State {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
     var isPaused: Bool = false
+    var voiceData: Voice?
   }
   
   @Published var state: State
@@ -49,8 +49,6 @@ final class RecordViewModel: ViewModel {
       handleStopRecording()
     case .refresh:
       handleRefresh()
-    case .moveToNext:
-      handleMoveToNext()
     }
   }
 }
@@ -73,6 +71,7 @@ private extension RecordViewModel {
     state.isRecording = false
     state.canMoveToNext = true
     state.isPaused = true
+    state.voiceData = recordManager.voice
     stopTimeObservation()
   }
   
@@ -80,11 +79,6 @@ private extension RecordViewModel {
     recordManager.resetAll()
     stopTimeObservation()
     state = State()
-  }
-  
-  func handleMoveToNext() {
-    recordManager.resetAll()
-    // TODO: 다음 화면과 연결
   }
   
   func startTimeObservation() {
