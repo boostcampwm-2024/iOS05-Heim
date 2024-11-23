@@ -11,8 +11,8 @@ import UIKit
 
 public protocol EmotionAnalyzeCoordinator: Coordinator {
   // MARK: - RecordView에서 넘어올 때 요약된 text, Voice Data를 가지고 넘어옵니다.
-  func start(text: String, voice: Voice)
-  func pushDiaryReportView(diary: Diary)
+  func start(recognizedtext: String, voice: Voice)
+  func pushDiaryReportView(emotion: Emotion, heimReply: EmotionReport, voice: Voice)
 }
 
 public final class DefaultEmotionAnalyzeRecordCoordinator: EmotionAnalyzeCoordinator {
@@ -29,18 +29,18 @@ public final class DefaultEmotionAnalyzeRecordCoordinator: EmotionAnalyzeCoordin
   // MARK: - Methods
   public func start() {}
   
-  public func start(text: String, voice: Voice) {
-    guard let emotionAnalyzeViewController = createEmotionAnalyzeViewController(text: text, voice: voice) else {
+  public func start(recognizedtext: String, voice: Voice) {
+    guard let viewController = createEmotionAnalyzeViewController(text: recognizedtext, voice: voice) else {
       return
     }
-    navigationController.pushViewController(emotionAnalyzeViewController, animated: true)
+    navigationController.pushViewController(viewController, animated: true)
   }
   
   public func didFinish() {
     parentCoordinator?.removeChild(self)
   }
   
-  public func pushDiaryReportView(diary: Diary) {
+  public func pushDiaryReportView(emotion: Emotion, heimReply: EmotionReport, voice: Voice) {
     // TODO: 분석 결과 화면으로 이동
   }
 }
@@ -52,8 +52,14 @@ private extension DefaultEmotionAnalyzeRecordCoordinator {
     guard let emotionClassfiyUseCase = DIContainer.shared.resolve(type: EmotionClassifyUseCase.self) else {
       return nil
     }
+    
     // TODO: - viewModel에 추가로 인자를 생성 후 넣어줘야함.
-    let viewModel = EmotionAnalyzeViewModel(recognizedText: text, classifyUseCase: emotionClassfiyUseCase)
+    let viewModel = EmotionAnalyzeViewModel(
+      recognizedText: text,
+      voice: voice,
+      classifyUseCase: emotionClassfiyUseCase
+    )
+    
     let viewController = EmotionAnalyzeViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController

@@ -23,16 +23,20 @@ final class EmotionAnalyzeViewModel: ViewModel {
   }
   
   private let recognizedText: String // RecordView에서 넘어온 인식된 텍스트
-  @Published var state: State
+  private let voice: Voice // RecordView에서 넘어온 음성 녹음
   private let classifyUseCase: EmotionClassifyUseCase
+  
+  @Published var state: State
   // TODO: GEMINI 이용 UseCase 추가
   
   init(
     recognizedText: String,
+    voice: Voice,
     classifyUseCase: EmotionClassifyUseCase
     // TODO: GEMINI 이용 UseCase 추가
   ) {
     self.recognizedText = recognizedText
+    self.voice = voice
     self.state = State(isAnalyzing: true, emotion: .none, heimReply: EmotionReport.init(text: ""))
     self.classifyUseCase = classifyUseCase
   }
@@ -58,5 +62,9 @@ final class EmotionAnalyzeViewModel: ViewModel {
         state.isAnalyzing = false
       }
     }
+  }
+  
+  func voiceData() -> Voice {
+    return voice
   }
 }
