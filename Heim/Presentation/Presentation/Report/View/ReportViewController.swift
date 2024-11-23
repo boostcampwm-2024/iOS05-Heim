@@ -13,6 +13,12 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   weak var coordinator: DefaultReportCoordinator?
 
   // MARK: - UI Components
+  private let scrollView: UIScrollView = {
+      let scrollView = UIScrollView()
+      scrollView.showsVerticalScrollIndicator = false
+      return scrollView
+    }()
+
   private let backgroundImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.image = .background
@@ -25,7 +31,6 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
     reportView.backgroundColor = .clear
     return reportView
   }()
-
 
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -43,35 +48,30 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   override func setupViews() {
     super.setupViews()
     view.addSubview(backgroundImageView)
-    view.addSubview(reportView)
-
+    view.addSubview(scrollView)
+    scrollView.addSubview(reportView)
   }
+
   override func setupLayoutConstraints() {
+
+    scrollView.snp.makeConstraints {
+         $0.edges.equalToSuperview()
+       }
+
     backgroundImageView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
 
     reportView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.edges.width.equalToSuperview()
+      $0.height.equalToSuperview()
+
     }
-
-
   }
+
   override func bindState() {
   }
 
   override func bindAction() {
-  }
-}
-
-private extension ReportViewController {
-  enum LayoutConstants {
-    static let defaultPadding: CGFloat = 16
-    static let titleOne: CGFloat = 28
-    static let titleTwo: CGFloat = 24
-    static let titleThree: CGFloat = 20
-    static let bodyOne: CGFloat = 16
-    static let bodyTwo: CGFloat = 24
-    static let bodyThree: CGFloat = 12
   }
 }
