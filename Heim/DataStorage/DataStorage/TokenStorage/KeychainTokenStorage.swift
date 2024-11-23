@@ -9,7 +9,10 @@ import DataModule
 import Foundation
 import Security
 
+// TODO: TokenStorage를 thorwable하게 변경
 public struct KeychainTokenStorage: TokenStorage {
+  public init() {}
+  
   public func save(token: String, attrAccount: String) -> Bool {
     let query: NSDictionary = [
       kSecClass: kSecClassGenericPassword,
