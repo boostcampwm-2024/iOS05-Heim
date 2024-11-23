@@ -29,6 +29,7 @@ final class ReportViewModel: ViewModel {
     var disgustCount: Int
     var neutralCount: Int
     var noneCount: Int
+    var emotion: String
     var reply: String
   }
 // TODO: UseCase 추가
