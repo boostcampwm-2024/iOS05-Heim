@@ -51,9 +51,7 @@ public final class DefaultHomeCoordinator: HomeCoordinator {
   }
   
   public func pushSettingView() {
-    guard let defaultSettingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self) else {
-      return
-    }
+    guard let defaultSettingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self) else { return }
     
     addChild(defaultSettingCoordinator)
     defaultSettingCoordinator.parentCoordinator = self
@@ -64,6 +62,7 @@ public final class DefaultHomeCoordinator: HomeCoordinator {
 // MARK: - Private
 private extension DefaultHomeCoordinator {
   func createHomeViewController() -> HomeViewController? {
+    // TODO: 추후 도메인 모듈 주입 예정
     let viewController = HomeViewController()
     viewController.coordinator = self
     return viewController
