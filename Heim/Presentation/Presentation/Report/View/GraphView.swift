@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+// 막대 그래프 
 final class GraphView: UIView {
   // TODO: mock데이터 제거 및 color 추가
   let emotionCharts: [Chart] =

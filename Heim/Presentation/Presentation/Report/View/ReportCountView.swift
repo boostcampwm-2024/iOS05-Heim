@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 상단 일기 갯수 표
 final class ReportCountView: UIView {
   // MARK: - Properties
   let totalCount = CommonLabel(

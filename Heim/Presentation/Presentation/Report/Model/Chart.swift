@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+// 막대그래프의 막대의 비율을 계산하는 모델, value = 해당 감정의 갯수/totalCount
 struct Chart {
   // MARK: Properties
   var value: Double
