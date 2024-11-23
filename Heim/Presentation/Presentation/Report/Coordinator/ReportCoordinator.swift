@@ -34,7 +34,7 @@ public final class DefaultReportCoordinator: ReportCoordinator {
   }
 
   func reportViewController() -> ReportViewController? {
-    // TODO: DIContainer 의존성 주입 구현 예정
+    // TODO: DIContainer 의존성 주입 구현
     let viewModel = ReportViewModel()
     let reportViewController = ReportViewController(viewModel: viewModel)
     reportViewController.coordinator = self
