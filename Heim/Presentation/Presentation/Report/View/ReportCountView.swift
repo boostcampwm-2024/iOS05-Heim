@@ -8,6 +8,27 @@
 import UIKit
 
 final class ReportCountView: UIView {
+  // MARK: - Properties
+  let totalCount = CommonLabel(
+    text: "30",
+    font: .bold,
+    size: LayoutContants.titleThree,
+    textColor: .white
+  )
+
+  let continuousCount = CommonLabel(
+    text: "10",
+    font: .bold,
+    size: LayoutContants.titleThree,
+    textColor: .white
+  )
+
+  let monthCount = CommonLabel(
+    text: "3",
+    font: .bold,
+    size: LayoutContants.titleThree,
+    textColor: .white
+  )
 
   private let countTitleStackView: UIStackView = {
     let stackView = UIStackView()
@@ -38,22 +59,6 @@ final class ReportCountView: UIView {
     stackView.axis = .horizontal
     stackView.spacing = LayoutContants.defaultPadding * 2
     stackView.distribution = .fillEqually
-
-    let totalCount = UILabel()
-    totalCount.text = "10"
-    let continuousCount = UILabel()
-    continuousCount.text = "30"
-
-    let monthCount = UILabel()
-    monthCount.text = "3"
-
-    [totalCount, continuousCount, monthCount].forEach {
-      $0.textColor = .white
-      $0.font = UIFont.boldFont(ofSize: LayoutContants.TitleThree)
-      $0.textAlignment = .center
-
-      stackView.addArrangedSubview($0)
-    }
     return stackView
   }()
 
@@ -61,6 +66,7 @@ final class ReportCountView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupViews()
+    setupCountStackView()
     setupTotalRecordStackView()
   }
 
@@ -78,11 +84,16 @@ private extension ReportCountView {
     }
   }
 
+  func setupCountStackView() {
+    [totalCount, continuousCount, monthCount].forEach {
+      $0.textAlignment = .center
+      countStackView.addArrangedSubview($0)
+    }
+  }
+
   func setupTotalRecordStackView() {
     countTitleStackView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(LayoutContants.defaultPadding)
-
-//      $0.width.equalToSuperview()
       $0.centerX.equalToSuperview()
     }
 
@@ -91,19 +102,13 @@ private extension ReportCountView {
       $0.width.equalToSuperview()
       $0.centerX.equalToSuperview()
     }
-
   }
-
 }
 
 private extension ReportCountView {
   enum LayoutContants {
     static let defaultPadding: CGFloat = 16
-    static let TitleOne: CGFloat = 28
-    static let TitleTwo: CGFloat = 24
-    static let TitleThree: CGFloat = 20
+    static let titleThree: CGFloat = 20
     static let bodyOne: CGFloat = 16
-    static let bodyTwo: CGFloat = 24
-    static let bodyThree: CGFloat = 12
   }
 }

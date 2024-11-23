@@ -8,7 +8,7 @@
 import UIKit
 
 final class GraphView: UIView {
-
+  // TODO: mock데이터 제거 및 color 추가
   let emotionCharts: [Chart] =
   [Chart(value: 0.1, color: .red),
    Chart(value: 1.0, color: .blue),
@@ -23,14 +23,14 @@ final class GraphView: UIView {
   private let graphStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .horizontal
-    stackView.spacing = LayoutContants.defaultPadding
+    stackView.spacing = LayoutConstants.defaultPadding
     stackView.distribution = .fillEqually
     return stackView
   }()
 
   private let emotionStack: UIStackView = {
     let stackView = UIStackView()
-    stackView.spacing = LayoutContants.defaultPadding
+    stackView.spacing = LayoutConstants.defaultPadding
     stackView.distribution = .fillEqually
     return stackView
   }()
@@ -77,20 +77,14 @@ private extension GraphView {
     }
 
     emotionStack.snp.makeConstraints {
-      $0.top.equalTo(graphStackView.snp.bottom).offset(LayoutContants.defaultPadding)
+      $0.top.equalTo(graphStackView.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.leading.trailing.equalTo(graphStackView)
       $0.height.equalTo(self.snp.height).multipliedBy(0.2)
     }
   }
 }
 private extension GraphView {
-  enum LayoutContants {
+  enum LayoutConstants {
     static let defaultPadding: CGFloat = 16
-    static let TitleOne: CGFloat = 28
-    static let TitleTwo: CGFloat = 24
-    static let TitleThree: CGFloat = 20
-    static let bodyOne: CGFloat = 16
-    static let bodyTwo: CGFloat = 24
-    static let bodyThree: CGFloat = 12
   }
 }

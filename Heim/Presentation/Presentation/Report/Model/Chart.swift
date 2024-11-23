@@ -8,9 +8,11 @@
 import UIKit
 
 struct Chart {
+  // MARK: Properties
   var value: Double
   var color: UIColor
 
+  // MARK: - Initializer
   init(value: Double, color: UIColor) {
     self.value = value
     self.color = color

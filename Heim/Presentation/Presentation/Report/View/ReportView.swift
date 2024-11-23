@@ -45,7 +45,7 @@ final class ReportView: UIView {
     label.numberOfLines = 0
     label.text = """
     지난 30일간 \(userName)님께서 
-    가장 많이 느끼신 감정은 슬픔이군요
+    가장 많이 느끼신 감정은 \(emotion)이군요
     """
     label.textColor = .white
     label.textAlignment = .center
