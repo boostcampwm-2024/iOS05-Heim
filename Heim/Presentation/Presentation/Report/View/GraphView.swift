@@ -18,50 +18,7 @@ final class GraphView: UIView {
    Chart(value: 0.5, color: .orange),
    Chart(value: 0.5, color: .brown)]
 
-  private var emotionEmojis: [UIImageView] = []
-
-  let fear1: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-    return imageView
-  }()
-
-  let fear2: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-    return imageView
-  }()
-
-  let fear3: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-    return imageView
-  }()
-
-  let fear4: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-
-    return imageView
-  }()
-
-  let fear5: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-    return imageView
-  }()
-
-  let fear6: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-    return imageView
-  }()
-
-  let fear7: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "splashRabbit")
-    return imageView
-  }()
+  private let emotionEmojis = HeimEmoji.defaultEmotions()
 
   private let graphStackView: UIStackView = {
     let stackView = UIStackView()
@@ -89,12 +46,7 @@ final class GraphView: UIView {
     setupEmojiStackView()
     setupLayoutConstraints()
   }
-
-  //  init(emotionCharts: [Chart]) {
-  //    self.emotionCharts = emotionCharts
-  //    super.init(frame: .zero)
-  //  }
-
+  // TODO: [Chart]파라미터로 하는 Initializer 만들기
 }
 
 // MARK: - Layout
@@ -112,10 +64,6 @@ private extension GraphView {
   }
 
   func setupEmojiStackView() {
-    [fear1, fear2, fear3, fear4, fear5, fear6, fear7].forEach {
-      emotionEmojis.append($0)
-    }
-
     emotionEmojis.forEach {
       emotionStack.addArrangedSubview($0)
     }
