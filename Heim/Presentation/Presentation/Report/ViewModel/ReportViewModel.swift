@@ -49,6 +49,7 @@ final class ReportViewModel: ViewModel {
                        disgustCount: 0,
                        neutralCount: 0,
                        noneCount: 0,
+                       emotion: "", 
                        reply: "답장이 도착하지 않았어요!")
   }
 
