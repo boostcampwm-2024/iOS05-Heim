@@ -13,37 +13,53 @@ final class ReportViewModel: ViewModel {
 
   // MARK: - Properties
   enum Action {
-    case fetchEmotion
+    //TODO: 수정
+    case fetchData
   }
 
   struct State: Equatable {
-    var emotion: String
+    var userName: String
+    var totalCount: Int
+    var sequenceCount: Int
+    var monthCount: Int
+    var sadnessCount: Int
+    var happinessCount: Int
+    var surpriseCount: Int
+    var fearCount: Int
+    var disgustCount: Int
+    var neutralCount: Int
+    var noneCount: Int
+    var reply: String
   }
-  //TODO: useCase 구현
-  //let usecase: ReportUseCase
+// TODO: UseCase 추가
   @Published var state: State
 
+  // MARK: - Initializer
+  // TODO: Initializer에 UseCase 추가
   init() {
-    self.state = State(emotion: "기쁨")
+    self.state = State(userName: "미래",
+                       totalCount: 0,
+                       sequenceCount: 0,
+                       monthCount: 0,
+                       sadnessCount: 0,
+                       happinessCount: 0,
+                       surpriseCount: 0,
+                       fearCount: 0,
+                       disgustCount: 0,
+                       neutralCount: 0,
+                       noneCount: 0,
+                       reply: "답장이 도착하지 않았어요!")
   }
 
   func action(_ action: Action) {
     switch action {
-    case .fetchEmotion: fetchEmotion()
+    case .fetchData:
+      fetchData()
     }
   }
 }
 
 // MARK: - Private Extenion
 private extension ReportViewModel {
-  func fetchEmotion() {
-    //TODO: 기능 구현
-//    Task {
-//      do {
-//        let emotion = try await usecase.fetchEmotions()
-//        state.emotion = emotion
-//      } catch {
-//      }
-//    }
-  }
+  func fetchData() {}
 }

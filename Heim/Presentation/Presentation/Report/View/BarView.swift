@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 final class BarView: UIView {
   let contentView: UIView = {
     let view = UIView()

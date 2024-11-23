@@ -53,7 +53,6 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   }
 
   override func setupLayoutConstraints() {
-
     scrollView.snp.makeConstraints {
          $0.edges.equalToSuperview()
        }
