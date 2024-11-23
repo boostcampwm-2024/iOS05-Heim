@@ -27,7 +27,7 @@ final class ReportView: UIView {
     let label = UILabel()
     label.text = "하임이와 함께 한 기록"
     label.textColor = .white
-    label.font = UIFont.boldFont(ofSize: LayoutContants.TitleOne)
+    label.font = UIFont.boldFont(ofSize: LayoutConstants.titleOne)
     return label
   }()
 
@@ -41,7 +41,7 @@ final class ReportView: UIView {
 
   private lazy var emotionLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.boldFont(ofSize: LayoutContants.TitleThree)
+    label.font = UIFont.boldFont(ofSize: LayoutConstants.titleThree)
     label.numberOfLines = 0
     label.text = """
     지난 30일간 \(userName)님께서 
@@ -57,19 +57,13 @@ final class ReportView: UIView {
     return graphView
   }()
 
-  private let replyStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.spacing = 10
-    return stackView
-  }()
-
-  private let replyLabel: UILabel = {
-    let label = UILabel()
+  let replyTitleLabel: CommonLabel = {
+    let label = CommonLabel(font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
+    label.text = "하임이의 답장"
     return label
   }()
 
-  private let replayTextView: CommonTextAreaView = {
+  let replyTextView: CommonTextAreaView = {
     let textAreaView = CommonTextAreaView()
     return textAreaView
   }()
@@ -94,6 +88,8 @@ private extension ReportView {
     addSubview(recordReportStackView)
     addSubview(emotionLabel)
     addSubview(graphView)
+    addSubview(replyTitleLabel)
+    addSubview(replyTextView)
   }
 
   func setupRecordReportStackView() {
@@ -121,15 +117,27 @@ private extension ReportView {
       $0.width.equalTo((UIScreen.main.bounds.width - 128))
       $0.centerX.equalToSuperview()
     }
+
+    replyTitleLabel.snp.makeConstraints {
+      $0.top.equalTo(graphView.snp.bottom).offset(LayoutConstants.defaultPadding)
+      $0.centerX.equalToSuperview()
+
+    }
+
+    replyTextView.snp.makeConstraints {
+      $0.top.equalTo(replyTitleLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
+    }
+
   }
 }
 
 private extension ReportView {
-  enum LayoutContants {
+  enum LayoutConstants {
     static let defaultPadding: CGFloat = 16
-    static let TitleOne: CGFloat = 28
-    static let TitleTwo: CGFloat = 24
-    static let TitleThree: CGFloat = 20
+    static let titleOne: CGFloat = 28
+    static let titleTwo: CGFloat = 24
+    static let titleThree: CGFloat = 20
     static let bodyOne: CGFloat = 16
     static let bodyTwo: CGFloat = 24
     static let bodyThree: CGFloat = 12

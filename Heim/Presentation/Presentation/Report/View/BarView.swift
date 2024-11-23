@@ -28,10 +28,10 @@ final class BarView: UIView {
   init(chart: Chart) {
     self.chart = chart
     super.init(frame: .zero)
-    setUP()
+    setupViews()
   }
 
-  func setUP() {
+  func setupViews() {
     addSubview(contentView)
     addSubview(bar)
     bar.backgroundColor = chart.color

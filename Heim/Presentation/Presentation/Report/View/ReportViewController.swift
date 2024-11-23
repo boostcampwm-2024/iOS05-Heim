@@ -19,11 +19,13 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
+
   private let reportView: ReportView = {
     let reportView = ReportView()
     reportView.backgroundColor = .clear
     return reportView
   }()
+
 
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -48,9 +50,11 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
     backgroundImageView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+
     reportView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+
 
   }
   override func bindState() {
@@ -60,3 +64,14 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   }
 }
 
+private extension ReportViewController {
+  enum LayoutConstants {
+    static let defaultPadding: CGFloat = 16
+    static let titleOne: CGFloat = 28
+    static let titleTwo: CGFloat = 24
+    static let titleThree: CGFloat = 20
+    static let bodyOne: CGFloat = 16
+    static let bodyTwo: CGFloat = 24
+    static let bodyThree: CGFloat = 12
+  }
+}
