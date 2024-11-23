@@ -6,6 +6,7 @@
 //
 
 import DataModule
+import Domain
 import Foundation
 
 extension RequestTarget {
@@ -21,7 +22,11 @@ extension RequestTarget {
     request.cachePolicy = .reloadIgnoringLocalCacheData
     
     if let body {
-      request.setBody(body)
+      if request.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded" {
+        request.setURLEncodedBody(body)
+      } else {
+        request.setBody(body)
+      }
     }
     
     return request
