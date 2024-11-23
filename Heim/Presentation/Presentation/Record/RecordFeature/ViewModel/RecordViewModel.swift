@@ -10,21 +10,21 @@ import Core
 import Domain
 import Foundation
 
-final class RecordViewModel: ViewModel {
+public final class RecordViewModel: ViewModel {
   // MARK: - Properties
-  enum Action {
+  public enum Action {
     case startRecording
     case stopRecording
     case refresh
   }
   
-  struct State {
+  public struct State: Equatable {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
   }
   
-  @Published var state: State
+  @Published public var state: State
   private var recordManager: RecordManager
   private var timer: Timer?
   
@@ -32,7 +32,7 @@ final class RecordViewModel: ViewModel {
   private var voice: Voice?
   
   // MARK: - Initializer
-  init() {
+  public init() {
     self.state = State()
     self.recordManager = RecordManager()
     
@@ -42,7 +42,7 @@ final class RecordViewModel: ViewModel {
   }
   
   // MARK: - Methods
-  func action(_ action: Action) {
+  public func action(_ action: Action) {
     switch action {
     case .startRecording:
       handleStartRecording()
