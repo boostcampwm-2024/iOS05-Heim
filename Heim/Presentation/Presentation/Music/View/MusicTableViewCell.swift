@@ -11,9 +11,12 @@ final class MusicTableViewCell: UITableViewCell {
 
   private let albumImage: UIImageView = {
     let view = UIImageView()
-    view.layer.masksToBounds = true
     view.layer.cornerRadius = 15
     view.backgroundColor = .gray
+    view.layer.shadowColor = UIColor.gray.cgColor
+    view.layer.shadowOffset = CGSize(width: 0, height: 5)
+    view.layer.shadowRadius = 4
+    view.layer.shadowOpacity = 0.7
     return view
   }()
 
@@ -119,7 +122,6 @@ private extension MusicTableViewCell {
       $0.leading.equalTo(subLabel.snp.leading)
       $0.width.equalTo(contentView.snp.width).multipliedBy(0.2)
       $0.bottom.equalTo(albumImage.snp.bottom)
-
     }
   }
 }

@@ -90,7 +90,7 @@ extension MusicMatchViewController: UITableViewDataSource {
     let subTilte = musicDataSources[indexPath.row].title
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
-    cell.configure(titleText: "슈퍼노바", subTitle: "테스트글입니다.")
+    cell.configure(titleText: "슈퍼노바", subTitle: "#감성힙합#플레이리스트 #해시태그 #해시태...")
 
     return cell
 
