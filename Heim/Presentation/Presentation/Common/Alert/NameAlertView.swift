@@ -84,14 +84,15 @@ private extension NameAlertView {
   
   @objc
   func textFieldDidChange() {
-    let isEnableComplete = !(nameTextField.text?.isEmpty ?? true)
+    guard let text = nameTextField.text else { return } 
+    let isEnableComplete = !text.isEmpty
     rightbutton?.isEnabled = isEnableComplete
     rightbutton?.alpha = isEnableComplete ? 1 : 0.5 
     rightbutton?.tintColor = .white.withAlphaComponent(isEnableComplete ? 1 : 0.5)
     
-    guard let text = nameTextField.text, text.count >= 5 else { return }
+    guard text.count >= 5 else { return }
     let index = text.index(text.startIndex, offsetBy: 5)
-    let newString = text[text.startIndex..<index]
-    nameTextField.text = String(newString)
+    let maximumText = text[text.startIndex..<index]
+    nameTextField.text = String(maximumText)
   }
 }
