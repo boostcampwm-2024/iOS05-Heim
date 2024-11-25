@@ -46,7 +46,7 @@ final class AlertViewController: UIViewController {
   func setupLeftButtonAction(_ action: @escaping () -> Void) {
     let action = UIAction { [weak self] _ in 
       action()
-      self?.dismiss(animated: true)
+      self?.dismiss(animated: false)
     }
     alertView.setupLeftButtonAction(action)
   }
@@ -54,7 +54,7 @@ final class AlertViewController: UIViewController {
   func setupRightButtonAction(_ action: @escaping () -> Void) {
     let action = UIAction { [weak self] _ in 
       action()
-      self?.dismiss(animated: true)
+      self?.dismiss(animated: false)
     }
     alertView.setupRightButtonAction(action)
   }
