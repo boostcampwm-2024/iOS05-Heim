@@ -12,6 +12,7 @@ import UIKit
 public protocol HomeCoordinator: Coordinator {
   func provideHomeViewController() -> HomeViewController
   func pushDiaryDetailView(diary: Diary)
+  func pushSettingView()
 }
 
 public final class DefaultHomeCoordinator: HomeCoordinator {
