@@ -37,10 +37,6 @@ final class CommonAlertView: AlertView {
   }
   
   // MARK: - Methods
-  func setupLeftButtonAction(_ action: UIAction) {
-    leftButton.addAction(action, for: .touchUpInside)
-  }
-  
   func setupRightButtonAction(_ action: UIAction) {
     guard let rightbutton else { return }
     rightbutton.addAction(action, for: .touchUpInside)

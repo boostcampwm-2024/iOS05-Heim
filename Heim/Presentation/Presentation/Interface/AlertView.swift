@@ -61,6 +61,11 @@ class AlertView: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  // MARK: - Methods
+  func setupLeftButtonAction(_ action: UIAction) {
+    leftButton.addAction(action, for: .touchUpInside)
+  }
 }
 
 // MARK: - Private Extenion

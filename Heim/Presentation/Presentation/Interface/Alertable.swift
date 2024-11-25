@@ -77,6 +77,10 @@ extension Alertable where Self: UIViewController {
     )
     let alertController = AlertViewController(alertView: alertView)
     
+    alertView.setupLeftButtonAction(UIAction { _ in
+      alertController.dismiss(animated: true)
+    })
+    
     alertView.setupCompleteButtonAction { textFieldText in
       alertController.dismiss(animated: true)
       completion(textFieldText)
