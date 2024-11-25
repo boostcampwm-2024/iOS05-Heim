@@ -13,7 +13,7 @@ public protocol MusicMatchCoordinator: Coordinator {
 
 }
 
-final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
+public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
   // MARK: - Properties
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
