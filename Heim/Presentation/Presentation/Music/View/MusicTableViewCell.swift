@@ -43,7 +43,7 @@ final class MusicTableViewCell: UITableViewCell {
     configuration.attributedTitle = AttributedString(text, attributes: container)
 
     let button = UIButton(configuration: configuration, primaryAction: nil)
-    button.backgroundColor = .whiteViolet
+    button.backgroundColor = .violet
     button.layer.masksToBounds = true
     button.layer.cornerRadius = 15
 
@@ -81,6 +81,7 @@ final class MusicTableViewCell: UITableViewCell {
 
 private extension MusicTableViewCell {
   enum LayoutConstants {
+    static let albumImageSize: CGFloat = 80
     static let defaultPadding: CGFloat = 16
     static let titleThree: CGFloat = 20
     static let titleLabel: CGFloat = 20
@@ -102,8 +103,8 @@ private extension MusicTableViewCell {
 
     albumImage.snp.makeConstraints {
       $0.top.leading.bottom.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.width.equalTo(75) // 정사각형으로 설정
-      $0.height.equalTo(75)
+      $0.width.equalTo(LayoutConstants.albumImageSize)
+      $0.height.equalTo(LayoutConstants.albumImageSize)
     }
 
     titleLabel.snp.makeConstraints {
@@ -112,13 +113,13 @@ private extension MusicTableViewCell {
     }
 
     subLabel.snp.makeConstraints {
-      $0.centerY.equalTo(contentView)
+      $0.top.equalTo(titleLabel.snp.bottom).offset(8)
       $0.leading.equalTo(titleLabel.snp.leading)
       $0.right.equalTo(contentView).offset(8)
     }
 
     playButton.snp.makeConstraints {
-//      $0.top.equalTo(subLabel.snp.bottom).offset(8)
+      $0.top.equalTo(subLabel.snp.bottom).offset(8)
       $0.leading.equalTo(subLabel.snp.leading)
       $0.width.equalTo(contentView.snp.width).multipliedBy(0.2)
       $0.bottom.equalTo(albumImage.snp.bottom)
