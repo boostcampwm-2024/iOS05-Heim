@@ -81,7 +81,6 @@ private extension DefaultTabBarCoordinator {
     removeLastTab()
     
     childViewController.view.frame = tabBarViewController.view.bounds
-    childViewController.didMove(toParent: tabBarViewController)
     tabBarViewController.addChild(childViewController)
     tabBarViewController.view.insertSubview(childViewController.view, belowSubview: tabBarViewController.tabBarView)
   }
