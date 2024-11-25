@@ -10,7 +10,7 @@ import Domain
 import UIKit
 
 public protocol RecordCoordinator: Coordinator {
-  // TODO: 기능필요시 추후 구현
+  func pushEmotionAnalyzeView(voice: Voice?)
 }
 
 public final class DefaultRecordCoordinator: RecordCoordinator {
@@ -35,7 +35,9 @@ public final class DefaultRecordCoordinator: RecordCoordinator {
     parentCoordinator?.removeChild(self)
   }
   
-  // TODO: 프로토콜에서 추가 기능 명시 후 구현
+  public func pushEmotionAnalyzeView(voice: Voice?) {
+    // TODO: EmotionAnlyzeView와 연결
+  }
 }
 
 // MARK: - Private
