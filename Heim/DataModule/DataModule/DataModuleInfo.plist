@@ -12,5 +12,7 @@
 	<string>${SPOTIFY_API_BASE_URL}</string>
 	<key>SPOTIFY_CLIENT_ID</key>
 	<string>${SPOTIFY_CLIENT_ID}</string>
+	<key>SPOTIFY_OAUTH_BASE_URL</key>
+	<string>${SPOTIFY_OAUTH_BASE_URL}</string>
 </dict>
 </plist>
