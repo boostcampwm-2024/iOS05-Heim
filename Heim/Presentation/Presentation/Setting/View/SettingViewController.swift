@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class SettingViewController: BaseViewController<SettingViewModel>, Coordinatable {
+final class SettingViewController: BaseViewController<SettingViewModel>, Alertable, Coordinatable {
   // MARK: - Properties
   weak var coordinator: DefaultSettingCoordinator?
   
@@ -92,8 +92,9 @@ extension SettingViewController: UITableViewDelegate {
   ) {
     switch indexPath.row {
     case 0: // 이름
-      //TODO: 이름 설정 팝업창 출력
-      return
+      presentNameAlert(completion: { [weak self] textFieldText in
+        self?.viewModel.action(.updateUserName(textFieldText))
+      })
     case 2: // 캐시 삭제
       viewModel.action(.removeCache)
     case 3: // 데이터 초기화
