@@ -63,7 +63,11 @@ final class MusicMatchViewController: UIViewController {
   override func viewDidLoad() {
     setupViews()
     setupLayoutConstraints()
-//    setupTableViewGradient()
+
+  }
+
+  override func viewDidLayoutSubviews() {
+    setupTableViewGradient()
   }
 }
 
@@ -107,18 +111,18 @@ private extension MusicMatchViewController {
     static let titleThree: CGFloat = 20
   }
 
-//  func setupTableViewGradient() {
-//    let gradientLayer = CAGradientLayer()
-//    gradientLayer.frame = musicTableView.bounds
-//    gradientLayer.colors = [UIColor.purple.cgColor,UIColor.red.cgColor]
-//    gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-//    gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-//
-//    let backgroundView = UIView(frame: musicTableView.bounds)
-//    backgroundView.layer.insertSublayer(gradientLayer, at: 0)
-//
-//    musicTableView.backgroundView = backgroundView
-//  }
+  func setupTableViewGradient() {
+    let gradientLayer = CAGradientLayer()
+    gradientLayer.frame = musicTableView.bounds
+    gradientLayer.colors = [UIColor.white.cgColor, UIColor.secondary.cgColor]
+    gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+    gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+
+    let backgroundView = UIView(frame: musicTableView.bounds)
+    backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+
+    musicTableView.backgroundView = backgroundView
+  }
 
   // MARK: - Methods
   func setupViews() {
