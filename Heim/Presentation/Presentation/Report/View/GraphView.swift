@@ -51,6 +51,12 @@ final class GraphView: UIView {
 
 // MARK: - Layout
 private extension GraphView {
+  enum LayoutConstants {
+    static let defaultPadding: CGFloat = 16
+    static let graphViewHeight: CGFloat = 0.7
+    static let emotionViewHeight: CGFloat = 0.2
+  }
+
   func setupViews() {
     addSubview(graphStackView)
     addSubview(emotionStack)
@@ -73,18 +79,13 @@ private extension GraphView {
     graphStackView.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(self.snp.height).multipliedBy(0.7)
+      $0.height.equalTo(self.snp.height).multipliedBy(LayoutConstants.graphViewHeight)
     }
 
     emotionStack.snp.makeConstraints {
       $0.top.equalTo(graphStackView.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.leading.trailing.equalTo(graphStackView)
-      $0.height.equalTo(self.snp.height).multipliedBy(0.2)
+      $0.height.equalToSuperview().multipliedBy(LayoutConstants.emotionViewHeight)
     }
-  }
-}
-private extension GraphView {
-  enum LayoutConstants {
-    static let defaultPadding: CGFloat = 16
   }
 }

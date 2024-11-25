@@ -19,13 +19,6 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
       return scrollView
     }()
 
-  private let backgroundImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = .background
-    imageView.contentMode = .scaleAspectFill
-    return imageView
-  }()
-
   private let reportView: ReportView = {
     let reportView = ReportView()
     reportView.backgroundColor = .clear
@@ -47,24 +40,19 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   // MARK: - LayOut Methods
   override func setupViews() {
     super.setupViews()
-    view.addSubview(backgroundImageView)
     view.addSubview(scrollView)
     scrollView.addSubview(reportView)
   }
 
   override func setupLayoutConstraints() {
+    super.setupLayoutConstraints()
     scrollView.snp.makeConstraints {
          $0.edges.equalToSuperview()
        }
 
-    backgroundImageView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-
     reportView.snp.makeConstraints {
       $0.edges.width.equalToSuperview()
       $0.height.equalToSuperview()
-
     }
   }
 
