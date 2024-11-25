@@ -40,7 +40,7 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
   
   public func setHomeView() {
     guard let defaultHomeCoordinator = DIContainer.shared.resolve(type: HomeCoordinator.self) else { return }
-    addChild(defaultHomeCoordinator)
+    addChildCoordinator(defaultHomeCoordinator)
     defaultHomeCoordinator.parentCoordinator = self
     
     let homeViewController = defaultHomeCoordinator.provideHomeViewController()
@@ -49,7 +49,7 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
   
   public func setRecordView() {
     guard let defaultRecordCoordinator = DIContainer.shared.resolve(type: RecordCoordinator.self) else { return }
-    addChild(defaultRecordCoordinator)
+    addChildCoordinator(defaultRecordCoordinator)
     defaultRecordCoordinator.parentCoordinator = self
     
     let recordViewController = defaultRecordCoordinator.provideRecordViewController()
@@ -60,7 +60,7 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
   public func setReportView() {
     // TODO: 통계화면 구현 이후 연결 예정
 //    guard let defaultReportCoordinator = DIContainer.shared.resolve(type: ReportCoordinator.self) else { return }
-//    addChild(defaultReportCoordinator)
+//    addChildCoordinator(defaultReportCoordinator)
 //    defaultReportCoordinator.parentCoordinator = self
 //    
 //    let homeViewController = defaultReportCoordinator.provideReportViewController()
