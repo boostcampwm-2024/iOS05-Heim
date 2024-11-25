@@ -20,7 +20,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private var navigationController: UINavigationController?
   // TODO: AppCoordinator 구현 후 적용 예정
   //  private var appCoordinator: AppCoordinator?
-  private var reportCoordinator: ReportCoordinator?
 
   // MARK: - Methods
   func scene(
@@ -40,7 +39,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 }
 
-// MARK: - Private Extenion
+  // MARK: - Private Extenion
 private extension SceneDelegate {
   func dependencyAssemble() {
     dataAssemble()
@@ -70,22 +69,13 @@ private extension SceneDelegate {
     DIContainer.shared.register(type: SettingCoordinator.self) { _ in
       return DefaultSettingCoordinator(navigationController: navigationController)
     }
-
-    DIContainer.shared.register(type: ReportCoordinator.self) { _ in
-       return DefaultReportCoordinator(navigationController: navigationController)
-     }
   }
 
   func startScene() {
     // TODO: AppCoordinator 구현 후 적용 예정
-    //    guard let appCoordinator = DIContainer.shared.resolve(type: AppCoordinator.self) else { return }
-    //    self.appCoordinator = appCoordinator
-    //    appCoordinator.start()
-
-    guard let navigationController else { return }
-    guard let reportCoordinator = DIContainer.shared.resolve(type: ReportCoordinator.self) else { return }
-
-    self.reportCoordinator = reportCoordinator
-    reportCoordinator.start()
+//    guard let appCoordinator = DIContainer.shared.resolve(type: AppCoordinator.self) else { return }
+//    self.appCoordinator = appCoordinator
+//    appCoordinator.start()
   }
 }
+
