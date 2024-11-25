@@ -63,10 +63,7 @@ final class ReportView: UIView {
     return label
   }()
 
-  let replyTextView: CommonTextAreaView = {
-    let textAreaView = CommonTextAreaView()
-    return textAreaView
-  }()
+  let replyTextView =  CommonTextAreaView()
 
   // MARK: - Initialize
   override init(frame: CGRect) {
