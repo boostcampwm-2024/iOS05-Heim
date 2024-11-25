@@ -34,7 +34,6 @@ final class MusicTableViewCell: UITableViewCell {
   }()
 
   private let playButton: UIButton = {
-
     let text = "듣기"
     var configuration = UIButton.Configuration.tinted()
     configuration.baseForegroundColor = .white
@@ -53,7 +52,6 @@ final class MusicTableViewCell: UITableViewCell {
   // MARK: - Initializer
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
     setupViews()
     setupLayoutconstraints()
   }
@@ -72,11 +70,13 @@ final class MusicTableViewCell: UITableViewCell {
 
   // MARK: - Methods
   // TODO: 파라미터에 앨범 이미지 추가
-  func configure(titleText: String, subTitle: String) {
+  func configure(titleText: String, subTitle: String, action: UIAction) {
     contentView.backgroundColor = .clear
     titleLabel.text = titleText
     subLabel.text = subTitle
+    playButton.addAction(action, for: .touchUpInside)
   }
+
 }
 
 private extension MusicTableViewCell {
@@ -96,11 +96,9 @@ private extension MusicTableViewCell {
     contentView.addSubview(titleLabel)
     contentView.addSubview(subLabel)
     contentView.addSubview(playButton)
-
   }
 
   func setupLayoutconstraints() {
-
     albumImage.snp.makeConstraints {
       $0.top.leading.bottom.equalToSuperview().inset(LayoutConstants.defaultPadding)
       $0.width.equalTo(LayoutConstants.albumImageSize)

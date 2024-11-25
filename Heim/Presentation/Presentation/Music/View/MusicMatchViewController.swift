@@ -52,7 +52,6 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
     )
     button.setTitle("메인 화면으로 이동하기",
                     for: .normal)
-
     return button
   }()
 
@@ -87,17 +86,13 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   }
 }
 
-extension MusicMatchViewController: UITableViewDelegate {
-
-}
-
-extension MusicMatchViewController: UITableViewDataSource {
+extension MusicMatchViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     5
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    // TODO: 앨범 이미지 넘기기
+    // TODO: 이미지 url 넘기기
     guard indexPath.row < musicDataSources.count else {
       return UITableViewCell()
     }
@@ -107,10 +102,13 @@ extension MusicMatchViewController: UITableViewDataSource {
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
 
-    cell.configure(titleText: "슈퍼노바", subTitle: "#감성힙합#플레이리스트 #해시태그 #해시태...")
+    let action = UIAction { _ in
+        // TODO: 뮤직킷 연동
+    }
+
+    cell.configure(titleText: "슈퍼노바", subTitle: "#감성힙합#플레이리스트 #해시태그 #해시태...", action: action)
 
     return cell
-
   }
 
 }
@@ -124,20 +122,7 @@ private extension MusicMatchViewController {
     static let tableViewBottom = UIScreen.main.bounds.height * 170 / UIScreen.main.bounds.height * -1
   }
 
-  func setupTableViewGradient() {
-    let gradientLayer = CAGradientLayer()
-    gradientLayer.frame = musicTableView.bounds
-    gradientLayer.colors = [UIColor.white.cgColor, UIColor.whiteViolet.cgColor]
-    gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-    gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-
-    let backgroundView = UIView(frame: musicTableView.bounds)
-    backgroundView.layer.insertSublayer(gradientLayer, at: 0)
-
-    musicTableView.backgroundView = backgroundView
-  }
-
-  // MARK: - Methods
+  // MARK: - Layout
   func setupViews() {
     musicTableView.delegate = self
     musicTableView.dataSource = self
@@ -172,5 +157,18 @@ private extension MusicMatchViewController {
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
       $0.top.equalTo(musicTableView.snp.bottom).offset(LayoutConstants.homeButtonTop)
     }
+  }
+
+  func setupTableViewGradient() {
+    let gradientLayer = CAGradientLayer()
+    gradientLayer.frame = musicTableView.bounds
+    gradientLayer.colors = [UIColor.white.cgColor, UIColor.whiteViolet.cgColor]
+    gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+    gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+
+    let backgroundView = UIView(frame: musicTableView.bounds)
+    backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+
+    musicTableView.backgroundView = backgroundView
   }
 }
