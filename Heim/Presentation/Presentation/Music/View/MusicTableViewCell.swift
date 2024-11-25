@@ -7,23 +7,43 @@
 
 import UIKit
 
-class MusicTableViewCell: UITableViewCell {
+final class MusicTableViewCell: UITableViewCell {
 
-  private let albumImage = UIImageView()
+  private let albumImage: UIImageView = {
+    let view = UIImageView()
+    view.layer.masksToBounds = true
+    view.layer.cornerRadius = 15
+    view.backgroundColor = .gray
+    return view
+  }()
+
   private let titleLabel: CommonLabel = {
     let label = CommonLabel(font: .regular, size: LayoutConstants.titleLabel)
+    label.textColor = .black
     label.text = "제목"
     return label
   }()
 
   private let subLabel: CommonLabel = {
     let label = CommonLabel(font: .regular, size: LayoutConstants.bodyThree)
+    label.textColor = .black
     return label
   }()
 
   private let playButton: UIButton = {
-    let button = UIButton()
-    button.setTitle("듣기", for: .normal)
+
+    let text = "듣기"
+    var configuration = UIButton.Configuration.tinted()
+    configuration.baseForegroundColor = .white
+    var container = AttributeContainer()
+    container.font = .regularFont(ofSize: LayoutConstants.bodyThree)
+    configuration.attributedTitle = AttributedString(text, attributes: container)
+
+    let button = UIButton(configuration: configuration, primaryAction: nil)
+    button.backgroundColor = .whiteViolet
+    button.layer.masksToBounds = true
+    button.layer.cornerRadius = 15
+
     return button
   }()
 
@@ -50,6 +70,7 @@ class MusicTableViewCell: UITableViewCell {
   // MARK: - Methods
   // TODO: 파라미터에 앨범 이미지 추가
   func configure(titleText: String, subTitle: String) {
+    contentView.backgroundColor = .clear
     titleLabel.text = titleText
     subLabel.text = subTitle
   }
@@ -75,8 +96,11 @@ private extension MusicTableViewCell {
   }
 
   func setupLayoutconstraints() {
+
     albumImage.snp.makeConstraints {
       $0.top.leading.bottom.equalToSuperview().inset(LayoutConstants.defaultPadding)
+      $0.width.equalTo(75) // 정사각형으로 설정
+      $0.height.equalTo(75)
     }
 
     titleLabel.snp.makeConstraints {
@@ -85,14 +109,17 @@ private extension MusicTableViewCell {
     }
 
     subLabel.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+      $0.centerY.equalTo(contentView)
       $0.leading.equalTo(titleLabel.snp.leading)
-      $0.right.equalToSuperview().offset(8)
+      $0.right.equalTo(contentView).offset(8)
     }
 
     playButton.snp.makeConstraints {
-      $0.top.equalTo(subLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
+//      $0.top.equalTo(subLabel.snp.bottom).offset(8)
       $0.leading.equalTo(subLabel.snp.leading)
+      $0.width.equalTo(contentView.snp.width).multipliedBy(0.2)
+      $0.bottom.equalTo(albumImage.snp.bottom)
+
     }
   }
 }
