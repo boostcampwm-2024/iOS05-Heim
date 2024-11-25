@@ -104,7 +104,7 @@ extension MusicMatchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     let titleText = musicDataSources[indexPath.row].title
-    let subTilteText = musicDataSources[indexPath.row].title
+    let subTilteText = musicDataSources[indexPath.row].artist
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
 
