@@ -49,4 +49,10 @@ extension UIColor {
     blue: 137 / 255.0,
     alpha: 0.3
   )
+
+  static let whiteViolet = UIColor(
+    red: 82 / 255,
+    green: 64 / 255,
+    blue: 124 / 255,
+    alpha: 1)
 }
