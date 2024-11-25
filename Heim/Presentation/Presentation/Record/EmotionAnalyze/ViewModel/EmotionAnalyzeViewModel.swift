@@ -18,13 +18,14 @@ final class EmotionAnalyzeViewModel: ViewModel {
   
   struct State {
     var isAnalyzing: Bool
-    var emotion: Emotion // isAnalyzing이 false가 된 후 emotion, heimReply를 VC로 전달하기 위함.
-    var heimReply: EmotionReport
   }
   
   private let recognizedText: String // RecordView에서 넘어온 인식된 텍스트
   private let voice: Voice // RecordView에서 넘어온 음성 녹음
   private let classifyUseCase: EmotionClassifyUseCase
+  private var emotion: Emotion = .none
+  private var heimReply: EmotionReport = EmotionReport(text: "")
+  private var summary: Summary = Summary(text: "")
   
   @Published var state: State
   // TODO: GEMINI 이용 UseCase 추가
@@ -37,7 +38,7 @@ final class EmotionAnalyzeViewModel: ViewModel {
   ) {
     self.recognizedText = recognizedText
     self.voice = voice
-    self.state = State(isAnalyzing: true, emotion: .none, heimReply: EmotionReport.init(text: ""))
+    self.state = State(isAnalyzing: true)
     self.classifyUseCase = classifyUseCase
   }
   
@@ -46,12 +47,14 @@ final class EmotionAnalyzeViewModel: ViewModel {
       async let emotionResult = classifyUseCase.validate(recognizedText) // 2개의 구조적 동시성 작업을 위해 async let을 사용
       
       // TODO: GEMINI UseCase 추가. 아래는 예시로 더미데이터를 사용, 삭제 예정
-      let heimResult = EmotionReport(text: "으어어어")
+      let heimResult = EmotionReport(text: "감정분석")
+      let summary = Summary(text: "요약")
       
       do {
-        let (emotion, heimReply) = try await (emotionResult, heimResult)
-        state.emotion = emotion
-        state.heimReply = heimReply
+        let (emotion, heimReply, summary) = try await (emotionResult, heimResult, summary)
+        self.emotion = emotion
+        self.heimReply = heimReply
+        self.summary = summary
         
         sleep(5) // GEMINI의 응답이 5초 걸린다고 가정
         
@@ -64,7 +67,7 @@ final class EmotionAnalyzeViewModel: ViewModel {
     }
   }
   
-  func voiceData() -> Voice {
-    return voice
+  func diaryData() -> Diary {
+    return Diary(emotion: emotion, emotionReport: heimReply, voice: voice, summary: summary)
   }
 }

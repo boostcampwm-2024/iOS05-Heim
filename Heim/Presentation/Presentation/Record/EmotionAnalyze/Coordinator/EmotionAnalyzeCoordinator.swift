@@ -12,7 +12,7 @@ import UIKit
 public protocol EmotionAnalyzeCoordinator: Coordinator {
   // MARK: - RecordView에서 넘어올 때 요약된 text, Voice Data를 가지고 넘어옵니다.
   func start(recognizedtext: String, voice: Voice)
-  func pushDiaryReportView(emotion: Emotion, heimReply: EmotionReport, voice: Voice)
+  func pushDiaryReportView(diary: Diary)
 }
 
 public final class DefaultEmotionAnalyzeRecordCoordinator: EmotionAnalyzeCoordinator {
@@ -40,7 +40,7 @@ public final class DefaultEmotionAnalyzeRecordCoordinator: EmotionAnalyzeCoordin
     parentCoordinator?.removeChild(self)
   }
   
-  public func pushDiaryReportView(emotion: Emotion, heimReply: EmotionReport, voice: Voice) {
+  public func pushDiaryReportView(diary: Diary) {
     // TODO: 분석 결과 화면으로 이동
   }
 }

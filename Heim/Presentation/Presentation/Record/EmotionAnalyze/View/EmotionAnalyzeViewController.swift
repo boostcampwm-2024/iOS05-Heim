@@ -60,6 +60,6 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
 
 extension EmotionAnalyzeViewController: EmotionAnalyzeViewDelegate {
   func buttonDidTap(_ emotionAnalyzeView: EmotionAnalyzeView) {
-    // TODO: 분석 결과로 이동 (Emotion, EmotionReport, Voice)
+    // TODO: 분석 결과로 이동 (Diary를 보냄) -> diaryData()
   }
 }
