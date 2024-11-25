@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HeimEmoji: UIImageView {
+final class HeimEmoji: UIImageView {
   // MARK: Properties
   enum HeimEmotion {
     case sadness
