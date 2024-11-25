@@ -11,7 +11,7 @@ final class MusicTableViewCell: UITableViewCell {
 
   private let albumImage: UIImageView = {
     let view = UIImageView()
-    view.layer.cornerRadius = 15
+    view.layer.cornerRadius = LayoutConstants.cornerRadius
     view.backgroundColor = .gray
     view.layer.shadowColor = UIColor.gray.cgColor
     view.layer.shadowOffset = CGSize(width: 0, height: 5)
@@ -44,7 +44,7 @@ final class MusicTableViewCell: UITableViewCell {
     let button = UIButton(configuration: configuration, primaryAction: nil)
     button.backgroundColor = .violet
     button.layer.masksToBounds = true
-    button.layer.cornerRadius = 15
+    button.layer.cornerRadius = LayoutConstants.cornerRadius
 
     return button
   }()
@@ -76,7 +76,6 @@ final class MusicTableViewCell: UITableViewCell {
     subLabel.text = subTitle
     playButton.addAction(action, for: .touchUpInside)
   }
-
 }
 
 private extension MusicTableViewCell {
@@ -86,6 +85,10 @@ private extension MusicTableViewCell {
     static let titleThree: CGFloat = 20
     static let titleLabel: CGFloat = 20
     static let bodyThree: CGFloat = 12
+    static let labelTop: CGFloat = 8
+    static let labelRightPadding: CGFloat = 8
+    static let playButtonWidth: CGFloat = 0.2
+    static let cornerRadius: CGFloat = 15
   }
 
   func setupViews() {
@@ -111,15 +114,15 @@ private extension MusicTableViewCell {
     }
 
     subLabel.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+      $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.labelTop)
       $0.leading.equalTo(titleLabel.snp.leading)
-      $0.right.equalTo(contentView).offset(8)
+      $0.right.equalTo(contentView).offset(LayoutConstants.labelRightPadding)
     }
 
     playButton.snp.makeConstraints {
-      $0.top.equalTo(subLabel.snp.bottom).offset(8)
+      $0.top.equalTo(subLabel.snp.bottom).offset(LayoutConstants.labelTop)
       $0.leading.equalTo(subLabel.snp.leading)
-      $0.width.equalTo(contentView.snp.width).multipliedBy(0.2)
+      $0.width.equalTo(contentView.snp.width).multipliedBy(LayoutConstants.playButtonWidth)
       $0.bottom.equalTo(albumImage.snp.bottom)
     }
   }

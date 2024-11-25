@@ -39,7 +39,7 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
     tableView.separatorStyle = .none
     tableView.isScrollEnabled = false
     tableView.layer.masksToBounds = true
-    tableView.layer.cornerRadius = 10
+    tableView.layer.cornerRadius = LayoutConstants.cornerRadius
     tableView.isScrollEnabled = true
     return tableView
   }()
@@ -59,11 +59,11 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   init(musics: [Music]) {
     self.musicDataSources = musics
     // TODO: 삭제
-    self.musicDataSources = [Music(title: "슈퍼노바", artist: "에스파"),
-                             Music(title: "슈퍼노바", artist: "에스파"),
-                             Music(title: "슈퍼노바", artist: "에스파"),
-                             Music(title: "슈퍼노바", artist: "에스파"),
-                             Music(title: "슈퍼노바", artist: "에스파")]
+    self.musicDataSources = [Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")]
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -87,18 +87,24 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
 }
 
 extension MusicMatchViewController: UITableViewDelegate, UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(
+    _ tableView: UITableView,
+    numberOfRowsInSection section: Int)
+  -> Int {
     5
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath)
+  -> UITableViewCell {
     // TODO: 이미지 url 넘기기
     guard indexPath.row < musicDataSources.count else {
       return UITableViewCell()
     }
 
     let titleText = musicDataSources[indexPath.row].title
-    let subTilte = musicDataSources[indexPath.row].title
+    let subTilteText = musicDataSources[indexPath.row].title
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
 
@@ -106,7 +112,9 @@ extension MusicMatchViewController: UITableViewDelegate, UITableViewDataSource {
         // TODO: 뮤직킷 연동
     }
 
-    cell.configure(titleText: "슈퍼노바", subTitle: "#감성힙합#플레이리스트 #해시태그 #해시태...", action: action)
+    cell.configure(titleText: titleText,
+                   subTitle: subTilteText,
+                   action: action)
 
     return cell
   }
@@ -118,6 +126,7 @@ private extension MusicMatchViewController {
     static let titleThree: CGFloat = 20
     static let homeButtonFont: CGFloat = 18
     static let homeButtonTop: CGFloat = 32
+    static let cornerRadius: CGFloat = 10
     // TODO: extension 수정
     static let tableViewBottom = UIScreen.main.bounds.height * 170 / UIScreen.main.bounds.height * -1
   }
@@ -167,7 +176,8 @@ private extension MusicMatchViewController {
     gradientLayer.endPoint = CGPoint(x: 0, y: 1)
 
     let backgroundView = UIView(frame: musicTableView.bounds)
-    backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+    backgroundView.layer.insertSublayer(gradientLayer,
+                                        at: 0)
 
     musicTableView.backgroundView = backgroundView
   }
