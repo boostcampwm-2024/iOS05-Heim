@@ -22,13 +22,14 @@ final class RecordViewModel: ViewModel {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
-    var isPaused: Bool = false
-    var voiceData: Voice?
   }
   
   @Published var state: State
   private var recordManager: RecordManager
   private var timer: Timer?
+  
+  private var isPaused: Bool = false
+  private var voice: Voice?
   
   // MARK: - Initializer
   init() {
@@ -51,6 +52,10 @@ final class RecordViewModel: ViewModel {
       handleRefresh()
     }
   }
+  
+  func voiceData() -> Voice? {
+    return voice
+  }
 }
 
 // MARK: - Private Extenion
@@ -70,8 +75,8 @@ private extension RecordViewModel {
     recordManager.stopRecording()
     state.isRecording = false
     state.canMoveToNext = true
-    state.isPaused = true
-    state.voiceData = recordManager.voice
+    isPaused = true
+    voice = recordManager.voice
     stopTimeObservation()
   }
   
@@ -84,10 +89,10 @@ private extension RecordViewModel {
   func startTimeObservation() {
     stopTimeObservation()
     
-    if !state.isPaused {
+    if isPaused {
       state.timeText = "00:00"
     }
-    state.isPaused = false
+    isPaused = false
     
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
       guard let self = self else { return }

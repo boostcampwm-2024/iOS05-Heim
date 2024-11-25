@@ -89,7 +89,7 @@ extension RecordViewController: RecordViewDelegate {
       viewModel.action(.refresh)
     case .next:
       // TODO: 다음 화면으로 이동
-      coordinator?.pushEmotionAnalyzeView(voice: viewModel.state.voiceData)
+      coordinator?.pushEmotionAnalyzeView(voice: viewModel.voiceData())
     case .close:
       // TODO: 추후 화면 연결시 동작 확인 필요
       coordinator?.didFinish()
