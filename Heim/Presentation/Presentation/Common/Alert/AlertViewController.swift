@@ -11,23 +11,15 @@ import SnapKit
 
 final class AlertViewController: UIViewController {
   // MARK: - Properties
-  private let alertView: CommonAlertView
+  private let alertView: AlertView
   
   // MARK: - Initializer
-  init(
-    title: String, 
-    message: String, 
-    leftButtonTitle: String, 
-    rightbuttonTitle: String
-  ) {
-    alertView = CommonAlertView(
-      title: title,
-      message: message,
-      leftButtonTitle: leftButtonTitle,
-      rightbuttonTitle: rightbuttonTitle
-    )
+  init(alertView: AlertView) {
+    self.alertView = alertView
     
     super.init(nibName: nil, bundle: nil)
+    modalPresentationStyle = .overCurrentContext
+    modalTransitionStyle = .crossDissolve
   }
   
   required init?(coder: NSCoder) {
@@ -40,23 +32,6 @@ final class AlertViewController: UIViewController {
     
     view.addSubview(alertView)
     setupAlertView()
-  }
-  
-  // MARK: - Methods
-  func setupLeftButtonAction(_ action: @escaping () -> Void) {
-    let action = UIAction { [weak self] _ in 
-      action()
-      self?.dismiss(animated: true)
-    }
-    alertView.setupLeftButtonAction(action)
-  }
-  
-  func setupRightButtonAction(_ action: @escaping () -> Void) {
-    let action = UIAction { [weak self] _ in 
-      action()
-      self?.dismiss(animated: true)
-    }
-    alertView.setupRightButtonAction(action)
   }
 }
 
