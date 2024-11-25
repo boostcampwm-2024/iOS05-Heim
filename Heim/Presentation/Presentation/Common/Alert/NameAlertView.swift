@@ -59,6 +59,11 @@ private extension NameAlertView {
   
   func setupViews() {
     titleLabel.textAlignment = .center
+    rightbutton?.isEnabled = false
+    rightbutton?.alpha = 0.5 
+    rightbutton?.tintColor = .white.withAlphaComponent(0.5)
+    nameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+    
     labelContainerView.addSubview(nameTextField)
     labelContainerView.addSubview(singleLineView)
   }
@@ -75,5 +80,18 @@ private extension NameAlertView {
       $0.top.equalTo(nameTextField.snp.bottom)
       $0.bottom.equalToSuperview().offset(-LayoutConstants.defaultPadding * 2)
     }
+  }
+  
+  @objc
+  func textFieldDidChange() {
+    let isEnableComplete = !(nameTextField.text?.isEmpty ?? true)
+    rightbutton?.isEnabled = isEnableComplete
+    rightbutton?.alpha = isEnableComplete ? 1 : 0.5 
+    rightbutton?.tintColor = .white.withAlphaComponent(isEnableComplete ? 1 : 0.5)
+    
+    guard let text = nameTextField.text, text.count >= 5 else { return }
+    let index = text.index(text.startIndex, offsetBy: 5)
+    let newString = text[text.startIndex..<index]
+    nameTextField.text = String(newString)
   }
 }
