@@ -17,21 +17,26 @@ final class ReportViewModel: ViewModel {
     case fetchData
   }
 
-  struct State: Equatable {
-    var userName: String
-    var totalCount: Int
-    var sequenceCount: Int
-    var monthCount: Int
+  struct EmotionCount: Equatable {
     var sadnessCount: Int
     var happinessCount: Int
     var surpriseCount: Int
     var fearCount: Int
     var disgustCount: Int
     var neutralCount: Int
-    var noneCount: Int
+    var angryCount: Int
+  }
+
+  struct State: Equatable {
+    var userName: String
+    var totalCount: Int
+    var sequenceCount: Int
+    var monthCount: Int
+    var emotionCount: EmotionCount
     var emotion: String
     var reply: String
   }
+
 // TODO: UseCase 추가
   @Published var state: State
 
@@ -42,14 +47,14 @@ final class ReportViewModel: ViewModel {
                        totalCount: 0,
                        sequenceCount: 0,
                        monthCount: 0,
-                       sadnessCount: 0,
-                       happinessCount: 0,
-                       surpriseCount: 0,
-                       fearCount: 0,
-                       disgustCount: 0,
-                       neutralCount: 0,
-                       noneCount: 0,
-                       emotion: "", 
+                       emotionCount: EmotionCount(sadnessCount: 0,
+                                                  happinessCount: 0,
+                                                  surpriseCount: 0,
+                                                  fearCount: 0,
+                                                  disgustCount: 0,
+                                                  neutralCount: 0,
+                                                  angryCount: 0),
+                       emotion: "",
                        reply: "답장이 도착하지 않았어요!")
   }
 

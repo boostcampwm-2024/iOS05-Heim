@@ -34,7 +34,7 @@ final class BarView: UIView {
   func setupViews() {
     addSubview(contentView)
     addSubview(bar)
-    bar.backgroundColor = chart.color
+    bar.backgroundColor = setBarColor(emotion: chart.emotion)
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -43,6 +43,25 @@ final class BarView: UIView {
       $0.bottom.equalTo(contentView.snp.bottom)
       $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(contentView.snp.height).multipliedBy(chart.value)
+    }
+  }
+
+  func setBarColor(emotion: HeimEmotion) -> UIColor {
+    switch emotion {
+    case .sadness:
+      return .red
+    case .happiness:
+      return .blue
+    case .angry:
+      return .white
+    case .surprise:
+      return .yellow
+    case .fear:
+      return .black
+    case .disgust:
+      return .orange
+    case .neutral:
+      return .brown
     }
   }
 }

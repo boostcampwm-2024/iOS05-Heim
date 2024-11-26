@@ -6,17 +6,31 @@
 //
 
 import UIKit
-// 막대 그래프 
+// 막대 그래프
+enum GraphColor {
+  
+  
+
+}
+
 final class GraphView: UIView {
   // TODO: mock데이터 제거 및 color 추가
   let emotionCharts: [Chart] =
-  [Chart(value: 0.1, color: .red),
-   Chart(value: 1.0, color: .blue),
-   Chart(value: 0.3, color: .white),
-   Chart(value: 0.7, color: .yellow),
-   Chart(value: 0.6, color: .black),
-   Chart(value: 0.5, color: .orange),
-   Chart(value: 0.5, color: .brown)]
+//  [Chart(value: 0.1, color: .red),
+//   Chart(value: 1.0, color: .blue),
+//   Chart(value: 0.3, color: .white),
+//   Chart(value: 0.7, color: .yellow),
+//   Chart(value: 0.6, color: .black),
+//   Chart(value: 0.5, color: .orange),
+//   Chart(value: 0.5, color: .brown)]
+
+  [Chart(value: 0.1, emotion: .sadness),
+   Chart(value: 1.0, emotion: .angry),
+   Chart(value: 0.3, emotion: .disgust),
+   Chart(value: 0.7, emotion: .fear),
+   Chart(value: 0.6, emotion: .happiness),
+   Chart(value: 0.5, emotion: .neutral),
+   Chart(value: 0.5, emotion: .surprise)]
 
   private let emotionEmojis = HeimEmoji.defaultEmotions()
 
