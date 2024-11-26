@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>, Coordinatable {
+final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>, Coordinatable, Alertable {
   // MARK: - UIComponents
   private let contentView = DiaryDetailView()
   
@@ -47,7 +47,6 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
     
     // TODO: state를 통해 configure를 사용할 예정
     viewModel.$state
-      .filter { !$0.isDeleted }
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
       .sink { [weak self] state in
@@ -68,6 +67,16 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
       }
       .store(in: &cancellable)
   }
+  
+  @objc func deleteButtonTapped() {
+    presentAlert(
+      type: .removeDiary,
+      leftButtonAction: {},
+      rightButtonAction: { [weak self] in
+        self?.viewModel.action(.deleteDiary)
+      }
+    )
+  }
 }
 
 private extension DiaryDetailViewController {
@@ -80,29 +89,6 @@ private extension DiaryDetailViewController {
     }()
     deleteButton.tintColor = .white
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: deleteButton)
-  }
-  
-  @objc func deleteButtonTapped() {
-    // MARK: - Alert창 생성
-    let alertViewController = AlertViewController(
-      title: "일기 삭제",
-      message: "정말 삭제하시겠습니까?",
-      leftButtonTitle: "다음에",
-      rightbuttonTitle: "삭제"
-    )
-    
-    alertViewController.setupLeftButtonAction { [weak self] in
-      // 구현할 게 없습니다.
-    }
-    
-    alertViewController.setupRightButtonAction { [weak self] in
-      guard let self else { return }
-      self.viewModel.action(.deleteDiary)
-    }
-    
-    // MARK: - overFullScreen로 뒷 화면이 보이도록 설정
-    alertViewController.modalPresentationStyle = .overFullScreen
-    present(alertViewController, animated: false)
   }
 }
 
