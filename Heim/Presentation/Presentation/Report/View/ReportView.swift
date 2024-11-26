@@ -78,12 +78,12 @@ private extension ReportView {
       reportCountStackView.addArrangedSubview($0)
     }
   }
-  //TODO: 스크린 사이즈 entension으로 수정
+
   func setupLayoutConstraints() {
     reportCountStackView.snp.makeConstraints {
-      $0.top.equalTo(self.safeAreaLayoutGuide)
+      $0.top.equalTo(safeAreaLayoutGuide)
       $0.centerX.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height * LayoutConstants.reportCountStackViewHeight)
+      $0.height.equalTo(UIApplication.screenHeight * LayoutConstants.reportCountStackViewHeight)
       $0.bottom.equalTo(emotionLabel.snp.top).offset(LayoutConstants.reportCountStackViewBottom)
     }
 
@@ -93,8 +93,8 @@ private extension ReportView {
 
     graphView.snp.makeConstraints {
       $0.top.equalTo(emotionLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
-      $0.height.equalTo(UIScreen.main.bounds.height * LayoutConstants.graphViewHeight)
-      $0.width.equalTo((UIScreen.main.bounds.width - LayoutConstants.graphViewWidth))
+      $0.height.equalTo(UIApplication.screenHeight * LayoutConstants.graphViewHeight)
+      $0.width.equalTo((UIApplication.screenWidth - LayoutConstants.graphViewWidth))
       $0.centerX.equalToSuperview()
     }
 
