@@ -1,5 +1,5 @@
 {
-  "originHash" : "b6b81641880f155005ac3b7bab30afae54b84d88fea32b3ce0d65b009ed3fa66",
+  "originHash" : "9237a90820e94a9798859448e9e22562637e776c3b14c5128473a2c030fe3bed",
   "pins" : [
     {
       "identity" : "collectionconcurrencykit",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "678d442c6f7828def400a70ae15968aef67ef52d",
         "version" : "1.8.3"
+      }
+    },
+    {
+      "identity" : "lottie-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "state" : {
+        "revision" : "b842598f1295f3ffa1475b1580672d1fe5b83580",
+        "version" : "4.5.0"
       }
     },
     {
@@ -51,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "515f79b522918f83483068d99c68daeb5116342d",
-        "version" : "600.0.0-prerelease-2024-08-14"
+        "revision" : "cb53fa1bd3219b0b23ded7dfdd3b2baff266fd25",
+        "version" : "600.0.0"
       }
     },
     {
@@ -60,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/SwiftLint",
       "state" : {
-        "revision" : "168fb98ed1f3e343d703ecceaf518b6cf565207b",
-        "version" : "0.57.0"
+        "revision" : "25f2776977e663305bee71309ea1e34d435065f1",
+        "version" : "0.57.1"
       }
     },
     {

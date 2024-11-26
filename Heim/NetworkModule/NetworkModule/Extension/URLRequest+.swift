@@ -12,7 +12,10 @@ extension URLRequest {
     // TODO: NSError -> 다른 Error Type으로 변경
     guard var components = URLComponents(string: urlString) else { throw NSError() }
     components.queryItems = query.compactMap {
-      URLQueryItem(name: $0.key, value: $0.value as? String)
+      URLQueryItem(
+        name: $0.key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? $0.key,
+        value: ($0.value as? String)?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+      )
     }
     
     guard let url = components.url else { throw NSError() }
@@ -21,6 +24,21 @@ extension URLRequest {
   
   mutating func setBody<T: Encodable>(_ body: T) {
     httpBody = try? JSONEncoder().encode(body)
+  }
+  
+  mutating func setURLEncodedBody<T: Encodable>(_ body: T) {
+    guard let dictionary = try? JSONSerialization.jsonObject(with: JSONEncoder().encode(body)) as? [String: Any] else {
+      return
+    }
+    let urlEncodedString = dictionary
+      .compactMap { key, value -> String in
+        let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let escapedValue = "\(value)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return "\(escapedKey)=\(escapedValue)"
+      }
+      .joined(separator: "&")
+    
+    self.httpBody = urlEncodedString.data(using: .utf8)
   }
   
   mutating func makeURLHeaders(_ headers: [String: String]) {

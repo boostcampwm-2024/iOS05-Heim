@@ -14,17 +14,20 @@ final class RecordManager {
   // MARK: - 음성 인식을 위한 Properties
   private let speechRecognizer: SFSpeechRecognizer
   private let audioEngine: AVAudioEngine
-  
   private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
   private var recognitionTask: SFSpeechRecognitionTask?
-  
-  // MARK: - 음성 녹음을 위한 Properties
-  private var audioRecorder: AVAudioRecorder?
-  private var timer: Timer?
   
   // MARK: - 인식된 텍스트, 경과한 시간
   private(set) var recognizedText: String
   private(set) var minuteAndSeconds: Int
+  
+  // MARK: - 음성 녹음을 위한 Properties
+  //  private var audioRecorder: AVAudioRecorder?
+  private var timer: Timer?
+  
+  // MARK: - 음성 데이터
+  private var recordingData: Data
+  private(set) var voice: Voice?
   
   var formattedTime: String {
     let minutes = minuteAndSeconds / 60
@@ -37,6 +40,7 @@ final class RecordManager {
     self.audioEngine = AVAudioEngine()
     self.recognizedText = ""
     self.minuteAndSeconds = 0
+    self.recordingData = Data()
   }
   
   // MARK: - 녹음과정 준비
@@ -47,7 +51,6 @@ final class RecordManager {
       }
     }
     
-    // TODO: 에러 핸들링(.authorized 제외) -> Merge 이후 수정 예정
     switch authStatus {
     case .authorized:
       return
@@ -55,23 +58,6 @@ final class RecordManager {
       throw RecordingError.permissionError
     @unknown default:
       throw RecordingError.permissionError
-    }
-  }
-  
-  // TODO: 현재 audioRecorder가 Stop되면 바로 설정한 URL에 m4a 파일이 저장됨. -> 데이터로 변환 필요
-  func setupAudioRecorder() throws {
-    let settings: [String: Any] = [
-      AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-      AVSampleRateKey: 12000,
-      AVNumberOfChannelsKey: 1,
-      AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-    ]
-    
-    do {
-      audioRecorder = try AVAudioRecorder(url: getAudioFileURL(), settings: settings)
-      audioRecorder?.prepareToRecord()
-    } catch {
-      throw RecordingError.audioError
     }
   }
   
@@ -88,6 +74,7 @@ final class RecordManager {
   // MARK: - 일시중지
   func stopRecording() {
     audioEngine.pause()
+    voice = Voice(audioBuffer: recordingData)
     timer?.invalidate()
     timer = nil
   }
@@ -106,10 +93,10 @@ final class RecordManager {
     timer?.invalidate()
     timer = nil
     minuteAndSeconds = 0
-    
     recognizedText = ""
     
-    audioRecorder?.stop()
+    voice = nil
+    recordingData = Data()
   }
 }
 
@@ -137,16 +124,11 @@ private extension RecordManager {
       try audioSession.setCategory(.record, mode: .measurement)
       try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
       
-      // 오디오 레코더 설정
-      try setupAudioRecorder()
-      audioRecorder?.record()
-      
       // 음성 인식 요청 설정
       recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
       
       guard let recognitionRequest = recognitionRequest else {
-        // TODO: 에러처리
-        return
+        throw RecordingError.audioError
       }
       
       recognitionRequest.shouldReportPartialResults = true
@@ -155,8 +137,15 @@ private extension RecordManager {
       let inputNode = audioEngine.inputNode
       let recordingFormat = inputNode.outputFormat(forBus: 0)
       
-      inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-        self.recognitionRequest?.append(buffer)
+      inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
+        self?.recognitionRequest?.append(buffer)
+        
+        // AVAudioPCMBuffer을 Data 타입으로 변환
+        if let channelData = buffer.floatChannelData?[0] {
+          let frames = buffer.frameLength
+          let data = Data(bytes: channelData, count: Int(frames) * MemoryLayout<Float>.size)
+          self?.recordingData.append(data)
+        }
       }
       
       audioEngine.prepare()
@@ -166,7 +155,6 @@ private extension RecordManager {
       // 음성 인식 작업 시작
       recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
         guard let self = self else {
-          // TODO: 에러로 변경
           return
         }
         
@@ -184,11 +172,6 @@ private extension RecordManager {
     } catch {
       throw RecordingError.audioError
     }
-  }
-  
-  func getAudioFileURL() -> URL {
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    return documentsPath.appendingPathComponent("recoding.m4a")
   }
   
   func startTimer() {

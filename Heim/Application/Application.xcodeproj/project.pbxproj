@@ -21,6 +21,8 @@
 		80A6CE3F2CECC68900CE2285 /* NetworkModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B51E2CD9F87A001C5040 /* NetworkModule.framework */; };
 		80A6CE412CECC69600CE2285 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A6CE402CECC69600CE2285 /* Domain.framework */; };
 		80A6CE422CECC69600CE2285 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80A6CE402CECC69600CE2285 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		80BD8B0B2CF4997C005FDC4E /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BD8B082CF495B5005FDC4E /* Lottie.framework */; };
+		80BD8B0C2CF4997C005FDC4E /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80BD8B082CF495B5005FDC4E /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,7 @@
 				4093ABAB2CDB9CBE00F7E060 /* NetworkModule.framework in Embed Frameworks */,
 				4093ABAD2CDB9CBF00F7E060 /* Presentation.framework in Embed Frameworks */,
 				80A6CE3D2CECC68000CE2285 /* DataModule.framework in Embed Frameworks */,
+				80BD8B0C2CF4997C005FDC4E /* Lottie.framework in Embed Frameworks */,
 				80A6CE3A2CECC67B00CE2285 /* Core.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -63,6 +66,7 @@
 		80A6CE382CECC67B00CE2285 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80A6CE3B2CECC68000CE2285 /* DataModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80A6CE402CECC69600CE2285 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		80BD8B082CF495B5005FDC4E /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lottie.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Heim-dixardwixxdscibrxhwaiopfreos/Build/Products/Debug-iphoneos/Lottie.framework"; sourceTree = "<group>"; };
 		B307B4862CD9B5AB001C5040 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B49C2CD9B5AD001C5040 /* ApplicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApplicationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B4A62CD9B5AD001C5040 /* ApplicationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApplicationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +111,7 @@
 				80A6CE3F2CECC68900CE2285 /* NetworkModule.framework in Frameworks */,
 				4093ABAA2CDB9CBE00F7E060 /* NetworkModule.framework in Frameworks */,
 				80A6CE412CECC69600CE2285 /* Domain.framework in Frameworks */,
+				80BD8B0B2CF4997C005FDC4E /* Lottie.framework in Frameworks */,
 				4093ABAC2CDB9CBF00F7E060 /* Presentation.framework in Frameworks */,
 				80A6CE3C2CECC68000CE2285 /* DataModule.framework in Frameworks */,
 				80A6CE392CECC67B00CE2285 /* Core.framework in Frameworks */,
@@ -153,6 +158,7 @@
 		B307B4BA2CD9B6D6001C5040 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80BD8B082CF495B5005FDC4E /* Lottie.framework */,
 				80A6CE402CECC69600CE2285 /* Domain.framework */,
 				80A6CE3B2CECC68000CE2285 /* DataModule.framework */,
 				80A6CE382CECC67B00CE2285 /* Core.framework */,

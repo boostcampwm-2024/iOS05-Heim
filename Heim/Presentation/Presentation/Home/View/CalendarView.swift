@@ -5,11 +5,20 @@
 //  Created by 김미래 on 11/7/24.
 //
 
+import Domain
 import UIKit
 import SnapKit
 
+protocol CalendarDelegate: AnyObject {
+  func collectionViewCellDidTap(
+    _ collectionView: UICollectionView, 
+    diary: Diary
+  )
+}
+
 final class CalendarView: UIView {
   // MARK: - Calendar Properties
+  weak var delegate: CalendarDelegate?
   private let calendar = Calendar.current // 현재의 지역 및 설정에 맞는 Calendar 객체
   private var calendarDate = Date() // 달력에 표시될 날짜
   private var days = [String]() // 달력 날짜 표시 string
@@ -200,6 +209,22 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     numberOfItemsInSection section: Int
   ) -> Int {
     return days.count
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView, 
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    // TODO: 테스트용 임시 데이터 적용
+    delegate?.collectionViewCellDidTap(
+      collectionView, 
+      diary: Diary(
+        emotion: .happiness, 
+        emotionReport: EmotionReport(text: ""), 
+        voice: Voice(audioBuffer: Data()), 
+        summary: Summary(text: "")
+      )
+    )
   }
 
   //TODO: - 수정 필요(너비가 7개로 나누어 떨어지도록 수정)
