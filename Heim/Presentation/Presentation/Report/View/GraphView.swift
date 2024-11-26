@@ -22,7 +22,6 @@ final class GraphView: UIView {
 
   private let graphStackView: UIStackView = {
     let stackView = UIStackView()
-    stackView.axis = .horizontal
     stackView.spacing = LayoutConstants.defaultPadding
     stackView.distribution = .fillEqually
     return stackView
@@ -52,9 +51,9 @@ final class GraphView: UIView {
 // MARK: - Layout
 private extension GraphView {
   enum LayoutConstants {
-    static let defaultPadding: CGFloat = 16
+    static let defaultPadding: CGFloat = 13
     static let graphViewHeight: CGFloat = 0.7
-    static let emotionViewHeight: CGFloat = 0.2
+    static let emotionViewHeight: CGFloat = 0.3
   }
 
   func setupViews() {

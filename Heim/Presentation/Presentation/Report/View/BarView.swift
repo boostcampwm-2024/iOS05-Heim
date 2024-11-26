@@ -7,7 +7,6 @@
 
 import UIKit
 
-// 그래프의 막대 부분
 final class BarView: UIView {
   let contentView = UIView()
   let bar: UIView = UIView()

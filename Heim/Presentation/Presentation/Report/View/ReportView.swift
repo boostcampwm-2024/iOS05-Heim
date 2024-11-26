@@ -94,7 +94,7 @@ private extension ReportView {
     graphView.snp.makeConstraints {
       $0.top.equalTo(emotionLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.height.equalTo(UIApplication.screenHeight * LayoutConstants.graphViewHeight)
-      $0.width.equalTo((UIApplication.screenWidth - LayoutConstants.graphViewWidth))
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.graphViewInset)
       $0.centerX.equalToSuperview()
     }
 
@@ -108,6 +108,7 @@ private extension ReportView {
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
     }
   }
+
 }
 
 private extension ReportView {
@@ -119,6 +120,6 @@ private extension ReportView {
     static let reportCountStackViewHeight: CGFloat = 0.2
     static let reportCountStackViewBottom: CGFloat = -32
     static let graphViewHeight: CGFloat = 0.2
-    static let graphViewWidth: CGFloat = 128
+    static let graphViewInset: CGFloat = 50
   }
 }
