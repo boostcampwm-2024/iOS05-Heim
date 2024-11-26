@@ -99,9 +99,9 @@ private extension SettingViewModel {
   func removeCache() {
     Task {
       do {
-        print("settingsview에서 삭제 누름")
+        // print("settingsview에서 삭제 누름")
         try await useCase.removeCacheData()
-        print("settingsview에서 삭제 종료")
+        // print("settingsview에서 삭제 종료")
       } catch {
         Logger.log(message: "removeCache Error: \(error)")
       }
