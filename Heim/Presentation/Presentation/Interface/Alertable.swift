@@ -17,8 +17,8 @@ enum AlertType {
   var title: String {
     switch self {
     case .removeDiary: "나의 일기가 사라져요"
-    case .removeCache: "현재 기기에 저장된 일기가 모두 사라져요"
-    case .removeData: "현재 기기에 저장된 일기가 모두 사라져요"
+    case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
+    case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
     }
   }
   
