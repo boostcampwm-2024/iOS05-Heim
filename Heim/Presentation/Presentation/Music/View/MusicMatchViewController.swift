@@ -27,11 +27,7 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
     return imageView
   }()
 
-  private let titleLabel: CommonLabel = {
-    let label = CommonLabel(font: .bold, size: LayoutConstants.titleThree)
-    label.text = "하임이가 추천하는 음악을 가져왔어요!"
-    return label
-  }()
+  private let titleLabel = CommonLabel(text: "하임이가 추천하는 음악을 가져왔어요!", font: .bold, size: LayoutConstants.titleThree)
 
   private let musicTableView: UITableView = {
     let tableView = UITableView(frame: .zero)

@@ -14,24 +14,15 @@ final class MusicTableViewCell: UITableViewCell {
     view.layer.cornerRadius = LayoutConstants.cornerRadius
     view.backgroundColor = .gray
     view.layer.shadowColor = UIColor.gray.cgColor
-    view.layer.shadowOffset = CGSize(width: 0, height: 5)
-    view.layer.shadowRadius = 4
-    view.layer.shadowOpacity = 0.7
+    view.layer.shadowOffset = CGSize(width: LayoutConstants.shadowOffsetWidth, height: LayoutConstants.shadowOffsetHeight)
+    view.layer.shadowRadius = LayoutConstants.shadowRadius
+    view.layer.shadowOpacity = LayoutConstants.shadowOpacity
     return view
   }()
 
-  private let titleLabel: CommonLabel = {
-    let label = CommonLabel(font: .regular, size: LayoutConstants.titleLabel)
-    label.textColor = .black
-    label.text = "제목"
-    return label
-  }()
+  private let titleLabel =  CommonLabel(text: "제목" ,font: .regular, size: LayoutConstants.titleLabel, textColor: .black)
 
-  private let subLabel: CommonLabel = {
-    let label = CommonLabel(font: .regular, size: LayoutConstants.bodyThree)
-    label.textColor = .black
-    return label
-  }()
+  private let subLabel = CommonLabel(font: .regular, size: LayoutConstants.bodyThree, textColor: .black)
 
   private let playButton: UIButton = {
     let text = "듣기"
@@ -89,6 +80,10 @@ private extension MusicTableViewCell {
     static let labelRightPadding: CGFloat = 8
     static let playButtonWidth: CGFloat = 0.2
     static let cornerRadius: CGFloat = 15
+    static let shadowOffsetHeight: CGFloat = 5
+    static let shadowOffsetWidth: CGFloat = 0
+    static let shadowRadius: CGFloat = 4
+    static let shadowOpacity: CGFloat = 0.7
   }
 
   func setupViews() {
