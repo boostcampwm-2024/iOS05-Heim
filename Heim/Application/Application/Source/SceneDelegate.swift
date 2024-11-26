@@ -14,12 +14,12 @@ import NetworkModule
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  
+
   // MARK: - Properties
   var window: UIWindow?
   private var navigationController: UINavigationController?
   private var tabBarCoordinator: TabBarCoordinator?
-  
+
   // MARK: - Methods
   func scene(
     _ scene: UIScene,
@@ -28,11 +28,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
-    
+
     self.navigationController = UINavigationController()
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
-    
+
     dependencyAssemble()
     startScene()
   }
@@ -45,23 +45,23 @@ private extension SceneDelegate {
     domainAssemble()
     presentationAssemble()
   }
-  
+
   func dataAssemble() {
     DIContainer.shared.register(type: SettingRepository.self) { _ in
       return DefaultSettingRepository()
     }
   }
-  
+
   func domainAssemble() {
     DIContainer.shared.register(type: SettingUseCase.self) { container in
       guard let settingRepository = container.resolve(type: SettingRepository.self) else {
         return
       }
-      
+
       return DefaultSettingUseCase(settingRepository: settingRepository)
     }
   }
-  
+
   func presentationAssemble() {
     guard let navigationController else { return }
     
@@ -85,10 +85,11 @@ private extension SceneDelegate {
       return DefaultDiaryDetailCoordinator(navigationController: navigationController)
     }
   }
-  
+
   func startScene() {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self) else { return }
     self.tabBarCoordinator = tabBarCoordinator
     tabBarCoordinator.start()
   }
 }
+
