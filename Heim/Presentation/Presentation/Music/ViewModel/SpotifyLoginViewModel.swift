@@ -11,12 +11,12 @@ import Foundation
 
 public final class SpotifyLoginViewModel: NSObject, ObservableObject, ViewModel {
   // MARK: - Properties
-  enum Action {
+  public enum Action {
     case authorize
     case token(code: String)
   }
   
-  struct State: Equatable {
+  public struct State: Equatable {
     var isLogined: Bool
     var challengeCode: String?
     var verifier: String?
@@ -24,7 +24,7 @@ public final class SpotifyLoginViewModel: NSObject, ObservableObject, ViewModel 
   }
   
   let useCase: SpotifyOAuthUseCase
-  @Published var state: State
+  @Published public var state: State
   
   // MARK: - Initializer
   public init(useCase: SpotifyOAuthUseCase) {
@@ -33,7 +33,7 @@ public final class SpotifyLoginViewModel: NSObject, ObservableObject, ViewModel 
   }
   
   // MARK: - Methods
-  func action(_ action: Action) {
+  public func action(_ action: Action) {
     switch action {
     case .authorize:
       authorize()

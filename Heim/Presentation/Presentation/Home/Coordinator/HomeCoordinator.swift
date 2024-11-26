@@ -46,7 +46,7 @@ public final class DefaultHomeCoordinator: HomeCoordinator {
       return
     }
     
-    addChild(defaultDiaryDetailCoordinator)
+    addChildCoordinator(defaultDiaryDetailCoordinator)
     defaultDiaryDetailCoordinator.parentCoordinator = self
     defaultDiaryDetailCoordinator.start(diary: diary)
   }
@@ -54,7 +54,7 @@ public final class DefaultHomeCoordinator: HomeCoordinator {
   public func pushSettingView() {
     guard let defaultSettingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self) else { return }
     
-    addChild(defaultSettingCoordinator)
+    addChildCoordinator(defaultSettingCoordinator)
     defaultSettingCoordinator.parentCoordinator = self
     defaultSettingCoordinator.start()
   }
