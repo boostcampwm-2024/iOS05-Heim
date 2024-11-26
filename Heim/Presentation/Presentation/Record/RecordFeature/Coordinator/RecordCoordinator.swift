@@ -11,6 +11,7 @@ import UIKit
 
 public protocol RecordCoordinator: Coordinator {
   func pushEmotionAnalyzeView(voice: Voice?)
+  func provideRecordViewController() -> RecordViewController
 }
 
 public final class DefaultRecordCoordinator: RecordCoordinator {
@@ -37,6 +38,13 @@ public final class DefaultRecordCoordinator: RecordCoordinator {
   
   public func pushEmotionAnalyzeView(voice: Voice?) {
     // TODO: EmotionAnlyzeView와 연결
+  }
+  
+  public func provideRecordViewController() -> RecordViewController {
+    guard let recordViewController = createRecordViewController() else { 
+      return RecordViewController(viewModel: RecordViewModel()) 
+    }
+    return recordViewController
   }
 }
 
