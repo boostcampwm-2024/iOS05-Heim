@@ -99,8 +99,10 @@ private extension SettingViewModel {
   func removeCache() {
     Task {
       do {
-        try await useCase.removeCacheData() 
-      } catch(let error) {
+        print("settingsview에서 삭제 누름")
+        try await useCase.removeCacheData()
+        print("settingsview에서 삭제 종료")
+      } catch {
         Logger.log(message: "removeCache Error: \(error)")
       }
     }
@@ -110,7 +112,7 @@ private extension SettingViewModel {
     Task {
       do {
         try await useCase.resetData() 
-      } catch(let error) {
+      } catch {
         Logger.log(message: "resetData Error: \(error)")
       }
     }

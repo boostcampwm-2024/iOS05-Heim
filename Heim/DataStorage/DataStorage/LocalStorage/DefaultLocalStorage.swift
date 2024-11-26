@@ -109,7 +109,27 @@ public struct DefaultLocalStorage: DataStorageModule {
     }
   }
   
-  //TODO: - 캐시삭제 구현 예정
+  // MARK: - baseURL을 기준으로 하위의 모든 디렉토리들 삭제
+  // TODO: 만약 현재 baseURL(documents)에 path를 추가해서
+  // documents/HeimStorage 로 baseURL을 변경한다면 HeimStorage를 한번에 지우는 방법이 더욱 효율적일 거 같습니다.
+  public func deleteAll() async throws {
+    do {
+      print("파일 삭제 시작")
+      let contents = try fileManager.contentsOfDirectory(
+        at: baseURL,
+        includingPropertiesForKeys: nil,
+        options: [.skipsHiddenFiles]
+      )
+      
+      for url in contents {
+        try fileManager.removeItem(at: url)
+      }
+      sleep(2)
+      print("파일 삭제 종료")
+    } catch {
+      throw StorageError.deleteError
+    }
+  }
 }
 
 private extension DefaultLocalStorage {
