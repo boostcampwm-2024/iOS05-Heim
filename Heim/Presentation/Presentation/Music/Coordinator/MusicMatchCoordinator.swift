@@ -43,8 +43,9 @@ public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
 // MARK: - Private
 private extension DefaultMusicMatchCoordinator {
   func createMusicMatchViewController() -> MusicMatchViewController? {
-    // TODO: 수정 
-    let viewController = MusicMatchViewController(musics: [Music(title: "Supernova", artist: "aespa")])
+    // TODO: 수정
+    let viewModel = MusicMatchViewModel()
+    let viewController = MusicMatchViewController(musics: [Music(title: "Supernova", artist: "aespa")], viewModel: viewModel)
     viewController.coordinator = self
     return viewController
   }

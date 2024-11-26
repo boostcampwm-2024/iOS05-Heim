@@ -13,7 +13,7 @@ struct Music {
   let artist: String
 }
 
-final class MusicMatchViewController: UIViewController, Coordinatable {
+final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable{
   // MARK: - Properties
   // TODO: let 수정
   private var musicDataSources: [Music]
@@ -21,13 +21,6 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   weak var coordinator: DefaultMusicMatchCoordinator?
 
   // MARK: - UI Components
-  private let backgroundImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = .background
-    imageView.contentMode = .scaleAspectFill
-    return imageView
-  }()
-
   private let titleLabel = CommonLabel(text: "하임이가 추천하는 음악을 가져왔어요!", font: .bold, size: LayoutConstants.titleThree)
 
   private let musicTableView: UITableView = {
@@ -53,7 +46,8 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   }()
 
   // MARK: - Initializer
-  init(musics: [Music], isHiddenHomeButton: Bool = false) {
+  init(musics: [Music], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
+
     self.musicDataSources = musics
     // TODO: 삭제
     self.musicDataSources = [Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
@@ -63,7 +57,7 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
                              Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")]
 
     self.isHiddenHomeButton = isHiddenHomeButton
-    super.init(nibName: nil, bundle: nil)
+    super.init(viewModel: viewModel)
   }
 
   required init?(coder: NSCoder) {
@@ -78,6 +72,42 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
 
   override func viewDidLayoutSubviews() {
     setupTableViewGradient()
+  }
+
+  override func setupViews() {
+    super.setupViews()
+
+    homeButton.isHidden = isHiddenHomeButton
+    musicTableView.delegate = self
+    musicTableView.dataSource = self
+
+    view.addSubview(titleLabel)
+    view.addSubview(musicTableView)
+    view.addSubview(homeButton)
+
+    homeButton.addTarget(self,
+                     action: #selector(homeButtondidTap),
+                     for: .touchUpInside)
+  }
+
+  override func setupLayoutConstraints() {
+    super.setupLayoutConstraints()
+
+    titleLabel.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.equalTo(LayoutConstants.defaultPadding)
+    }
+
+    musicTableView.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
+      $0.bottom.equalToSuperview().offset(LayoutConstants.tableViewBottom)
+    }
+
+    homeButton.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
+      $0.top.equalTo(musicTableView.snp.bottom).offset(LayoutConstants.homeButtonTop)
+    }
   }
 
   @objc func homeButtondidTap() {
@@ -119,8 +149,8 @@ extension MusicMatchViewController: UITableViewDataSource {
 
     return cell
   }
-
 }
+
 private extension MusicMatchViewController {
   enum LayoutConstants {
     static let defaultPadding: CGFloat = 16
@@ -132,43 +162,6 @@ private extension MusicMatchViewController {
   }
 
   // MARK: - Layout
-  func setupViews() {
-    homeButton.isHidden = isHiddenHomeButton
-    musicTableView.delegate = self
-    musicTableView.dataSource = self
-
-    view.addSubview(backgroundImageView)
-    view.addSubview(titleLabel)
-    view.addSubview(musicTableView)
-    view.addSubview(homeButton)
-
-    homeButton.addTarget(self,
-                     action: #selector(homeButtondidTap),
-                     for: .touchUpInside)
-  }
-
-  func setupLayoutConstraints() {
-    backgroundImageView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-
-    titleLabel.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide)
-      $0.left.equalTo(LayoutConstants.defaultPadding)
-    }
-
-    musicTableView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
-      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.bottom.equalToSuperview().offset(LayoutConstants.tableViewBottom)
-    }
-
-    homeButton.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.top.equalTo(musicTableView.snp.bottom).offset(LayoutConstants.homeButtonTop)
-    }
-  }
-
   func setupTableViewGradient() {
     let gradientLayer = CAGradientLayer()
     gradientLayer.frame = musicTableView.bounds
