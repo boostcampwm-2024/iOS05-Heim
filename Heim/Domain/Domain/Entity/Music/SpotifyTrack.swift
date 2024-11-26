@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SpotifyTrack: Codable {
+public struct SpotifyTrack: Decodable {
   public let album: Album
   public let artists: [Artist]
   public let id: String
@@ -28,8 +28,8 @@ public struct SpotifyTrack: Codable {
     case externalIDs = "external_ids"
   }
   
-  public static func toEntity(_ spotifyTrack: SpotifyTrack) -> Track {
-    return Track(
+  public static func toEntity(_ spotifyTrack: Self) -> MusicTrack {
+    return MusicTrack(
       thumbnail: spotifyTrack.album.albumArtURL,
       title: spotifyTrack.name,
       artist: spotifyTrack.artists.map { $0.name }.joined(separator: ", "),
@@ -38,7 +38,7 @@ public struct SpotifyTrack: Codable {
   }
 }
 
-public struct Album: Codable {
+public struct Album: Decodable {
   public let id: String
   public let name: String
   public let releaseDate: String
@@ -55,7 +55,7 @@ public struct Album: Codable {
   }
 }
 
-public struct AlbumImage: Codable {
+public struct AlbumImage: Decodable {
   public let url: String
   public let height: Int
   public let width: Int
@@ -65,11 +65,11 @@ public struct AlbumImage: Codable {
   }
 }
 
-public struct Artist: Codable {
+public struct Artist: Decodable {
   public let id: String
   public let name: String
 }
 
-public struct ExternalIDs: Codable {
+public struct ExternalIDs: Decodable {
   public let isrc: String
 }
