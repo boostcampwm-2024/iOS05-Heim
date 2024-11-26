@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum SpotifyEnvironment {
+public enum SpotifyEnvironment {
   private static let frameworkBundle = Bundle(identifier: "kr.codesquad.boostcamp9.Heim.DataModule")
   
-  static let clientId = {
+  public static let clientId = {
     guard let frameworkBundle,
           let clientId = frameworkBundle.infoDictionary?["SPOTIFY_CLIENT_ID"] as? String else {
       fatalError("Can't load environment: SPOTIFY_CLIENT_ID")
@@ -37,4 +37,5 @@ enum SpotifyEnvironment {
   static let redirectURI: String = "Heim://spotifyLogin"
   static let accessTokenAttributeKey: String = "a3f24f4a11fd0135627ddd8ab9f40cbe"
   static let refreshTokenAttributeKey: String = "65f9c2d174ff38ead38339d7dec2389c"
+  static let expiresInAttributeKey: String = "b2edc2b5147c0583265864cd99931fb2"
 }
