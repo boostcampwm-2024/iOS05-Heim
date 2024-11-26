@@ -41,19 +41,19 @@ final class BarView: UIView {
   func setBarColor(emotion: HeimEmotion) -> UIColor {
     switch emotion {
     case .sadness:
-      return .red
+      return .darkGray
     case .happiness:
-      return .blue
+      return .heimYellow
     case .angry:
-      return .white
+      return .heimRed
     case .surprise:
-      return .yellow
+      return .heimViolet
     case .fear:
-      return .black
+      return .heimBlack
     case .disgust:
-      return .orange
+      return .heimGreen
     case .neutral:
-      return .brown
+      return .whiteBlue
     }
   }
 }
