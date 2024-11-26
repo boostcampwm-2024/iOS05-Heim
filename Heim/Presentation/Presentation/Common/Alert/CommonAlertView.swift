@@ -45,11 +45,6 @@ final class CommonAlertView: AlertView {
 
 // MARK: - Private Extenion
 private extension CommonAlertView {
-  enum LayoutConstants {
-    static let messageLabelFontSize: CGFloat = 16
-    static let defaultPadding: CGFloat = 16
-  }
-  
   func setupViews() {
     if let messageLabel, !(messageLabel.text ?? "").isEmpty {
       labelContainerView.addSubview(messageLabel)
@@ -84,5 +79,12 @@ private extension CommonAlertView {
   func setupLabelSpacing() {
     guard let messageLabel else { return }
     messageLabel.setupLineSpacing()
+  }
+}
+
+private extension CommonAlertView {
+  enum LayoutConstants {
+    static let messageLabelFontSize: CGFloat = 16
+    static let defaultPadding: CGFloat = 16
   }
 }

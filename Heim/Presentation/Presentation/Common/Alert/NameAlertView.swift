@@ -51,12 +51,6 @@ final class NameAlertView: AlertView {
 
 // MARK: - Private Extenion
 private extension NameAlertView {
-  enum LayoutConstants {
-    static let defaultPadding: CGFloat = 16
-    static let defaultRadius: CGFloat = 16
-    static let singleLineViewHeight: CGFloat = 1
-  }
-  
   func setupViews() {
     titleLabel.textAlignment = .center
     rightbutton?.isEnabled = false
@@ -94,5 +88,13 @@ private extension NameAlertView {
     let index = text.index(text.startIndex, offsetBy: 5)
     let maximumText = text[text.startIndex..<index]
     nameTextField.text = String(maximumText)
+  }
+}
+
+private extension NameAlertView {
+  enum LayoutConstants {
+    static let defaultPadding: CGFloat = 16
+    static let defaultRadius: CGFloat = 16
+    static let singleLineViewHeight: CGFloat = 1
   }
 }
