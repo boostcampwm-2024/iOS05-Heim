@@ -9,16 +9,8 @@ import UIKit
 
 // 그래프의 막대 부분
 final class BarView: UIView {
-  let contentView: UIView = {
-    let view = UIView()
-    return view
-  }()
-
-  let bar: UIView = {
-    let view = UIView()
-    return view
-  }()
-
+  let contentView = UIView()
+  let bar: UIView = UIView()
   let chart: Chart
 
   required init?(coder: NSCoder) {

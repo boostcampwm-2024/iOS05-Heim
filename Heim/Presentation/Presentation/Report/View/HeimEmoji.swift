@@ -22,8 +22,8 @@ final class HeimEmoji: UIImageView {
   // MARK: - Initializer
   init(icon: HeimEmotion) {
     super.init(frame: .zero)
+    
     switch icon {
-      // TODO: - 이미지 추가 후 수정 
     case .disgust: self.image = .disgustIcon
     case .sadness: self.image = .sadIcon
     case .happiness: self.image = .happyIcon

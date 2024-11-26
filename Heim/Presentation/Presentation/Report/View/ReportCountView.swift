@@ -10,44 +10,20 @@ import UIKit
 // 상단 일기 갯수 표
 final class ReportCountView: UIView {
   // MARK: - Properties
-  private let totalCount = CommonLabel(
-    text: "30",
-    font: .bold,
-    size: LayoutContants.titleThree,
-    textColor: .white
-  )
-
-  private let continuousCount = CommonLabel(
-    text: "10",
-    font: .bold,
-    size: LayoutContants.titleThree,
-    textColor: .white
-  )
-
-  private let monthCount = CommonLabel(
-    text: "3",
-    font: .bold,
-    size: LayoutContants.titleThree,
-    textColor: .white
-  )
+  private let totalCount = CommonLabel(text: "30", font: .bold, size: LayoutContants.titleThree, textColor: .white)
+  private let continuousCount = CommonLabel(text: "10", font: .bold, size: LayoutContants.titleThree, textColor: .white)
+  private let monthCount = CommonLabel(text: "3", font: .bold, size: LayoutContants.titleThree, textColor: .white)
 
   private let countTitleStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.spacing = LayoutContants.defaultPadding * 2
     stackView.distribution = .fillEqually
 
-    let labelOne = UILabel()
-    labelOne.text = "전체"
-
-    let labelTwo = UILabel()
-    labelTwo.text = "연속 작성"
-
-    let labelThree = UILabel()
-    labelThree.text = "지난 30일"
+    let labelOne = CommonLabel(text: "전체", font: .regular, size: LayoutContants.bodyOne, textColor: .white)
+    let labelTwo = CommonLabel(text: "연속 작성", font: .regular, size: LayoutContants.bodyOne, textColor: .white)
+    let labelThree = CommonLabel(text: "지난 30일", font: .regular, size: LayoutContants.bodyOne, textColor: .white)
 
     [labelOne, labelTwo, labelThree].forEach {
-      $0.textColor = .white
-      $0.font = UIFont.regularFont(ofSize: LayoutContants.bodyOne)
       $0.textAlignment = .center
       stackView.addArrangedSubview($0)
     }

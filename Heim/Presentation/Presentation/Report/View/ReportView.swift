@@ -23,14 +23,7 @@ final class ReportView: UIView {
     return stackView
   }()
 
-  private let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = "하임이와 함께 한 기록"
-    label.textColor = .white
-    label.font = UIFont.boldFont(ofSize: LayoutConstants.titleOne)
-    return label
-  }()
-
+  private let titleLabel = CommonLabel(text: "하임이와 함께 한 기록", font: .bold, size: LayoutConstants.titleOne, textColor: .white)
   private let totalReportView: UIView = {
     let reportCountView = ReportCountView()
     reportCountView.layer.cornerRadius = 10
@@ -53,13 +46,7 @@ final class ReportView: UIView {
   }()
   
   private let graphView = GraphView()
-
-  private let replyTitleLabel: CommonLabel = {
-    let label = CommonLabel(font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
-    label.text = "하임이의 답장"
-    return label
-  }()
-
+  private let replyTitleLabel = CommonLabel(text: "하임이의 답장", font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
   private let replyTextView = CommonTextAreaView()
 
   // MARK: - Initialize
@@ -114,7 +101,6 @@ private extension ReportView {
     replyTitleLabel.snp.makeConstraints {
       $0.top.equalTo(graphView.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.centerX.equalToSuperview()
-
     }
 
     replyTextView.snp.makeConstraints {
