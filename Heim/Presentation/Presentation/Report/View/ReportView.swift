@@ -52,18 +52,15 @@ final class ReportView: UIView {
     return label
   }()
   
-  private let graphView: UIView = {
-    let graphView = GraphView()
-    return graphView
-  }()
+  private let graphView = GraphView()
 
-  let replyTitleLabel: CommonLabel = {
+  private let replyTitleLabel: CommonLabel = {
     let label = CommonLabel(font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
     label.text = "하임이의 답장"
     return label
   }()
 
-  let replyTextView =  CommonTextAreaView()
+  private let replyTextView = CommonTextAreaView()
 
   // MARK: - Initialize
   override init(frame: CGRect) {

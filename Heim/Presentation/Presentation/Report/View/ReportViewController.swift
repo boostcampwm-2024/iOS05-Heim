@@ -32,15 +32,17 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
     setupLayoutConstraints()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
 
-    coordinator?.didFinish()
+    // TODO: 수정
+    //coordinator?.didFinish()
   }
 
   // MARK: - LayOut Methods
   override func setupViews() {
     super.setupViews()
+    
     view.addSubview(scrollView)
     scrollView.addSubview(reportView)
   }

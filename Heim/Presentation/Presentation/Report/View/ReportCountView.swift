@@ -10,21 +10,21 @@ import UIKit
 // 상단 일기 갯수 표
 final class ReportCountView: UIView {
   // MARK: - Properties
-  let totalCount = CommonLabel(
+  private let totalCount = CommonLabel(
     text: "30",
     font: .bold,
     size: LayoutContants.titleThree,
     textColor: .white
   )
 
-  let continuousCount = CommonLabel(
+  private let continuousCount = CommonLabel(
     text: "10",
     font: .bold,
     size: LayoutContants.titleThree,
     textColor: .white
   )
 
-  let monthCount = CommonLabel(
+  private let monthCount = CommonLabel(
     text: "3",
     font: .bold,
     size: LayoutContants.titleThree,
@@ -33,7 +33,6 @@ final class ReportCountView: UIView {
 
   private let countTitleStackView: UIStackView = {
     let stackView = UIStackView()
-    stackView.axis = .horizontal
     stackView.spacing = LayoutContants.defaultPadding * 2
     stackView.distribution = .fillEqually
 
@@ -57,7 +56,6 @@ final class ReportCountView: UIView {
 
   private let countStackView: UIStackView = {
     let stackView = UIStackView()
-    stackView.axis = .horizontal
     stackView.spacing = LayoutContants.defaultPadding * 2
     stackView.distribution = .fillEqually
     return stackView
