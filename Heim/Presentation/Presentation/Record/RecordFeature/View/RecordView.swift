@@ -5,6 +5,7 @@
 //  Created by 박성근 on 11/17/24.
 //
 
+import Lottie
 import UIKit
 import SnapKit
 
@@ -39,11 +40,13 @@ final class RecordView: UIView {
     return button
   }()
   
-  private let characterImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = .recordRabbit
-    imageView.contentMode = .scaleAspectFit
-    return imageView
+  private let microphoneAnimation: LottieAnimationView = {
+    let bundle = Bundle(for: RecordView.self)
+    let animation = LottieAnimation.named("microphone", bundle: bundle)
+    let animationView = LottieAnimationView(animation: animation)
+    animationView.contentMode = .scaleAspectFit
+    animationView.loopMode = .loop
+    return animationView
   }()
   
   private let timeLabel: UILabel = {
@@ -101,8 +104,10 @@ final class RecordView: UIView {
   func updatePlayButtonImage(isPlaying: Bool) {
     if isPlaying {
       playButton.setImage(.stopFill, for: .normal)
+      microphoneAnimation.play()
     } else {
       playButton.setImage(.playFill, for: .normal)
+      microphoneAnimation.stop()
     }
   }
   
@@ -119,7 +124,7 @@ final class RecordView: UIView {
 private extension RecordView {
   // MARK: - Setup
   private func setupViews() {
-    [closeButton, characterImageView, timeLabel, buttonStackView, nextButton].forEach {
+    [closeButton, microphoneAnimation, timeLabel, buttonStackView, nextButton].forEach {
       addSubview($0)
     }
     
@@ -138,15 +143,15 @@ private extension RecordView {
       $0.width.height.equalTo(LayoutConstants.closeButtonSize)
     }
     
-    characterImageView.snp.makeConstraints {
+    microphoneAnimation.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalToSuperview().offset(screenHeight * LayoutConstants.characterImageTopRatio)
-      $0.width.height.equalTo(LayoutConstants.characterImageSize)
+      $0.top.equalToSuperview().offset(screenHeight * LayoutConstants.microphoneAnimationImageTopRatio)
+      $0.width.height.equalTo(LayoutConstants.microphoneAnimationImageSize)
     }
     
     timeLabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalTo(characterImageView.snp.bottom).offset(screenHeight * LayoutConstants.timeLabelTopRatio)
+      $0.top.equalTo(microphoneAnimation.snp.bottom).offset(screenHeight * LayoutConstants.timeLabelTopRatio)
     }
     
     buttonStackView.snp.makeConstraints {
@@ -212,10 +217,10 @@ private extension RecordView {
     static let buttonStackSpacing: CGFloat = 36
     
     // Image
-    static let characterImageSize: CGFloat = 256
+    static let microphoneAnimationImageSize: CGFloat = 256
     
     // Screen ratio
-    static let characterImageTopRatio: CGFloat = 0.2
+    static let microphoneAnimationImageTopRatio: CGFloat = 0.2
     static let timeLabelTopRatio: CGFloat = 0.07
     
     // Font size
