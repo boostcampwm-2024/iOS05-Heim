@@ -18,8 +18,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Properties
   var window: UIWindow?
   private var navigationController: UINavigationController?
-  // TODO: AppCoordinator 구현 후 적용 예정
-  //  private var appCoordinator: AppCoordinator?
+  private var tabBarCoordinator: TabBarCoordinator?
   
   // MARK: - Methods
   func scene(
@@ -66,15 +65,30 @@ private extension SceneDelegate {
   func presentationAssemble() {
     guard let navigationController else { return }
     
+    DIContainer.shared.register(type: TabBarCoordinator.self) { _ in
+      return DefaultTabBarCoordinator(navigationController: navigationController)
+    }
+    
     DIContainer.shared.register(type: SettingCoordinator.self) { _ in
       return DefaultSettingCoordinator(navigationController: navigationController)
+    }
+    
+    DIContainer.shared.register(type: RecordCoordinator.self) { _ in
+      return DefaultRecordCoordinator(navigationController: navigationController)
+    }
+    
+    DIContainer.shared.register(type: HomeCoordinator.self) { _ in
+      return DefaultHomeCoordinator(navigationController: navigationController)
+    }
+    
+    DIContainer.shared.register(type: DiaryDetailCoordinator.self) { _ in
+      return DefaultDiaryDetailCoordinator(navigationController: navigationController)
     }
   }
   
   func startScene() {
-    // TODO: AppCoordinator 구현 후 적용 예정
-//    guard let appCoordinator = DIContainer.shared.resolve(type: AppCoordinator.self) else { return }
-//    self.appCoordinator = appCoordinator
-//    appCoordinator.start()
+    guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self) else { return }
+    self.tabBarCoordinator = tabBarCoordinator
+    tabBarCoordinator.start()
   }
 }
