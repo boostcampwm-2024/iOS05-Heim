@@ -34,8 +34,8 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   public func start() {}
   
   public func start(diary: Diary) {
-    guard let diaryDetailViewController = diaryDetailViewController(diary) else { return }
-    navigationController.pushViewController(diaryDetailViewController, animated: true)
+    // TODO: diaryDetailViewController 구현
+    // navigationController.pushViewController(diaryDetailViewController, animated: true)
   }
   
   public func didFinish() {
@@ -53,18 +53,9 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   public func pushDiaryReplayView() {
     // TODO: 화면 연결
   }
-  
 }
 
 // MARK: - Private
 private extension DefaultDiaryDetailCoordinator {
-  func diaryDetailViewController(_ diary: Diary) -> DiaryDetailViewController? {
-    // TODO: TimeStamp, UseCase 주입
-    
-    // guard let dataStorageUseCase = DIContainer.shared.resolve(type: DataStorageUseCase.self) else { return nil }
-    let viewModel = DiaryDetailViewModel(diary: diary)
-    let viewController = DiaryDetailViewController(viewModel: viewModel)
-    viewController.coordinator = self
-    return viewController
-  }
+  // TODO: diaryDetailViewController 구현
 }
