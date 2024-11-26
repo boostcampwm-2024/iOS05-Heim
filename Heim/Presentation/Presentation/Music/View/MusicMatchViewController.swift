@@ -128,8 +128,7 @@ private extension MusicMatchViewController {
     static let homeButtonFont: CGFloat = 18
     static let homeButtonTop: CGFloat = 32
     static let cornerRadius: CGFloat = 10
-    // TODO: extension 수정
-    static let tableViewBottom = UIScreen.main.bounds.height * 170 / UIScreen.main.bounds.height * -1
+    static let tableViewBottom = UIApplication.screenHeight * 170 / UIApplication.screenHeight * -1
   }
 
   // MARK: - Layout
