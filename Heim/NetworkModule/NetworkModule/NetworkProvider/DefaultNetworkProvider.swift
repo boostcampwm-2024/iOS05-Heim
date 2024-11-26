@@ -6,9 +6,9 @@
 //
 
 import Core
+import Domain
 import DataModule
 import Foundation
-import Core
 
 // MARK: - NetworkRequestable
 public protocol NetworkRequestable {
@@ -28,7 +28,6 @@ public struct DefaultNetworkProvider: NetworkProvider {
   
   @discardableResult
   public func request<T: Decodable>(target: RequestTarget, type: T.Type) async throws -> T {
-    // TODO: NSError -> 다른 Error Type으로 변경
     let request = try target.makeURLRequest()
     let (data, response) = try await requestor.data(for: request)
     
@@ -40,7 +39,7 @@ public struct DefaultNetworkProvider: NetworkProvider {
       if let responseBody = String(data: data, encoding: .utf8) {
         Logger.log(message: "Response Body: \(responseBody)")
       }
-      throw NSError()
+      throw NetworkError.interalServerError
     }
     
     return responseDTO
