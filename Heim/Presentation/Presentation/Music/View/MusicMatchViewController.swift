@@ -17,6 +17,7 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   // MARK: - Properties
   // TODO: let 수정
   private var musicDataSources: [Music]
+  private let isHiddenHomeButton: Bool
   weak var coordinator: DefaultMusicMatchCoordinator?
 
   // MARK: - UI Components
@@ -52,7 +53,7 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   }()
 
   // MARK: - Initializer
-  init(musics: [Music]) {
+  init(musics: [Music], isHiddenHomeButton: Bool = false) {
     self.musicDataSources = musics
     // TODO: 삭제
     self.musicDataSources = [Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
@@ -60,6 +61,8 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
                              Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
                              Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
                              Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")]
+
+    self.isHiddenHomeButton = isHiddenHomeButton
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -131,6 +134,7 @@ private extension MusicMatchViewController {
 
   // MARK: - Layout
   func setupViews() {
+    homeButton.isHidden = isHiddenHomeButton
     musicTableView.delegate = self
     musicTableView.dataSource = self
 
