@@ -48,7 +48,7 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
     let button = CommonRectangleButton(
       fontStyle: .boldFont(ofSize: LayoutConstants.homeButtonFont),
       backgroundColor: .primary,
-      radius: 10
+      radius: LayoutConstants.cornerRadius
     )
     button.setTitle("메인 화면으로 이동하기",
                     for: .normal)
@@ -86,14 +86,16 @@ final class MusicMatchViewController: UIViewController, Coordinatable {
   }
 }
 
-extension MusicMatchViewController: UITableViewDelegate, UITableViewDataSource {
+extension MusicMatchViewController: UITableViewDelegate {
   func tableView(
     _ tableView: UITableView,
     numberOfRowsInSection section: Int)
   -> Int {
     5
   }
+}
 
+extension MusicMatchViewController: UITableViewDataSource {
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)

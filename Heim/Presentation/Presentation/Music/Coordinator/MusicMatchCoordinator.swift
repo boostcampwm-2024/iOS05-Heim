@@ -36,15 +36,7 @@ public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
   }
 
   public func pushHomeView() {
-    // TODO: 주석 제거
-//    guard let defaultHomeCoordinator = DIContainer.shared.resolve(type: HomeViewCoordinator.self) else { return }
-//
-//    addChild(defaultHomeCoordinator)
-//    defaultHomeCoordinator.parentCoordinator = self
-//    defaultHomeCoordinator.start()
   }
-
-
 
 }
 
