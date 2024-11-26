@@ -14,10 +14,11 @@ extension RequestTarget {
     return [:]
   }
   
-  func makeURLRequest() throws -> URLRequest {
+  func makeURLRequest(accessToken: String = "") throws -> URLRequest {
     var request: URLRequest = try URLRequest(baseURL + path, query: query)
     
     request.makeURLHeaders(headers)
+    request.addAuthorization(accessToken)
     request.httpMethod = method.rawValue
     request.cachePolicy = .reloadIgnoringLocalCacheData
     
