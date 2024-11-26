@@ -5,6 +5,7 @@
 //  Created by 정지용 on 11/25/24.
 //
 
+import Domain
 import Foundation
 
 public final class SpotifyRecommendRequestDTOFactory {
