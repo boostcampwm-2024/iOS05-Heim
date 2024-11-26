@@ -6,6 +6,7 @@
 //
 
 import DataModule
+import Domain
 import Foundation
 
 extension RequestTarget {
@@ -14,14 +15,18 @@ extension RequestTarget {
   }
   
   func makeURLRequest() throws -> URLRequest {
-    var request: URLRequest = try URLRequest(path, query: query)
+    var request: URLRequest = try URLRequest(baseURL + path, query: query)
     
     request.makeURLHeaders(headers)
     request.httpMethod = method.rawValue
     request.cachePolicy = .reloadIgnoringLocalCacheData
     
     if let body {
-      request.setBody(body)
+      if request.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded" {
+        request.setURLEncodedBody(body)
+      } else {
+        request.setBody(body)
+      }
     }
     
     return request

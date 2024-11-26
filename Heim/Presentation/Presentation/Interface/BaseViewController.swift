@@ -10,7 +10,7 @@ import UIKit
 
 import SnapKit
 
-class BaseViewController<T: ViewModel>: UIViewController {
+public class BaseViewController<T: ViewModel>: UIViewController {
   // MARK: - Properties
   var cancellable: Set<AnyCancellable> = []
   let viewModel: T
@@ -33,7 +33,7 @@ class BaseViewController<T: ViewModel>: UIViewController {
   }
   
   // MARK: - LifeCycle
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     
     setupViews()

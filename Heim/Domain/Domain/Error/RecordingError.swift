@@ -5,11 +5,11 @@
 //  Created by 정지용 on 11/19/24.
 //
 
-enum RecordingError: Error {
+public enum RecordingError: Error {
   case permissionError
   case audioError
   
-  var description: String {
+  public var description: String {
     switch self {
     case .permissionError:
       return "사용자 권한 오류"

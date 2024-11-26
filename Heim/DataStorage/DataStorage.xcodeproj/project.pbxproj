@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		4093ABA22CDB9C0F00F7E060 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4093ABA12CDB9C0F00F7E060 /* Core.framework */; };
 		4093ABA32CDB9C0F00F7E060 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4093ABA12CDB9C0F00F7E060 /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4093ABA52CDB9CB200F7E060 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B51C2CD9F848001C5040 /* DataModule.framework */; };
-		4093ABA62CDB9CB200F7E060 /* DataModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B51C2CD9F848001C5040 /* DataModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B307B5082CD9F809001C5040 /* DataStorage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4FD2CD9F809001C5040 /* DataStorage.framework */; };
+		B37700B22CEE4BC900063D2B /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B37700B12CEE4BC900063D2B /* DataModule.framework */; };
+		B37700B32CEE4BC900063D2B /* DataModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B37700B12CEE4BC900063D2B /* DataModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +31,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4093ABA62CDB9CB200F7E060 /* DataModule.framework in Embed Frameworks */,
+				B37700B32CEE4BC900063D2B /* DataModule.framework in Embed Frameworks */,
 				4093ABA32CDB9C0F00F7E060 /* Core.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -43,7 +43,7 @@
 		4093ABA12CDB9C0F00F7E060 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B4FD2CD9F809001C5040 /* DataStorage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStorage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B307B5072CD9F809001C5040 /* DataStorageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStorageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B307B51C2CD9F848001C5040 /* DataModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B37700B12CEE4BC900063D2B /* DataModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -64,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4093ABA52CDB9CB200F7E060 /* DataModule.framework in Frameworks */,
+				B37700B22CEE4BC900063D2B /* DataModule.framework in Frameworks */,
 				4093ABA22CDB9C0F00F7E060 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,8 +102,8 @@
 		B307B51B2CD9F848001C5040 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B37700B12CEE4BC900063D2B /* DataModule.framework */,
 				4093ABA12CDB9C0F00F7E060 /* Core.framework */,
-				B307B51C2CD9F848001C5040 /* DataModule.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
