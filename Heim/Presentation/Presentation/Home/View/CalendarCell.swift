@@ -20,8 +20,8 @@ class CalendarCell: UICollectionViewCell {
     return label
   }()
 
-  private let emojiView: UIView = {
-    let view = UIView()
+  private let emojiView: UIImageView = {
+    let view = UIImageView()
     view.frame.size = CGSize(width: LayoutContants.emojiSize, height: LayoutContants.emojiSize)
     view.layer.cornerRadius = view.frame.width / 2
     return view
@@ -67,6 +67,11 @@ class CalendarCell: UICollectionViewCell {
     //TODO: 수정필요 - 애초에 View가 그려지지 않도록 하는 방법 찾기
     self.emojiView.backgroundColor = day.isEmpty ? .clear : .whiteGray
     self.dateLabel.text = day
+    
+    // TODO: 화면 테스트용 임시 데이터 적용
+    if day == "17" {
+      emojiView.image = .smileIcon
+    }
   }
 }
 

@@ -20,7 +20,7 @@ public protocol Coordinator: AnyObject {
 
 // MARK: - Default Implementation
 public extension Coordinator {
-  func addChild(
+  func addChildCoordinator(
     _ child: Coordinator
   ) {
     childCoordinators.append(child)

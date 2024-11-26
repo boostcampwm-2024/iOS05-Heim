@@ -63,4 +63,12 @@ extension UIColor {
     blue: 208 / 255,
     alpha: 1.0
   )
+
+  
+  static let primaryTransparent = UIColor(
+    red: 28 / 255,
+    green: 7 / 255,
+    blue: 93 / 255,
+    alpha: 0.5
+  )
 }

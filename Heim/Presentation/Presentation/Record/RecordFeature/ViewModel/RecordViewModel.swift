@@ -10,28 +10,29 @@ import Core
 import Domain
 import Foundation
 
-final class RecordViewModel: ViewModel {
+public final class RecordViewModel: ViewModel {
   // MARK: - Properties
-  enum Action {
+  public enum Action {
     case startRecording
     case stopRecording
     case refresh
-    case moveToNext
   }
   
-  struct State: Equatable {
+  public struct State: Equatable {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
-    var isPaused: Bool = false
   }
   
-  @Published var state: State
+  @Published public var state: State
   private var recordManager: RecordManager
   private var timer: Timer?
   
+  private var isPaused: Bool = false
+  private var voice: Voice?
+  
   // MARK: - Initializer
-  init() {
+  public init() {
     self.state = State()
     self.recordManager = RecordManager()
     
@@ -41,7 +42,7 @@ final class RecordViewModel: ViewModel {
   }
   
   // MARK: - Methods
-  func action(_ action: Action) {
+  public func action(_ action: Action) {
     switch action {
     case .startRecording:
       handleStartRecording()
@@ -49,9 +50,11 @@ final class RecordViewModel: ViewModel {
       handleStopRecording()
     case .refresh:
       handleRefresh()
-    case .moveToNext:
-      handleMoveToNext()
     }
+  }
+  
+  func voiceData() -> Voice? {
+    return voice
   }
 }
 
@@ -72,7 +75,8 @@ private extension RecordViewModel {
     recordManager.stopRecording()
     state.isRecording = false
     state.canMoveToNext = true
-    state.isPaused = true
+    isPaused = true
+    voice = recordManager.voice
     stopTimeObservation()
   }
   
@@ -82,18 +86,13 @@ private extension RecordViewModel {
     state = State()
   }
   
-  func handleMoveToNext() {
-    recordManager.resetAll()
-    // TODO: 다음 화면과 연결
-  }
-  
   func startTimeObservation() {
     stopTimeObservation()
     
-    if !state.isPaused {
+    if isPaused {
       state.timeText = "00:00"
     }
-    state.isPaused = false
+    isPaused = false
     
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
       guard let self = self else { return }

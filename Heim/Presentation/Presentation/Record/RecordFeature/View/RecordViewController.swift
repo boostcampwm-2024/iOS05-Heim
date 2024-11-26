@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class RecordViewController: BaseViewController<RecordViewModel>, Coordinatable {
+public final class RecordViewController: BaseViewController<RecordViewModel>, Coordinatable {
   // MARK: - UIComponents
   private let contentView = RecordView()
   
@@ -16,21 +16,21 @@ final class RecordViewController: BaseViewController<RecordViewModel>, Coordinat
   weak var coordinator: DefaultRecordCoordinator?
   
   // MARK: - LifeCycle
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
+  public override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
   }
   
-  override func setupViews() {
+  public override func setupViews() {
     super.setupViews()
     contentView.delegate = self
     view.addSubview(contentView)
   }
   
-  override func setupLayoutConstraints() {
+  public override func setupLayoutConstraints() {
     super.setupLayoutConstraints()
     
     contentView.snp.makeConstraints {
@@ -38,7 +38,7 @@ final class RecordViewController: BaseViewController<RecordViewModel>, Coordinat
     }
   }
   
-  override func bindState() {
+  public override func bindState() {
     super.bindState()
     
     // 녹음 상태
@@ -88,10 +88,11 @@ extension RecordViewController: RecordViewDelegate {
     case .refresh:
       viewModel.action(.refresh)
     case .next:
-      viewModel.action(.moveToNext)
+      // TODO: 다음 화면으로 이동
+      coordinator?.pushEmotionAnalyzeView(voice: viewModel.voiceData())
     case .close:
-      // TODO: 추후 화면 연결시 동작 확인 필요
       coordinator?.didFinish()
+      dismiss(animated: true)
     }
   }
 }

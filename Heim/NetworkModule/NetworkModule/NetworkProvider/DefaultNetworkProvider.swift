@@ -5,6 +5,7 @@
 //  Created by 정지용 on 11/12/24.
 //
 
+import Core
 import DataModule
 import Foundation
 import Core
