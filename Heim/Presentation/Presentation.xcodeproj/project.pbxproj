@@ -10,7 +10,6 @@
 		4093ABB42CDB9CCA00F7E060 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; };
 		4093ABB52CDB9CCA00F7E060 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		807206302CDB50F100123BFB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8072062F2CDB50F100123BFB /* SnapKit */; };
-		80BD8B042CF4897A005FDC4E /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 80BD8B032CF4897A005FDC4E /* Lottie */; };
 		B307B3FE2CD9B4B7001C5040 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B3F32CD9B4B7001C5040 /* Presentation.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,7 +63,6 @@
 			files = (
 				4093ABB42CDB9CCA00F7E060 /* Domain.framework in Frameworks */,
 				807206302CDB50F100123BFB /* SnapKit in Frameworks */,
-				80BD8B042CF4897A005FDC4E /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +138,6 @@
 			name = Presentation;
 			packageProductDependencies = (
 				8072062F2CDB50F100123BFB /* SnapKit */,
-				80BD8B032CF4897A005FDC4E /* Lottie */,
 			);
 			productName = Presentation;
 			productReference = B307B3F32CD9B4B7001C5040 /* Presentation.framework */;
@@ -200,7 +197,6 @@
 			packageReferences = (
 				8072062E2CDB50F100123BFB /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B307B6BC2CDC7D48001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */,
-				80BD8B022CF4897A005FDC4E /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B307B3F42CD9B4B7001C5040 /* Products */;
@@ -555,14 +551,6 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		80BD8B022CF4897A005FDC4E /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.5.0;
-			};
-		};
 		B307B6BC2CDC7D48001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/SwiftLint";
@@ -578,11 +566,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8072062E2CDB50F100123BFB /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		80BD8B032CF4897A005FDC4E /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 80BD8B022CF4897A005FDC4E /* XCRemoteSwiftPackageReference "lottie-spm" */;
-			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
