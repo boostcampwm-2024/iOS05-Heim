@@ -95,6 +95,7 @@ extension SettingViewController: UITableViewDelegate, Alertable {
       //TODO: 이름 설정 팝업창 출력
       return
     case 2: // 캐시 삭제
+      // TODO: Alert창의 너비 조절
       presentAlert(
         type: .removeCache,
         leftButtonAction: {},
@@ -111,7 +112,7 @@ extension SettingViewController: UITableViewDelegate, Alertable {
         }
       )
     case 5: // 문의하기
-      coordinator?.pushQuestionWebView()
+      coordinator?.openQuestionURL()
     default:
       return
     }
