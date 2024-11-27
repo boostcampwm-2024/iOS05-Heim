@@ -8,33 +8,33 @@
 import Combine
 import Core
 import Domain
+import Foundation
 
 final class DiaryDetailViewModel: ViewModel {
   // MARK: - Properties
   enum Action {
     case fetchDiary
-    case musicRecommendation
-    case heimReply
-    case replayVoice
+    case deleteDiary
   }
   
   struct State: Equatable {
     var date: String = ""
     var description: String = ""
     var content: String = ""
+    var isDeleted: Bool = false
   }
   
   @Published var state: State
-  // private let useCase: DataStorageUseCase
+  private let useCase: DiaryUseCase
   private let diary: Diary
   
   // MARK: - Initializer
   init(
-    // useCase: DataStorageUseCase
+    useCase: DiaryUseCase,
     diary: Diary
   ) {
-    // self.useCase = useCase
     state = State()
+    self.useCase = useCase
     self.diary = diary
   }
   
@@ -42,23 +42,36 @@ final class DiaryDetailViewModel: ViewModel {
   func action(_ action: Action) {
     switch action {
     case .fetchDiary:
+      setUp()
+    case .deleteDiary:
       Task {
-        await setUp()
+        await handleDeleteDiary()
+        state.isDeleted = true
       }
-    case .musicRecommendation, .heimReply, .replayVoice:
-      break
     }
-  }
-  
-  // TODO: 기능 구현
-  func setUp() async {
-//    state.date = diary.date
-//    state.description = diary.emotion.rawValue
-//    state.content = diary.summary.text
   }
 }
 
 // MARK: - Private Extenion
-private extension SettingViewModel {
+private extension DiaryDetailViewModel {
+  // TODO: 현재 timeStamp를 직접 생성하여 코드가 길어져 메서드를 따로 분리
+  func handleDeleteDiary() async {
+    // TODO: date 선언해서 파라미터로 넣는 것이 아닌 diary.id로 변경(미정)
+    let date = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyyMMddHHmmss"
+    let timeStamp = dateFormatter.string(from: date)
+    do {
+      try await useCase.deleteDiary(timeStamp: timeStamp)
+    } catch {
+      // TODO: Error Handling
+    }
+  }
   
+  // TODO: 날짜 정보 초기화하는 기능 구현
+  func setUp() {
+    // state.date = diary.id
+    state.description = diary.emotion.rawValue
+    state.content = diary.summary.text
+  }
 }

@@ -41,14 +41,16 @@ extension SpotifyOAuthAPI: RequestTarget {
   
   var body: (any Encodable)? {
     switch self {
-    case .authorize: nil
-    case .accessToken: nil
+    case .authorize:
+      return nil
+    case .accessToken(let dto):
+      return dto
     }
   }
   
   var query: [String: Any] {
     switch self {
-    case .authorize(let dto): dto.toSnakeCaseDictionary()
+    case .authorize(let dto): dto.dictionary
     case .accessToken: [:]
     }
   }

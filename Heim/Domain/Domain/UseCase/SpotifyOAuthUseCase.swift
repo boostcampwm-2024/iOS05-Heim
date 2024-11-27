@@ -8,7 +8,7 @@
 import CryptoKit
 import Foundation
 
-protocol SpotifyOAuthUseCase {
+public protocol SpotifyOAuthUseCase {
   func authorizaionURL(hash: String) throws -> URL?
   func login(
     code authorizationCode: String,
@@ -21,24 +21,28 @@ protocol SpotifyOAuthUseCase {
   )
 }
 
-struct DefaultSpotifyOAuthUseCase: SpotifyOAuthUseCase {
+public struct DefaultSpotifyOAuthUseCase: SpotifyOAuthUseCase {
   private let repository: SpotifyOAuthRepository
   
-  func authorizaionURL(hash: String) throws -> URL? {
-    return try repository.createAuthorizationURL(codeChallenge: "")
+  public init(repository: SpotifyOAuthRepository) {
+    self.repository = repository
   }
   
-  func login(
+  public func authorizaionURL(hash: String) throws -> URL? {
+    return try repository.createAuthorizationURL(codeChallenge: hash)
+  }
+  
+  public func login(
     code authorizationCode: String,
     plainText: String
   ) async throws -> Bool {
     return try await repository.exchangeAccessToken(
       with: authorizationCode,
-      codeVerifier: ""
+      codeVerifier: plainText
     )
   }
   
-  func generateCodeChallenge() -> (
+  public func generateCodeChallenge() -> (
     challenge: String,
     verifier: String
   ) {
@@ -71,5 +75,8 @@ private extension DefaultSpotifyOAuthUseCase {
     let base64EncodedString = Data(hashedData).base64EncodedString()
     
     return base64EncodedString
+      .replacingOccurrences(of: "+", with: "-")
+      .replacingOccurrences(of: "/", with: "_")
+      .replacingOccurrences(of: "=", with: "")
   }
 }

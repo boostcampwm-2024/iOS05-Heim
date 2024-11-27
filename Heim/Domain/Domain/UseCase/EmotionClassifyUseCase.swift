@@ -7,12 +7,14 @@
 
 import CoreML
 
-protocol EmotionClassifyUseCase {
+public protocol EmotionClassifyUseCase {
   func validate(_ input: String) async throws -> Emotion
 }
 
-struct DefaultEmotionClassifyUseCase: EmotionClassifyUseCase {
-  func validate(_ input: String) async throws -> Emotion {
+public struct DefaultEmotionClassifyUseCase: EmotionClassifyUseCase {
+  public init() {}
+  
+  public func validate(_ input: String) async throws -> Emotion {
     let model = try EmotionClassifier(configuration: MLModelConfiguration())
     let result = try model.prediction(text: input)
     return Emotion(rawValue: result.label) ?? .none

@@ -10,7 +10,7 @@ import Foundation
 public struct SpotifyAccessTokenResponseDTO: Decodable {
   public let accessToken: String
   public let tokenType: String
-  public let scope: String
+  public let scope: String?
   public let expiresIn: Int
   public let refreshToken: String
   
@@ -18,7 +18,7 @@ public struct SpotifyAccessTokenResponseDTO: Decodable {
     case accessToken = "access_token"
     case tokenType = "token_type"
     case scope = "scope"
-    case expiresIn = "expire_in"
+    case expiresIn = "expires_in"
     case refreshToken = "refresh_token"
   }
 }
