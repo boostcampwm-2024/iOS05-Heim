@@ -18,8 +18,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Properties
   var window: UIWindow?
   private var navigationController: UINavigationController?
+  private var recordNavigationController: UINavigationController?
   private var tabBarCoordinator: TabBarCoordinator?
-
+  
   // MARK: - Methods
   func scene(
     _ scene: UIScene,
@@ -30,6 +31,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window = UIWindow(windowScene: windowScene)
 
     self.navigationController = UINavigationController()
+    self.recordNavigationController = UINavigationController()
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
 
@@ -41,14 +43,33 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Private Extenion
 private extension SceneDelegate {
   func dependencyAssemble() {
+    storageAssemble()
     dataAssemble()
     domainAssemble()
     presentationAssemble()
   }
+  
+  func storageAssemble() {
+    DIContainer.shared.register(type: DataStorageModule.self) { _ in
+      return DefaultLocalStorage()
+    }
+  }
 
   func dataAssemble() {
-    DIContainer.shared.register(type: SettingRepository.self) { _ in
-      return DefaultSettingRepository()
+    DIContainer.shared.register(type: SettingRepository.self) { container in
+      guard let localStorage = container.resolve(type: DataStorageModule.self) else {
+        return
+      }
+      
+      return DefaultSettingRepository(localStorage: localStorage)
+    }
+    
+    DIContainer.shared.register(type: DiaryRepository.self) { container in
+      guard let localStorage = container.resolve(type: DataStorageModule.self) else {
+        return
+      }
+      
+      return DefaultDiaryRepository(dataStorage: localStorage)
     }
   }
 
@@ -60,10 +81,23 @@ private extension SceneDelegate {
 
       return DefaultSettingUseCase(settingRepository: settingRepository)
     }
+    
+    DIContainer.shared.register(type: EmotionClassifyUseCase.self) { _ in
+      return DefaultEmotionClassifyUseCase()
+    }
+    
+    DIContainer.shared.register(type: DiaryUseCase.self) { container in
+      guard let diaryRepository = container.resolve(type: DiaryRepository.self) else {
+        return
+      }
+
+      return DefaultDiaryUseCase(diaryRepository: diaryRepository)
+    }
   }
 
   func presentationAssemble() {
     guard let navigationController else { return }
+    guard let recordNavigationController else { return }
     
     DIContainer.shared.register(type: TabBarCoordinator.self) { _ in
       return DefaultTabBarCoordinator(navigationController: navigationController)
@@ -74,7 +108,7 @@ private extension SceneDelegate {
     }
     
     DIContainer.shared.register(type: RecordCoordinator.self) { _ in
-      return DefaultRecordCoordinator(navigationController: navigationController)
+      return DefaultRecordCoordinator(navigationController: recordNavigationController)
     }
     
     DIContainer.shared.register(type: HomeCoordinator.self) { _ in
@@ -84,6 +118,14 @@ private extension SceneDelegate {
     DIContainer.shared.register(type: DiaryDetailCoordinator.self) { _ in
       return DefaultDiaryDetailCoordinator(navigationController: navigationController)
     }
+    
+    DIContainer.shared.register(type: EmotionAnalyzeCoordinator.self) { _ in
+      return DefaultEmotionAnalyzeCoordinator(navigationController: recordNavigationController)
+    }
+    
+    DIContainer.shared.register(type: AnalyzeResultCoordinator.self) { _ in
+      return DefaultAnalyzeResultCoordinator(navigationController: recordNavigationController)
+    }
   }
 
   func startScene() {
@@ -92,4 +134,3 @@ private extension SceneDelegate {
     tabBarCoordinator.start()
   }
 }
-
