@@ -15,14 +15,6 @@ final class ReportView: UIView {
   var emotion = "슬픔"
 
   // MARK: - UI Components
-  private let reportCountStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.spacing = 10
-    stackView.distribution = .fillEqually
-    return stackView
-  }()
-
   private let titleLabel = CommonLabel(text: "하임이와 함께 한 기록", font: .bold, size: LayoutConstants.titleOne, textColor: .white)
   private let totalReportView: UIView = {
     let reportCountView = ReportCountView()
@@ -66,7 +58,6 @@ final class ReportView: UIView {
 private extension ReportView {
   func setupViews() {
     self.backgroundColor = .clear
-    addSubview(reportCountStackView)
     addSubview(emotionLabel)
     addSubview(graphView)
     addSubview(replyTitleLabel)
@@ -74,20 +65,23 @@ private extension ReportView {
   }
 
   func setupRecordReportStackView() {
-    [titleLabel, totalReportView].forEach {
-      reportCountStackView.addArrangedSubview($0)
-    }
+    addSubview(totalReportView)
+    addSubview(titleLabel)
   }
 
   func setupLayoutConstraints() {
-    reportCountStackView.snp.makeConstraints {
-      $0.top.equalTo(safeAreaLayoutGuide)
+    titleLabel.snp.makeConstraints {
+      $0.top.equalToSuperview()
       $0.centerX.equalToSuperview()
-      $0.height.equalTo(UIApplication.screenHeight * LayoutConstants.reportCountStackViewHeight)
-      $0.bottom.equalTo(emotionLabel.snp.top).offset(LayoutConstants.reportCountStackViewBottom)
+    }
+    
+    totalReportView.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(16)
+      $0.centerX.equalToSuperview()
     }
 
     emotionLabel.snp.makeConstraints {
+      $0.top.equalTo(totalReportView.snp.bottom).offset(50)
       $0.centerX.equalToSuperview()
     }
 

@@ -29,8 +29,8 @@ final class GraphView: UIView {
 
   private let emotionStack: UIStackView = {
     let stackView = UIStackView()
-    stackView.spacing = LayoutConstants.defaultPadding
-    stackView.distribution = .fillEqually
+//    stackView.spacing = LayoutConstants.defaultPadding
+    stackView.distribution = .fillProportionally
     return stackView
   }()
 
@@ -41,9 +41,9 @@ final class GraphView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupViews()
+    setupLayoutConstraints()
     setupGraphStackView()
     setupEmojiStackView()
-    setupLayoutConstraints()
   }
   // TODO: [Chart]파라미터로 하는 Initializer 만들기
 }
@@ -52,8 +52,8 @@ final class GraphView: UIView {
 private extension GraphView {
   enum LayoutConstants {
     static let defaultPadding: CGFloat = 13
-    static let graphViewHeight: CGFloat = 0.7
-    static let emotionViewHeight: CGFloat = 0.3
+    static let graphViewHeightRatio: CGFloat = 0.7
+    static let emotionViewHeightRatio: CGFloat = 0.3
   }
 
   func setupViews() {
@@ -69,8 +69,13 @@ private extension GraphView {
   }
 
   func setupEmojiStackView() {
-    emotionEmojis.forEach {
-      emotionStack.addArrangedSubview($0)
+    emotionEmojis.forEach { emotionEmoji in 
+      emotionEmoji.snp.makeConstraints {
+        $0.height.equalTo(emotionStack)
+        $0.width.equalTo(emotionEmoji.snp.height)
+      }
+      
+      emotionStack.addArrangedSubview(emotionEmoji)
     }
   }
 
@@ -78,13 +83,13 @@ private extension GraphView {
     graphStackView.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(self.snp.height).multipliedBy(LayoutConstants.graphViewHeight)
+      $0.height.equalTo(self.snp.height).multipliedBy(LayoutConstants.graphViewHeightRatio)
     }
 
     emotionStack.snp.makeConstraints {
       $0.top.equalTo(graphStackView.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.leading.trailing.equalTo(graphStackView)
-      $0.height.equalToSuperview().multipliedBy(LayoutConstants.emotionViewHeight)
+      $0.height.equalToSuperview().multipliedBy(LayoutConstants.emotionViewHeightRatio)
     }
   }
 }
