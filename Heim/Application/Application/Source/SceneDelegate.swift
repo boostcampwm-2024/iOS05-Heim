@@ -7,7 +7,7 @@
 
 import Core
 import DataModule
-import DataStorage
+import DataStorageModule
 import Domain
 import Presentation
 import NetworkModule
@@ -41,14 +41,33 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Private Extenion
 private extension SceneDelegate {
   func dependencyAssemble() {
+    dataStorageAssemble()
     dataAssemble()
     domainAssemble()
     presentationAssemble()
   }
+  
+  func dataStorageAssemble() {
+    DIContainer.shared.register(type: DataStorage.self) { _ in
+      return DefaultLocalStorage()
+    }
+  }
 
   func dataAssemble() {
-    DIContainer.shared.register(type: SettingRepository.self) { _ in
-      return DefaultSettingRepository()
+    DIContainer.shared.register(type: SettingRepository.self) { container in
+      guard let localStorage = container.resolve(type: DataStorage.self) else {
+        return
+      }
+      
+      return DefaultSettingRepository(localStorage: localStorage)
+    }
+    
+    DIContainer.shared.register(type: DiaryRepository.self) { container in
+      guard let localStorage = container.resolve(type: DataStorage.self) else {
+        return
+      }
+      
+      return DefaultDiaryRepository(dataStorage: localStorage)
     }
   }
 
@@ -59,6 +78,14 @@ private extension SceneDelegate {
       }
 
       return DefaultSettingUseCase(settingRepository: settingRepository)
+    }
+    
+    DIContainer.shared.register(type: DiaryUseCase.self) { container in
+      guard let diaryRepository = container.resolve(type: DiaryRepository.self) else {
+        return
+      }
+
+      return DefaultDiaryUseCase(diaryRepository: diaryRepository)
     }
   }
 
@@ -96,4 +123,3 @@ private extension SceneDelegate {
     tabBarCoordinator.start()
   }
 }
-
