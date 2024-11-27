@@ -10,7 +10,7 @@ import Domain
 import UIKit
 
 public protocol SettingCoordinator: Coordinator {
-  func pushQuestionWebView()
+  func openQuestionURL()
 }
 
 public final class DefaultSettingCoordinator: SettingCoordinator {
@@ -18,7 +18,7 @@ public final class DefaultSettingCoordinator: SettingCoordinator {
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
-
+  
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -33,14 +33,22 @@ public final class DefaultSettingCoordinator: SettingCoordinator {
   public func didFinish() {
     parentCoordinator?.removeChild(self)
   }
-
-  public func pushQuestionWebView() {
-    // TODO: '문의하기' 관련 구글폼 웹 뷰 연결 예정
+  
+  public func openQuestionURL() {
+    // TODO: WKWebView로 전환할 예정
+    guard let url = URL(string: "https://docs.google.com/forms/d/1OsrcQcyhgRW6uJT5tVADGMK9cW66K70i0bQVKjCSydY") else {
+      return
+    }
+    
+    // TODO: 에러 처리
+    if UIApplication.shared.canOpenURL(url) {
+      UIApplication.shared.open(url, options: [:])
+    }
   }
 }
 
 // MARK: - Private
-private extension DefaultSettingCoordinator {
+private extension DefaultSettingCoordinator{
   func settingViewController() -> SettingViewController? {
     guard let settingUseCase = DIContainer.shared.resolve(type: SettingUseCase.self) else { return nil }
     

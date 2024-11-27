@@ -9,10 +9,10 @@ import Domain
 
 public final class DefaultSettingRepository: SettingRepository {
   // MARK: - Properties
+  private let localStorage: DataStorageModule
   
   /* TODO: 추후 구현
    private let networkProvider: NetworkProvidable
-   private let localStorage: LocalStorage
    private let cloudStorage: CloudStorage
    */
 
@@ -21,8 +21,10 @@ public final class DefaultSettingRepository: SettingRepository {
   // TODO: 추후 구현
   public init(
 //    networkProvider: NetworkProvidable
+    localStorage: DataStorageModule
   ) {
 //    self.networkProvider = networkProvider
+    self.localStorage = localStorage
   }
   
   public func fetchUserName() async throws -> String {
@@ -31,10 +33,11 @@ public final class DefaultSettingRepository: SettingRepository {
   }
   
   public func removeCacheData() async throws {
-    // TODO: 추후 구현
+    try await localStorage.deleteAll()
   }
   
   public func resetData() async throws {
-    // TODO: 추후 구현
+    // TODO: 우선 removeCacheData와 동일하게 구현
+    try await localStorage.deleteAll()
   }
 }

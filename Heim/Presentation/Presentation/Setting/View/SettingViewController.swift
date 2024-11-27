@@ -85,7 +85,7 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
   }
 }
 
-extension SettingViewController: UITableViewDelegate {
+extension SettingViewController: UITableViewDelegate, Alertable {
   func tableView(
     _ tableView: UITableView,
     didSelectRowAt indexPath: IndexPath
@@ -95,11 +95,24 @@ extension SettingViewController: UITableViewDelegate {
       //TODO: 이름 설정 팝업창 출력
       return
     case 2: // 캐시 삭제
-      viewModel.action(.removeCache)
+      // TODO: Alert창의 너비 조절
+      presentAlert(
+        type: .removeCache,
+        leftButtonAction: {},
+        rightButtonAction: { [weak self] in
+          self?.viewModel.action(.removeCache)
+        }
+      )
     case 3: // 데이터 초기화
-      viewModel.action(.resetData)
+      presentAlert(
+        type: .removeCache,
+        leftButtonAction: {},
+        rightButtonAction: { [weak self] in
+          self?.viewModel.action(.resetData)
+        }
+      )
     case 5: // 문의하기
-      coordinator?.pushQuestionWebView()
+      coordinator?.openQuestionURL()
     default:
       return
     }

@@ -11,4 +11,5 @@ public protocol DataStorageModule {
   func readData<T: Decodable>(timeStamp: String) async throws -> T
   func saveData<T: Encodable>(timeStamp: String, data: T) async throws
   func deleteData(timeStamp: String) async throws
+  func deleteAll() async throws
 }
