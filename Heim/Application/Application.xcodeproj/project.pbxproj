@@ -13,7 +13,7 @@
 		4093ABAB2CDB9CBE00F7E060 /* NetworkModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B51E2CD9F87A001C5040 /* NetworkModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4093ABAC2CDB9CBF00F7E060 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4BB2CD9B6D6001C5040 /* Presentation.framework */; };
 		4093ABAD2CDB9CBF00F7E060 /* Presentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4BB2CD9B6D6001C5040 /* Presentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8090049F2CF5CC7900A363C4 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8090049E2CF5CC7900A363C4 /* Lottie */; };
+		40B58B312CF5BA9800D67922 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 40B58B302CF5BA9800D67922 /* Lottie */; };
 		80A6CE392CECC67B00CE2285 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A6CE382CECC67B00CE2285 /* Core.framework */; };
 		80A6CE3A2CECC67B00CE2285 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80A6CE382CECC67B00CE2285 /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80A6CE3C2CECC68000CE2285 /* DataModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A6CE3B2CECC68000CE2285 /* DataModule.framework */; };
@@ -106,10 +106,10 @@
 			files = (
 				80A6CE3E2CECC68400CE2285 /* DataStorage.framework in Frameworks */,
 				4093ABA72CDB9CBC00F7E060 /* DataStorage.framework in Frameworks */,
+				40B58B312CF5BA9800D67922 /* Lottie in Frameworks */,
 				80A6CE3F2CECC68900CE2285 /* NetworkModule.framework in Frameworks */,
 				4093ABAA2CDB9CBE00F7E060 /* NetworkModule.framework in Frameworks */,
 				80A6CE412CECC69600CE2285 /* Domain.framework in Frameworks */,
-				8090049F2CF5CC7900A363C4 /* Lottie in Frameworks */,
 				4093ABAC2CDB9CBF00F7E060 /* Presentation.framework in Frameworks */,
 				80A6CE3C2CECC68000CE2285 /* DataModule.framework in Frameworks */,
 				80A6CE392CECC67B00CE2285 /* Core.framework in Frameworks */,
@@ -189,7 +189,7 @@
 			);
 			name = Application;
 			packageProductDependencies = (
-				8090049E2CF5CC7900A363C4 /* Lottie */,
+				40B58B302CF5BA9800D67922 /* Lottie */,
 			);
 			productName = Application;
 			productReference = B307B4862CD9B5AB001C5040 /* Application.app */;
@@ -272,7 +272,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				B307B6AD2CDC7BF1001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */,
-				8090049D2CF5CC7900A363C4 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				40B58B2F2CF5BA8E00D67922 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B307B4872CD9B5AB001C5040 /* Products */;
@@ -673,7 +673,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8090049D2CF5CC7900A363C4 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+		40B58B2F2CF5BA8E00D67922 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
 			requirement = {
@@ -692,9 +692,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8090049E2CF5CC7900A363C4 /* Lottie */ = {
+		40B58B302CF5BA9800D67922 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8090049D2CF5CC7900A363C4 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			package = 40B58B2F2CF5BA8E00D67922 /* XCRemoteSwiftPackageReference "lottie-spm" */;
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */

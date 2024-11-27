@@ -83,7 +83,7 @@ private extension MusicTableViewCell {
     static let shadowOffsetHeight: CGFloat = 5
     static let shadowOffsetWidth: CGFloat = 0
     static let shadowRadius: CGFloat = 4
-    static let shadowOpacity: CGFloat = 0.7
+    static let shadowOpacity: Float = 0.7
   }
 
   func setupViews() {

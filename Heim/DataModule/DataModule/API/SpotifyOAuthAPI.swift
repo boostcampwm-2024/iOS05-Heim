@@ -50,7 +50,7 @@ extension SpotifyOAuthAPI: RequestTarget {
   
   var query: [String: Any] {
     switch self {
-    case .authorize(let dto): dto.toSnakeCaseDictionary()
+    case .authorize(let dto): dto.dictionary
     case .accessToken: [:]
     }
   }
