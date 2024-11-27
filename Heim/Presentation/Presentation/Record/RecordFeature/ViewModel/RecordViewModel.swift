@@ -30,6 +30,7 @@ public final class RecordViewModel: ViewModel {
   
   private var isPaused: Bool = false
   private var voice: Voice?
+  private var recognizedText: String?
   
   // MARK: - Initializer
   public init() {
@@ -54,7 +55,13 @@ public final class RecordViewModel: ViewModel {
   }
   
   func voiceData() -> Voice? {
+    // TODO: nil 일때 에러 처리
     return voice
+  }
+  
+  func recognizedTextData() -> String? {
+    recognizedText = recordManager.recognizedText
+    return recognizedText
   }
 }
 
