@@ -44,7 +44,7 @@ extension UIColor {
   )
 
   static let whiteGray = UIColor(
-    red:  233 / 255.0,
+    red: 233 / 255.0,
     green: 235 / 255.0,
     blue: 137 / 255.0,
     alpha: 0.3
@@ -119,5 +119,18 @@ extension UIColor {
     blue: 188 / 255,
     alpha: 1.0
   )
-
+  
+  static let dayRed = UIColor(
+    red: 240 / 255,
+    green: 100 / 255,
+    blue: 100 / 255,
+    alpha: 1
+  )
+  
+  static let dayBlue = UIColor(
+    red: 92 / 255,
+    green: 148 / 255,
+    blue: 255 / 255,
+    alpha: 1
+  )
 }
