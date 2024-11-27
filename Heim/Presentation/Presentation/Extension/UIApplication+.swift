@@ -15,11 +15,7 @@ extension UIApplication {
     return windowScene.screen.bounds.size
   }
   
-  static var screenHeight: CGFloat {
-    return screenSize.height
-  }
-  
-  static var screenWidth: CGFloat {
-    return screenSize.width
-  }
+  static let screenHeight: CGFloat = screenSize.height
+  static let screenWidth: CGFloat = screenSize.width
+  static let isMinimumSizeDevice: Bool = screenSize.height <= 667
 }
