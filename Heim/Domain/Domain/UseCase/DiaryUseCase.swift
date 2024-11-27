@@ -16,6 +16,7 @@ public protocol DiaryUseCase {
   func saveDiary(timeStamp: String, data: Diary) async throws
   // TODO: 인덱스 접근 고려
   func deleteDiary(timeStamp: String) async throws
+  func countTotalDiary() async throws -> Int
 }
 
 public struct DefaultDiaryUseCase: DiaryUseCase {
@@ -38,5 +39,9 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
   
   public func deleteDiary(timeStamp: String) async throws {
     try await diaryRepository.deleteDiary(timeStamp: timeStamp)
+  }
+
+  public func countTotalDiary() async throws -> Int{
+    return try await diaryRepository.countTotalDiary()
   }
 }
