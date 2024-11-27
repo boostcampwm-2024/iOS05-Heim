@@ -43,7 +43,7 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
     addChildCoordinator(defaultHomeCoordinator)
     defaultHomeCoordinator.parentCoordinator = self
     
-    let homeViewController = defaultHomeCoordinator.provideHomeViewController()
+    guard let homeViewController = defaultHomeCoordinator.provideHomeViewController() else { return }
     addChildView(homeViewController)
   }
   
