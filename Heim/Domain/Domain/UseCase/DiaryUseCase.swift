@@ -12,10 +12,10 @@ public protocol DiaryUseCase {
   var diaryRepository: DiaryRepository { get }
 
   // MARK: - Methods
-  func readDiary(timeStamp: String) async throws -> Diary
-  func saveDiary(timeStamp: String, data: Diary) async throws
+  func readDiaries(calendarDate: CalendarDate) async throws -> [Diary]
+  func saveDiary(data: Diary) async throws
   // TODO: 인덱스 접근 고려
-  func deleteDiary(timeStamp: String) async throws
+  func deleteDiary(calendarDate: CalendarDate) async throws
 }
 
 public struct DefaultDiaryUseCase: DiaryUseCase {
@@ -28,15 +28,15 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
   }
 
   // MARK: - Methods
-  public func readDiary(timeStamp: String) async throws -> Diary {
-    return try await diaryRepository.readDiary(timeStamp: timeStamp)
+  public func readDiaries(calendarDate: CalendarDate) async throws -> [Diary] {
+    return try await diaryRepository.readDiaries(calendarDate: calendarDate)
   }
   
-  public func saveDiary(timeStamp: String, data: Diary) async throws {
-    try await diaryRepository.saveDiary(timeStamp: timeStamp, data: data)
+  public func saveDiary(data: Diary) async throws {
+    try await diaryRepository.saveDiary(data: data)
   }
   
-  public func deleteDiary(timeStamp: String) async throws {
-    try await diaryRepository.deleteDiary(timeStamp: timeStamp)
+  public func deleteDiary(calendarDate: CalendarDate) async throws {
+    try await diaryRepository.deleteDiary(calendarDate: calendarDate)
   }
 }
