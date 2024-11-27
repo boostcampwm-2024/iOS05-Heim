@@ -65,25 +65,23 @@ final class AnalyzeResultView: UIView {
     return stackView
   }()
   
-  private lazy var musicRecomendationButton: CommonRectangleButton = {
+  private let musicRecomendationButton: CommonRectangleButton = {
     let button = CommonRectangleButton(
       title: "하임이가 추천하는 노래 듣기",
       fontStyle: .boldFont(ofSize: LayoutConstants.buttonLabelFontSize),
       titleColor: .white,
       backgroundColor: .primaryTransparent
     )
-    button.addTarget(self, action: #selector(musicRecomendationButtonTapped), for: .touchUpInside)
     return button
   }()
   
-  private lazy var homeButton: CommonRectangleButton = {
+  private let homeButton: CommonRectangleButton = {
     let button = CommonRectangleButton(
       title: "메인 화면으로 이동하기",
       fontStyle: .boldFont(ofSize: LayoutConstants.buttonLabelFontSize),
       titleColor: .white,
       backgroundColor: .primaryTransparent
     )
-    button.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -91,6 +89,7 @@ final class AnalyzeResultView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupViews()
+    setupActions()
     setupLayoutConstraints()
   }
   
@@ -125,6 +124,11 @@ private extension AnalyzeResultView {
     }
   }
   
+  func setupActions() {
+    musicRecomendationButton.addTarget(self, action: #selector(musicRecomendationButtonTapped), for: .touchUpInside)
+    homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
+  }
+  
   func setupLayoutConstraints() {
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -136,7 +140,7 @@ private extension AnalyzeResultView {
     }
     
     titleLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(LayoutConstants.padding)
+      $0.top.equalTo(safeAreaLayoutGuide).offset(LayoutConstants.padding)
       $0.centerX.equalToSuperview()
     }
     

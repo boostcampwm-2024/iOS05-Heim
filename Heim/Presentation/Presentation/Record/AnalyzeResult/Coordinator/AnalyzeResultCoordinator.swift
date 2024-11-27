@@ -12,7 +12,7 @@ import UIKit
 public protocol AnalyzeResultCoordinator: Coordinator {
   func start(diary: Diary)
   func pushMusicRecommendationView()
-  func pushHomeView()
+  func backToApproachView()
 }
 
 public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
@@ -41,7 +41,7 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
     // TODO: 노래 추천으로 이동
   }
   
-  public func pushHomeView() {
+  public func backToApproachView() {
     // TODO: 홈 화면으로 이동
   }
 }
@@ -49,9 +49,9 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
 // MARK: - Private
 private extension DefaultAnalyzeResultCoordinator {
   func analyzeResultViewController(diary: Diary) -> AnalyzeResultViewController? {
-    guard let analyzeResultUseCase = DIContainer.shared.resolve(type: AnalyzeResultUseCase.self) else { return nil }
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
     
-    let viewModel = AnalyzeResultViewModel(useCase: analyzeResultUseCase, diary: diary)
+    let viewModel = AnalyzeResultViewModel(useCase: diaryUseCase, diary: diary)
     let viewController = AnalyzeResultViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController

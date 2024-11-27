@@ -62,7 +62,7 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
       .filter { $0 }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] _ in
-        self?.coordinator?.pushHomeView()
+        self?.coordinator?.backToApproachView()
       }
       .store(in: &cancellable)
   }

@@ -24,12 +24,12 @@ final class AnalyzeResultViewModel: ViewModel {
   }
   
   @Published var state: State
-  private let useCase: AnalyzeResultUseCase
+  private let useCase: DiaryUseCase
   private let diary: Diary
   
   // MARK: - Initializer
   init(
-    useCase: AnalyzeResultUseCase,
+    useCase: DiaryUseCase,
     diary: Diary
   ) {
     state = State()
@@ -41,14 +41,10 @@ final class AnalyzeResultViewModel: ViewModel {
   func action(_ action: Action) {
     switch action {
     case .fetchDiary:
-      setUp()
+      configureUI()
     case .saveDiary:
       Task {
-        // TODO: 주석 제거
-//        print("시작")
         await handleSaveDiary()
-//        sleep(2)
-//        print("끝")
         state.isSaved = true
       }
     }
@@ -71,10 +67,10 @@ private extension AnalyzeResultViewModel {
     }
   }
   
-  func setUp() {
-    // TODO: 
+  func configureUI() {
+    // TODO:
     state.description = diary.emotion.rawValue
-    state.content = diary.summary.text
+    state.content = diary.emotionReport.text
   }
 }
 
