@@ -13,7 +13,7 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
   private let contentView = EmotionAnalyzeView()
   
   // MARK: - Properties
-  weak var coordinator: DefaultEmotionAnalyzeRecordCoordinator?
+  weak var coordinator: DefaultEmotionAnalyzeCoordinator?
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -41,7 +41,7 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    coordinator?.didFinish()
+    // coordinator?.didFinish()
   }
   
   override func bindState() {
@@ -60,6 +60,7 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
 
 extension EmotionAnalyzeViewController: EmotionAnalyzeViewDelegate {
   func buttonDidTap(_ emotionAnalyzeView: EmotionAnalyzeView) {
-    // TODO: 분석 결과로 이동 (Diary를 보냄) -> diaryData()
+    let diary = viewModel.diaryData()
+    coordinator?.pushDiaryReportView(diary: diary)
   }
 }
