@@ -10,8 +10,8 @@ import Domain
 import UIKit
 
 public protocol RecordCoordinator: Coordinator {
-  func pushEmotionAnalyzeView(voice: Voice?)
-  func provideRecordViewController() -> RecordViewController
+  func pushEmotionAnalyzeView(recognizedText: String, voice: Voice)
+  func provideRecordViewController() -> UINavigationController
 }
 
 public final class DefaultRecordCoordinator: RecordCoordinator {
@@ -26,25 +26,32 @@ public final class DefaultRecordCoordinator: RecordCoordinator {
   }
   
   // MARK: - Methods
-  public func start() {
-    guard let recordViewController = createRecordViewController() else { return }
-    recordViewController.modalPresentationStyle = .fullScreen
-    navigationController.present(recordViewController, animated: true)
-  }
+  public func start() {}
   
   public func didFinish() {
     parentCoordinator?.removeChild(self)
   }
   
-  public func pushEmotionAnalyzeView(voice: Voice?) {
-    // TODO: EmotionAnlyzeView와 연결
+  public func pushEmotionAnalyzeView(recognizedText: String, voice: Voice) {
+    guard let defaultEmotionAnalyzeCoordinator = DIContainer.shared.resolve(
+      type: EmotionAnalyzeCoordinator.self
+    ) else {
+      return
+    }
+    
+    addChildCoordinator(defaultEmotionAnalyzeCoordinator)
+    defaultEmotionAnalyzeCoordinator.parentCoordinator = self
+    defaultEmotionAnalyzeCoordinator.start(recognizedText: recognizedText, voice: voice)
   }
   
-  public func provideRecordViewController() -> RecordViewController {
-    guard let recordViewController = createRecordViewController() else { 
-      return RecordViewController(viewModel: RecordViewModel()) 
+  public func provideRecordViewController() -> UINavigationController {
+    guard let recordViewController = createRecordViewController() else {
+      return UINavigationController()
     }
-    return recordViewController
+    
+    navigationController.viewControllers = [recordViewController]
+    
+    return navigationController
   }
 }
 
