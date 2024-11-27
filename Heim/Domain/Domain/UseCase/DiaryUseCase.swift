@@ -41,7 +41,7 @@ public struct DefaultDiaryUseCase: DiaryUseCase {
     try await diaryRepository.deleteDiary(timeStamp: timeStamp)
   }
 
-  public func countTotalDiary() async throws -> Int{
+  public func countTotalDiary() async throws -> Int {
     return try await diaryRepository.countTotalDiary()
   }
 }

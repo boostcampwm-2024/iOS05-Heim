@@ -34,7 +34,7 @@ public final class DefaultDiaryRepository: DiaryRepository {
     try await dataStorage.deleteData(timeStamp: timeStamp)
   }
 
-  public func readTotalDairyCount() async throws -> Int {
+  public func countTotalDiary() async throws -> Int {
     return try await dataStorage.countAllFiles()
   }
 }
