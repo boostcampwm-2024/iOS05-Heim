@@ -42,7 +42,7 @@ final class DiaryDetailViewModel: ViewModel {
   func action(_ action: Action) {
     switch action {
     case .fetchDiary:
-      setUp()
+      setupInitialState()
     case .deleteDiary:
       Task {
         await handleDeleteDiary()
@@ -69,7 +69,7 @@ private extension DiaryDetailViewModel {
   }
   
   // TODO: 날짜 정보 초기화하는 기능 구현
-  func setUp() {
+  func setupInitialState() {
     // state.date = diary.id
     state.description = diary.emotion.rawValue
     state.content = diary.summary.text

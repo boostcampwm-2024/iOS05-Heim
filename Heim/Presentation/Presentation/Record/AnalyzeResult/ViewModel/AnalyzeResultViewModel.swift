@@ -41,7 +41,7 @@ final class AnalyzeResultViewModel: ViewModel {
   func action(_ action: Action) {
     switch action {
     case .fetchDiary:
-      configureUI()
+      setupInitialState()
     case .saveDiary:
       Task {
         await handleSaveDiary()
@@ -67,7 +67,7 @@ private extension AnalyzeResultViewModel {
     }
   }
   
-  func configureUI() {
+  func setupInitialState() {
     // TODO:
     state.description = diary.emotion.rawValue
     state.content = diary.emotionReport.text
