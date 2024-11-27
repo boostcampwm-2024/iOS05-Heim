@@ -52,8 +52,8 @@ private extension OAuthNetworkProvider {
     do {
       try tokenManager.isAccessTokenValid()
     } catch TokenError.accessTokenExpired {
-      let refreshToken = try tokenManager.loadRefreshToken()
       do {
+        let refreshToken = try tokenManager.loadRefreshToken()
         try await refresh(token: refreshToken)
       } catch {
         throw TokenError.refreshTokenExpired
