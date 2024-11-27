@@ -9,19 +9,12 @@ import Domain
 import UIKit
 import SnapKit
 
-public final class HomeViewController: UIViewController, Coordinatable {
+public final class HomeViewController: BaseViewController<HomeViewModel>, Coordinatable {
   // MARK: - Properties
   weak var coordinator: DefaultHomeCoordinator?
   
   // MARK: - UI Components
   private let calendarView = CalendarView()
-  
-  private let backgroundImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = .background
-    imageView.contentMode = .scaleAspectFill
-    return imageView
-  }()
   
   private let settingButton: UIButton = {
     let button = UIButton()
@@ -34,24 +27,22 @@ public final class HomeViewController: UIViewController, Coordinatable {
     super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
+    viewModel.action(.fetchDiaryData(date: Date().calendarDate()))
   }
-}
-
-// MARK: - Private Extenion
-private extension HomeViewController {
-  func setupViews() {
+  
+  // MARK: - Methods
+  public override func setupViews() {
+    super.setupViews()
+    
     calendarView.delegate = self
     settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
     
-    view.addSubview(backgroundImageView)
     view.addSubview(calendarView)
     view.addSubview(settingButton)
   }
   
-  func setupLayoutConstraints() {
-    backgroundImageView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
+  public override func setupLayoutConstraints() {
+    super.setupLayoutConstraints()
     
     calendarView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -63,6 +54,21 @@ private extension HomeViewController {
     }
   }
   
+  override func bindState() {
+    super.bindState()
+    
+    viewModel.$state
+      .map { $0.diaries }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        self?.calendarView.updateDiaries($0)
+      }
+      .store(in: &cancellable)
+  }
+}
+
+// MARK: - Private Extenion
+private extension HomeViewController {
   @objc func settingButtonDidTap() {
     coordinator?.pushSettingView()
   }
@@ -70,6 +76,14 @@ private extension HomeViewController {
 
 // MARK: - CalendarDelegate
 extension HomeViewController: CalendarDelegate {
+  func previousMonthButtonDidTap(_ button: UIButton, date: CalendarDate) {
+    viewModel.action(.fetchDiaryData(date: date))
+  }
+  
+  func nextMonthButtonDidTap(_ button: UIButton, date: CalendarDate) {
+    viewModel.action(.fetchDiaryData(date: date))
+  }
+  
   func collectionViewCellDidTap(
     _ collectionView: UICollectionView,
     diary: Diary
