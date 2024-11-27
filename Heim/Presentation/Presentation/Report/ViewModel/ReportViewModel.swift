@@ -18,8 +18,8 @@ final class ReportViewModel: ViewModel {
   }
 
   struct EmotionCount: Equatable {
-    var sadnessCount: Int
-    var happinessCount: Int
+    var sadCount: Int
+    var happyCount: Int
     var surpriseCount: Int
     var fearCount: Int
     var disgustCount: Int
@@ -37,18 +37,19 @@ final class ReportViewModel: ViewModel {
     var reply: String
   }
 
-// TODO: UseCase 추가
+  // TODO: UseCase 추가
+  private let useCase: DiaryUseCase
   @Published var state: State
 
   // MARK: - Initializer
   // TODO: Initializer에 UseCase 추가
-  init() {
-    self.state = State(userName: "미래",
+  init(useCase: DiaryUseCase) {
+    self.state = State(userName: "미래", // TODO: userName
                        totalCount: 0,
                        sequenceCount: 0,
                        monthCount: 0,
-                       emotionCount: EmotionCount(sadnessCount: 0,
-                                                  happinessCount: 0,
+                       emotionCount: EmotionCount(sadCount: 0,
+                                                  happyCount: 0,
                                                   surpriseCount: 0,
                                                   fearCount: 0,
                                                   disgustCount: 0,
@@ -56,17 +57,75 @@ final class ReportViewModel: ViewModel {
                                                   angryCount: 0),
                        emotion: "",
                        reply: "답장이 도착하지 않았어요!")
+    self.useCase = useCase
   }
 
   func action(_ action: Action) {
     switch action {
     case .fetchData:
-      fetchData()
+      Task {
+        await fetchData()
+      }
     }
   }
 }
 
 // MARK: - Private Extenion
 private extension ReportViewModel {
-  func fetchData() {}
+  func fetchData() async{
+    do {
+      state.totalCount = try await useCase.countTotalDiary()
+      // TODO: 30일 다이어리 가지고 오기
+      // TODO: countEmotion()
+      // TODO: returnMajorEmotion()
+    } catch {
+      // TODO: 에러
+    }
+  }
+
+  func countEmotion(diarys: [Diary]) {
+    for diary in diarys {
+      switch diary.emotion {
+      case .sadness:
+        state.emotionCount.sadCount += 1
+      case .happiness:
+        state.emotionCount.happyCount += 1
+      case .angry:
+        state.emotionCount.angryCount += 1
+      case .surprise:
+        state.emotionCount.surpriseCount += 1
+      case .fear:
+        state.emotionCount.fearCount += 1
+      case .disgust:
+        state.emotionCount.disgustCount += 1
+      case .neutral:
+        state.emotionCount.neutralCount += 1
+      case .none:
+        break
+      @unknown default:
+        continue
+      }
+    }
+  }
+
+  func returnMajorEmotion() {
+    let emotionCounts = state.emotionCount
+    let totalEmotionCounts = [
+      ("슬픔", emotionCounts.sadCount),
+      ("행복", emotionCounts.happyCount),
+      ("화남", emotionCounts.angryCount),
+      ("놀람", emotionCounts.surpriseCount),
+      ("공포", emotionCounts.fearCount),
+      ("혐오", emotionCounts.disgustCount),
+      ("중립", emotionCounts.neutralCount)
+    ]
+
+    guard let majorEmotion = totalEmotionCounts.max(by: { $0.1 < $1.1 }) else {
+      state.emotion = "없음"
+      return
+    }
+    state.emotion = majorEmotion.0
+    // TODO: 재미나이 호출
+    // state.reply
+  }
 }
