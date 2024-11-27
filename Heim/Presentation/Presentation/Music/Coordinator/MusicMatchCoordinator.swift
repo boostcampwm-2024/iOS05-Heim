@@ -10,7 +10,7 @@ import Domain
 import UIKit
 
 public protocol MusicMatchCoordinator: Coordinator {
-  func pushHomeView()
+  func backToMainView()
 
 }
 
@@ -35,7 +35,9 @@ public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
     parentCoordinator?.removeChild(self)
   }
 
-  public func pushHomeView() {
+  public func backToMainView() {
+    didFinish()
+    navigationController.popToRootViewController(animated: true)
   }
 
 }

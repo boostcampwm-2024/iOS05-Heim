@@ -19,8 +19,7 @@ final class MusicMatchViewModel: ViewModel {
   }
 
   struct State: Equatable {
-    var isPlay: Bool
-    var isPause: Bool
+    var isPlaying: Bool
   }
 
 // TODO: UseCase 추가
@@ -28,7 +27,7 @@ final class MusicMatchViewModel: ViewModel {
 
   // MARK: - Initializer
   init() {
-    self.state = State(isPlay: false, isPause: false)
+    self.state = State(isPlaying: false)
   }
 
   func action(_ action: Action) {

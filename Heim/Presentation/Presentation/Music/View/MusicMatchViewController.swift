@@ -107,11 +107,12 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     homeButton.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
       $0.top.equalTo(musicTableView.snp.bottom).offset(LayoutConstants.homeButtonTop)
+      $0.height.equalTo(LayoutConstants.homeButtonHeight)
     }
   }
 
   @objc func homeButtondidTap() {
-    coordinator?.pushHomeView()
+    coordinator?.backToMainView()
   }
 }
 
@@ -159,6 +160,7 @@ private extension MusicMatchViewController {
     static let homeButtonTop: CGFloat = 32
     static let cornerRadius: CGFloat = 10
     static let tableViewBottom = UIApplication.screenHeight * 170 / UIApplication.screenHeight * -1
+    static let homeButtonHeight = UIApplication.screenHeight * 0.07
   }
 
   // MARK: - Layout
