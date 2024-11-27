@@ -5,7 +5,7 @@
       location = "group:Application/Application.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:DataStorage/DataStorage.xcodeproj">
+      location = "group:DataStorage/DataStorageModule.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Core/Core.xcodeproj">
