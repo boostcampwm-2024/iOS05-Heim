@@ -15,22 +15,7 @@ final class ReportView: UIView {
   var emotion = "슬픔"
 
   // MARK: - UI Components
-  private let reportCountStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.spacing = 10
-    stackView.distribution = .fillEqually
-    return stackView
-  }()
-
-  private let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = "하임이와 함께 한 기록"
-    label.textColor = .white
-    label.font = UIFont.boldFont(ofSize: LayoutConstants.titleOne)
-    return label
-  }()
-
+  private let titleLabel = CommonLabel(text: "하임이와 함께 한 기록", font: .bold, size: LayoutConstants.titleOne, textColor: .white)
   private let totalReportView: UIView = {
     let reportCountView = ReportCountView()
     reportCountView.layer.cornerRadius = 10
@@ -53,13 +38,7 @@ final class ReportView: UIView {
   }()
   
   private let graphView = GraphView()
-
-  private let replyTitleLabel: CommonLabel = {
-    let label = CommonLabel(font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
-    label.text = "하임이의 답장"
-    return label
-  }()
-
+  private let replyTitleLabel = CommonLabel(text: "하임이의 답장", font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
   private let replyTextView = CommonTextAreaView()
 
   // MARK: - Initialize
@@ -79,7 +58,6 @@ final class ReportView: UIView {
 private extension ReportView {
   func setupViews() {
     self.backgroundColor = .clear
-    addSubview(reportCountStackView)
     addSubview(emotionLabel)
     addSubview(graphView)
     addSubview(replyTitleLabel)
@@ -87,34 +65,36 @@ private extension ReportView {
   }
 
   func setupRecordReportStackView() {
-    [titleLabel, totalReportView].forEach {
-      reportCountStackView.addArrangedSubview($0)
-    }
+    addSubview(totalReportView)
+    addSubview(titleLabel)
   }
-  //TODO: 스크린 사이즈 entension으로 수정
+
   func setupLayoutConstraints() {
-    reportCountStackView.snp.makeConstraints {
-      $0.top.equalTo(self.safeAreaLayoutGuide)
+    titleLabel.snp.makeConstraints {
+      $0.top.equalTo(safeAreaLayoutGuide)
       $0.centerX.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height * LayoutConstants.reportCountStackViewHeight)
-      $0.bottom.equalTo(emotionLabel.snp.top).offset(LayoutConstants.reportCountStackViewBottom)
+    }
+    
+    totalReportView.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
+      $0.centerX.equalToSuperview()
     }
 
     emotionLabel.snp.makeConstraints {
+      $0.top.equalTo(totalReportView.snp.bottom).offset(LayoutConstants.emotionLabelBottom)
       $0.centerX.equalToSuperview()
     }
 
     graphView.snp.makeConstraints {
-      $0.top.equalTo(emotionLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
-      $0.height.equalTo(UIScreen.main.bounds.height * LayoutConstants.graphViewHeight)
-      $0.width.equalTo((UIScreen.main.bounds.width - LayoutConstants.graphViewWidth))
+      $0.top.equalTo(emotionLabel.snp.bottom).offset(LayoutConstants.graphViewTop)
+      $0.height.equalTo(UIApplication.screenHeight * LayoutConstants.graphViewHeight)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.graphViewInset)
       $0.centerX.equalToSuperview()
     }
 
     replyTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(graphView.snp.bottom).offset(LayoutConstants.defaultPadding)
+      $0.top.equalTo(graphView.snp.bottom).offset(LayoutConstants.replyTitleLabelTop)
       $0.centerX.equalToSuperview()
-
     }
 
     replyTextView.snp.makeConstraints {
@@ -133,6 +113,9 @@ private extension ReportView {
     static let reportCountStackViewHeight: CGFloat = 0.2
     static let reportCountStackViewBottom: CGFloat = -32
     static let graphViewHeight: CGFloat = 0.2
-    static let graphViewWidth: CGFloat = 128
+    static let graphViewInset: CGFloat = 50
+    static let emotionLabelBottom: CGFloat = 32
+    static let graphViewTop: CGFloat = 32
+    static let replyTitleLabelTop: CGFloat = 32
   }
 }

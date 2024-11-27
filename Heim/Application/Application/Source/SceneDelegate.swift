@@ -84,6 +84,10 @@ private extension SceneDelegate {
     DIContainer.shared.register(type: DiaryDetailCoordinator.self) { _ in
       return DefaultDiaryDetailCoordinator(navigationController: navigationController)
     }
+    
+    DIContainer.shared.register(type: ReportCoordinator.self) { _ in
+      return DefaultReportCoordinator(navigationController: navigationController)
+    }
   }
 
   func startScene() {
