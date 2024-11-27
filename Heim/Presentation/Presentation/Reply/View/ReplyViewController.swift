@@ -9,7 +9,7 @@ import Domain
 import SnapKit
 import UIKit
 
-final class ReplyViewController: UIViewController {
+public final class ReplyViewController: UIViewController {
   // MARK: - UIComponents
   private let scrollView = UIScrollView()
   
@@ -42,7 +42,7 @@ final class ReplyViewController: UIViewController {
   private let diary: Diary
   
   // MARK: - Initializer
-  init(diary: Diary) {
+  public init(diary: Diary) {
     self.diary = diary
     super.init(nibName: nil, bundle: nil)
   }
@@ -52,7 +52,7 @@ final class ReplyViewController: UIViewController {
   }
   
   // MARK: - LifeCycle
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     setupView()
     setupLabel()
