@@ -81,16 +81,16 @@ private extension ReportCountView {
 
   func setupLayoutContstraints() {
     totalCountStackView.snp.makeConstraints {
-      $0.width.equalTo(UIApplication.screenWidth * 0.158)
-      $0.height.equalTo(90)
+      $0.width.equalTo(LayoutContants.totalCountStackViewWidth)
+      $0.height.equalTo(LayoutContants.totalCountStackViewHeight)
     }
     
     continuousCount.snp.makeConstraints {
-      $0.width.equalTo(UIApplication.screenWidth * 0.238)
+      $0.width.equalTo(LayoutContants.continuousCountStackViewWidth)
     }
     
     monthCount.snp.makeConstraints {
-      $0.width.equalTo(UIApplication.screenWidth * 0.246)
+      $0.width.equalTo(LayoutContants.monthCountStackViewWidth)
     }
     
     totalStackView.snp.makeConstraints {
@@ -104,5 +104,9 @@ private extension ReportCountView {
     static let defaultPadding: CGFloat = 16
     static let titleThree: CGFloat = 20
     static let bodyOne: CGFloat = 16
+    static let totalCountStackViewWidth: CGFloat = UIApplication.screenWidth * 0.158
+    static let totalCountStackViewHeight: CGFloat = UIApplication.screenWidth * 0.2
+    static let continuousCountStackViewWidth: CGFloat = UIApplication.screenWidth * 0.238
+    static let monthCountStackViewWidth: CGFloat = UIApplication.screenWidth * 0.246
   }
 }

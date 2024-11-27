@@ -29,8 +29,7 @@ final class GraphView: UIView {
 
   private let emotionStack: UIStackView = {
     let stackView = UIStackView()
-//    stackView.spacing = LayoutConstants.defaultPadding
-    stackView.distribution = .fillProportionally
+    stackView.distribution = .fillEqually
     return stackView
   }()
 
@@ -69,12 +68,8 @@ private extension GraphView {
   }
 
   func setupEmojiStackView() {
-    emotionEmojis.forEach { emotionEmoji in 
-      emotionEmoji.snp.makeConstraints {
-        $0.height.equalTo(emotionStack)
-        $0.width.equalTo(emotionEmoji.snp.height)
-      }
-      
+    emotionEmojis.forEach { emotionEmoji in
+      emotionEmoji.contentMode = .scaleAspectFill
       emotionStack.addArrangedSubview(emotionEmoji)
     }
   }
