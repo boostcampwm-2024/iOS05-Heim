@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>음악을 재생하려면 Apple Music 접근 권한이 필요합니다.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

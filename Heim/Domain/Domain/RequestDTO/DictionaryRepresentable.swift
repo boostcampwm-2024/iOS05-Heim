@@ -23,10 +23,25 @@ extension DictionaryRepresentable {
     
     for child in mirror.children {
       if let key = child.label {
-        dict[key.toSnakeCase()] = child.value
+        if let optionalValue = child.value as? OptionalProtocol {
+          if optionalValue.isNil {
+            continue
+          }
+        }
+        if let unwrapValue = unwrap(child.value) {
+          dict[key.toSnakeCase()] = String(describing: unwrapValue)
+        }
       }
     }
     return dict
+  }
+  
+  private func unwrap(_ value: Any) -> Any? {
+    let mirror = Mirror(reflecting: value)
+    if mirror.displayStyle == .optional {
+      return mirror.children.first?.value
+    }
+    return value
   }
 }
 
@@ -44,5 +59,15 @@ private extension String {
       }
     }
     return result.trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+  }
+}
+
+private protocol OptionalProtocol {
+  var isNil: Bool { get }
+}
+
+extension Optional: OptionalProtocol {
+  var isNil: Bool {
+    return self == nil
   }
 }
