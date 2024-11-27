@@ -9,7 +9,7 @@ import Domain
 import DataModule
 import Foundation
 
-public struct DefaultLocalStorage: DataStorageModule {
+public struct DefaultLocalStorage: DataStorage {
   // MARK: - Properties
   private let fileManager: FileManager
   private var baseURL: URL
@@ -21,8 +21,9 @@ public struct DefaultLocalStorage: DataStorageModule {
     self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
   
-  public func readData<T: Decodable>(timeStamp: String) async throws -> T {
-    let (directory, fileName) = try parseTimeStamp(timeStamp)
+  public func readData<T: Decodable>(calendarDate: CalendarDate) async throws -> T {
+    let directory = "Heim/\(calendarDate.year)/\(calendarDate.month)"
+    let fileName = calendarDate.toTimeStamp()
     let url: URL
     
     if #available(iOS 16.0, *) {
@@ -31,18 +32,19 @@ public struct DefaultLocalStorage: DataStorageModule {
       url = baseURL.appendingPathComponent(directory, isDirectory: true)
     }
     
-    let fileURL = url.appendingPathComponent(fileName)
-    
-    guard fileManager.fileExists(atPath: fileURL.path) else {
-      throw StorageError.readError
+    guard let subfolderURLs = try? fileManager.contentsOfDirectory(
+      at: url, 
+      includingPropertiesForKeys: nil, 
+      options: .skipsHiddenFiles
+    ) else {
+      throw StorageError.fileNotExist
     }
     
-    guard let jsonData = fileManager.contents(atPath: fileURL.path) else {
-      throw StorageError.readError
-    }
+    // 모든 파일의 데이터를 결합
+    guard let combinedJSON = try? makeCombinedJSON(urls: subfolderURLs) else { throw StorageError.readError }
     
     do {
-      let data = try decoder.decode(T.self, from: jsonData)
+      let data = try decoder.decode(T.self, from: combinedJSON)
       return data
     } catch {
       throw StorageError.readError
@@ -50,10 +52,11 @@ public struct DefaultLocalStorage: DataStorageModule {
   }
   
   public func saveData<T: Encodable>(
-    timeStamp: String,
+    calendarDate: CalendarDate,
     data: T
   ) async throws {
-    let (directory, fileName) = try parseTimeStamp(timeStamp)
+    let directory = "Heim/\(calendarDate.year)/\(calendarDate.month)/\(calendarDate.day)"
+    let fileName = calendarDate.toTimeStamp() + ".json"
     let url: URL
     
     if #available(iOS 16.0, *) {
@@ -66,6 +69,7 @@ public struct DefaultLocalStorage: DataStorageModule {
     
     // MARK: - Create File
     do {
+      encoder.outputFormatting = .prettyPrinted
       let encodingData = try encoder.encode(data)
       let fileURL = url.appendingPathComponent(fileName)
       fileManager.createFile(atPath: fileURL.path, contents: encodingData)
@@ -74,8 +78,9 @@ public struct DefaultLocalStorage: DataStorageModule {
     }
   }
   
-  public func deleteData(timeStamp: String) async throws {
-    let (directory, fileName) = try parseTimeStamp(timeStamp)
+  public func deleteData(calendarDate: CalendarDate) async throws {
+    let directory = "Heim/\(calendarDate.year)/\(calendarDate.month)/\(calendarDate.day)"
+    let fileName = calendarDate.toTimeStamp() + ".json"
     let url: URL
     
     if #available(iOS 16.0, *) {
@@ -113,9 +118,13 @@ public struct DefaultLocalStorage: DataStorageModule {
   // TODO: 만약 현재 baseURL(documents)에 path를 추가해서
   // documents/HeimStorage 로 baseURL을 변경한다면 HeimStorage를 한번에 지우는 방법이 더욱 효율적일 거 같습니다.
   public func deleteAll() async throws {
+    guard let heimDirectoryURL = URL(string: baseURL.absoluteString + "/Heim") else {
+      throw StorageError.deleteError
+    }
+    
     do {
       let contents = try fileManager.contentsOfDirectory(
-        at: baseURL,
+        at: heimDirectoryURL,
         includingPropertiesForKeys: nil,
         options: [.skipsHiddenFiles]
       )
@@ -142,14 +151,42 @@ private extension DefaultLocalStorage {
     }
   }
   
-  func parseTimeStamp(_ timeStamp: String) throws -> (String, String) {
-    guard timeStamp.count == 14 else {
-      throw StorageError.invalidInput
+  // 특정 달에 속한 모든 데이터들을 결합해 반환
+  func makeCombinedJSON(urls: [URL]) throws -> Data {
+    var combinedData: [Data] = []
+    
+    for folderURL in urls {
+      var isDirectory: ObjCBool = false
+      
+      // 하위 폴더가 존재하는지 확인
+      guard fileManager.fileExists(atPath: folderURL.path, isDirectory: &isDirectory), isDirectory.boolValue,
+            let fileURLs = try? fileManager.contentsOfDirectory(
+              at: folderURL, 
+              includingPropertiesForKeys: nil, 
+              options: .skipsHiddenFiles
+            ) else {
+        throw StorageError.fileNotExist
+      }
+      
+      for fileURL in fileURLs {
+        let fileData = try Data(contentsOf: fileURL)
+        combinedData.append(fileData)
+      }
     }
     
-    let directory = String(timeStamp.prefix(8))
-    let fileName = String(timeStamp.suffix(6))
+    // 모든 데이터를 하나의 JSON형태로 조합
+    var combinedString = "["
+    for (index, json) in combinedData.enumerated() {
+      // 마지막 항목이 아니라면 쉼표 추가
+      if index < combinedData.count - 1 {
+        combinedString += (String(data: json, encoding: .utf8) ?? "") + ","
+      } else {
+        combinedString += (String(data: json, encoding: .utf8)) ?? ""
+      }
+    }
+    combinedString += "]"
     
-    return (directory, fileName)
+    guard let jsonData = combinedString.data(using: .utf8) else { return Data() }
+    return jsonData
   }
 }
