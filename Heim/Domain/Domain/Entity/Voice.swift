@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Voice: Codable {
+public struct Voice: Codable, Equatable {
   public let audioBuffer: Data
   
   public init(audioBuffer: Data) {

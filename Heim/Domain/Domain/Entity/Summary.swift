@@ -5,7 +5,7 @@
 //  Created by 정지용 on 11/19/24.
 //
 
-public struct Summary: Codable {
+public struct Summary: Codable, Equatable {
   public let text: String
   
   public init(text: String) {
