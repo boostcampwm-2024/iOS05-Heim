@@ -17,7 +17,6 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   // MARK: - Properties
   // TODO: let 수정
   private var musicDataSources: [Music]
-  private let isHiddenHomeButton: Bool
   weak var coordinator: DefaultMusicMatchCoordinator?
 
   // MARK: - UI Components
@@ -56,7 +55,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
                              Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
                              Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")]
 
-    self.isHiddenHomeButton = isHiddenHomeButton
+    self.homeButton.isHidden = isHiddenHomeButton
     super.init(viewModel: viewModel)
   }
 
@@ -77,7 +76,6 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   override func setupViews() {
     super.setupViews()
 
-    homeButton.isHidden = isHiddenHomeButton
     musicTableView.delegate = self
     musicTableView.dataSource = self
 
