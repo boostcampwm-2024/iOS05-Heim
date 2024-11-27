@@ -101,9 +101,9 @@ extension DiaryDetailViewController: DiaryDetailViewDelegate {
     case .musicRecomendation:
       coordinator?.pushMusicRecommendationView()
     case .heimReply:
-      coordinator?.pushHeimReplyView()
+      coordinator?.pushHeimReplyView(diary: viewModel.diary)
     case .replayVoice:
-      coordinator?.pushDiaryReplayView()
+      coordinator?.pushDiaryReplayView(diary: viewModel.diary)
     }
   }
 }
