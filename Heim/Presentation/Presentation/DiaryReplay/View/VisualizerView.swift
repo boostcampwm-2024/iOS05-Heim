@@ -10,6 +10,7 @@ import UIKit
 final class VisualizerView: UIView {
   private var displayLink: CADisplayLink?
   private weak var viewModel: DiaryReplayViewModel?
+  private var defaultAmplitude: CGFloat = 0.01
 
   func startVisualizer(for viewModel: DiaryReplayViewModel?) {
     self.viewModel = viewModel
@@ -28,8 +29,8 @@ final class VisualizerView: UIView {
     manager.audioPlayer.updateMeters()
 
     let power = manager.audioPlayer.averagePower(forChannel: 0)
-    let amplitude = max(0, pow(10, power / 20))
-    updateVisualizerPath(amplitude: CGFloat(amplitude))
+    let amplitude = pow(10, power / 20)
+    updateVisualizerPath(amplitude: CGFloat(max(CGFloat(amplitude) * 15, defaultAmplitude)))
   }
 
   private func updateVisualizerPath(amplitude: CGFloat) {
