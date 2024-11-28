@@ -66,7 +66,9 @@ private extension DiaryReplayViewModel {
     do {
       state.recordFile = data
       diaryReplayManager = try DiaryReplayManager(data: data)
-      state.isPlaying = true
+      diaryReplayManager?.onPlaybackFinished = { [weak self] in
+        self?.state.isPlaying = false
+      }
     } catch {
       // TODO: 사용자에게 전파
     }
@@ -75,6 +77,7 @@ private extension DiaryReplayViewModel {
   func handlePlay() {
     Task {
       await diaryReplayManager?.play()
+      state.isPlaying = true
     }
   }
 }
