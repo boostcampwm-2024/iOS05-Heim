@@ -27,7 +27,15 @@ public final class HomeViewController: BaseViewController<HomeViewModel>, Coordi
     super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
-    viewModel.action(.fetchDiaryData(date: Date().calendarDate()))
+  }
+  
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    viewModel.action(.fetchDiaryData(date: calendarView.provideCurrentCalendarDate()))
+  }
+  
+  deinit {
+    coordinator?.didFinish()
   }
   
   // MARK: - Methods

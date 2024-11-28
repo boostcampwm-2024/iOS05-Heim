@@ -7,7 +7,7 @@
 import Domain
 import UIKit
 
-final class ReportViewController: BaseViewController<ReportViewModel>, Coordinatable {
+public final class ReportViewController: BaseViewController<ReportViewModel>, Coordinatable {
   // MARK: - Properties
   weak var coordinator: DefaultReportCoordinator?
 
@@ -25,18 +25,15 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   }()
 
   // MARK: - LifeCycle
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     
     setupViews()
     setupLayoutConstraints()
   }
 
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-
-    // TODO: 수정
-    //coordinator?.didFinish()
+  deinit {
+    coordinator?.didFinish()
   }
 
   // MARK: - LayOut Methods

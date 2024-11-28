@@ -10,7 +10,9 @@ import Domain
 import UIKit
 
 //MARK: 수정 필요
-public protocol ReportCoordinator: Coordinator {}
+public protocol ReportCoordinator: Coordinator {
+  func provideReportViewController() -> ReportViewController?
+}
 
 public final class DefaultReportCoordinator: ReportCoordinator {
   // MARK: - Properties
@@ -24,20 +26,26 @@ public final class DefaultReportCoordinator: ReportCoordinator {
   }
 
   // MARK: - Methods
-  public func start() {
-    guard let reportViewController = reportViewController() else { return }
-    navigationController.pushViewController(reportViewController, animated: true)
-  }
+  public func start() {}
   
   public func didFinish() {
     parentCoordinator?.removeChild(self)
   }
 
-  func reportViewController() -> ReportViewController? {
-    // TODO: DIContainer 의존성 주입 구현
-    let viewModel = ReportViewModel()
-    let reportViewController = ReportViewController(viewModel: viewModel)
-    reportViewController.coordinator = self
+  public func provideReportViewController() -> ReportViewController? {
+    guard let reportViewController = createReportViewController() else { return nil }
     return reportViewController
+  }
+}
+
+private extension DefaultReportCoordinator {
+  func createReportViewController() -> ReportViewController? {
+    // TODO: 추후 사용
+//    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    
+    let viewModel = ReportViewModel()
+    let viewController = ReportViewController(viewModel: viewModel)
+    viewController.coordinator = self
+    return viewController
   }
 }

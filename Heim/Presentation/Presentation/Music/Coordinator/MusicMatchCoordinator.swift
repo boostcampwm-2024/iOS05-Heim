@@ -27,7 +27,7 @@ public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
 
   // MARK: - Methods
   public func start() {
-    guard let musicMatchViewController =  createMusicMatchViewController() else { return }
+    guard let musicMatchViewController = createMusicMatchViewController() else { return }
     navigationController.pushViewController(musicMatchViewController, animated: true)
   }
   
@@ -36,8 +36,11 @@ public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
   }
 
   public func backToMainView() {
-    didFinish()
-    navigationController.popToRootViewController(animated: true)
+    parentCoordinator?.removeChild(self)
+    parentCoordinator?.parentCoordinator?.removeChild(parentCoordinator)
+    parentCoordinator?.parentCoordinator?.parentCoordinator?.removeChild(parentCoordinator?.parentCoordinator)
+    
+    navigationController.dismiss(animated: true)
   }
 
 }

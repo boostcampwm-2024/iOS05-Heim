@@ -59,13 +59,12 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
   
   public func setReportView() {
     // TODO: 통계화면 구현 이후 연결 예정
-//    guard let defaultReportCoordinator = DIContainer.shared.resolve(type: ReportCoordinator.self) else { return }
-//    addChildCoordinator(defaultReportCoordinator)
-//    defaultReportCoordinator.parentCoordinator = self
-//    
-//    let homeViewController = defaultReportCoordinator.provideReportViewController()
-//    addChildView(homeViewController)
-    addChildView(UIViewController())
+    guard let defaultReportCoordinator = DIContainer.shared.resolve(type: ReportCoordinator.self) else { return }
+    addChildCoordinator(defaultReportCoordinator)
+    defaultReportCoordinator.parentCoordinator = self
+    
+    guard let reportViewController = defaultReportCoordinator.provideReportViewController() else { return }
+    addChildView(reportViewController)
   }
 }
 

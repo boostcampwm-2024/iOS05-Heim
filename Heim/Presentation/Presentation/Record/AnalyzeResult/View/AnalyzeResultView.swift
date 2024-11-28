@@ -50,9 +50,10 @@ final class AnalyzeResultView: UIView {
     return label
   }()
   
+  // TODO: 감정에 맞게 이미지 변경
   private let characterImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .recordRabbit
+    imageView.image = .angryIcon
     imageView.contentMode = .scaleAspectFit
     return imageView
   }()

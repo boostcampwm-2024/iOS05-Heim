@@ -31,9 +31,7 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
     viewModel.action(.fetchSynchronizationState)
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    
+  deinit {
     coordinator?.didFinish()
   }
   
@@ -69,19 +67,6 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
         nameCell.updateUserName(userName)
       }
       .store(in: &cancellable)
-    
-    viewModel.$state
-      .map { $0.isConnectedCloud }
-      .receive(on: DispatchQueue.main)
-      .removeDuplicates()
-      .sink { [weak self] isConnected in
-        guard let cloudCell = self?.settingTableView.cellForRow(
-          at: IndexPath(row: 1, section: 0)
-        ) as? SettingTableViewCell else { return }
-        
-        cloudCell.setupCloudSwitch(isOn: isConnected)
-      }
-      .store(in: &cancellable)
   }
 }
 
@@ -93,11 +78,11 @@ extension SettingViewController: UITableViewDelegate {
     switch indexPath.row {
     case 0: // 이름
       presentNameAlert()
-    case 2: // 캐시 삭제
+    case 1: // 캐시 삭제
       presentRemoveCacheAlert()
-    case 3: // 데이터 초기화
+    case 2: // 데이터 초기화
       presentDataResetAlert()
-    case 5: // 문의하기
+    case 4: // 문의하기
       coordinator?.openQuestionURL()
     default:
       return
@@ -110,7 +95,7 @@ extension SettingViewController: UITableViewDataSource {
     _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
-    return 6
+    return settingTableViewDataSources.count
   }
   
   func tableView(
@@ -131,9 +116,7 @@ extension SettingViewController: UITableViewDataSource {
     switch indexPath.row {
     case 0: // 이름
       cell.setupNameLabel(name: viewModel.state.userName)
-    case 1: // iCloud 동기화
-      cell.cloudSwitchDelegate = self
-    case 4: // 앱 버전
+    case 3: // 앱 버전
       cell.setupVersionLabel()
     default: 
       return cell
@@ -148,7 +131,8 @@ extension SettingViewController: CloudSwitchDelegate {
     _ cloudSwitch: UISwitch, 
     isOn: Bool
   ) {
-    viewModel.action(.updateSynchronizationState(isOn))
+    // TODO: iCloud 연동 후 구현 예정
+//    viewModel.action(.updateSynchronizationState(isOn))
   }
 }
 

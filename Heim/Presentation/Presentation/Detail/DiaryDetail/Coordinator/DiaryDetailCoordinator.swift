@@ -33,8 +33,8 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   public func start() {}
   
   public func start(diary: Diary) {
-    // TODO: diaryDetailViewController 구현
-    // navigationController.pushViewController(diaryDetailViewController, animated: true)
+    guard let diaryDetailViewController = createDiaryDetailViewController(diary: diary) else { return }
+    navigationController.pushViewController(diaryDetailViewController, animated: true)
   }
   
   public func didFinish() {
@@ -42,7 +42,13 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    // TODO: 화면 연결
+    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
+      return
+    }
+    
+    addChildCoordinator(defaultMusicMatchCoordinator)
+    defaultMusicMatchCoordinator.parentCoordinator = self
+    defaultMusicMatchCoordinator.start()
   }
   
   public func pushHeimReplyView(diary: Diary) {
@@ -55,10 +61,19 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
       viewModel: DiaryReplayViewModel(),
       diary: diary
     )
+    navigationController.pushViewController(diaryReplayViewController, animated: true)
   }
 }
 
 // MARK: - Private
 private extension DefaultDiaryDetailCoordinator {
-  // TODO: diaryDetailViewController 구현
+  func createDiaryDetailViewController(diary: Diary) -> DiaryDetailViewController? {
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    
+    
+    let viewModel = DiaryDetailViewModel(useCase: diaryUseCase, diary: diary)
+    let viewController = DiaryDetailViewController(viewModel: viewModel)
+    viewController.coordinator = self
+    return viewController
+  }
 }

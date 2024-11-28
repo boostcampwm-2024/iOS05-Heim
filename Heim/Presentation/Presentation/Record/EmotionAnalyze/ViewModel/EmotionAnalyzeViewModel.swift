@@ -56,8 +56,6 @@ final class EmotionAnalyzeViewModel: ViewModel {
         self.heimReply = heimReply
         self.summary = summary
         
-        sleep(5) // GEMINI의 응답이 5초 걸린다고 가정
-        
         // 모든 작업이 완료되면 isAnalyzing을 false로 설정
         state.isAnalyzing = false
       } catch {
