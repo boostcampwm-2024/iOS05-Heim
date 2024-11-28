@@ -49,11 +49,13 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
 
     self.musicDataSources = musics
     // TODO: 삭제
-    self.musicDataSources = [Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-                             Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")]
+    self.musicDataSources = [
+      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
+      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")
+    ]
 
     self.homeButton.isHidden = isHiddenHomeButton
     super.init(viewModel: viewModel)
@@ -67,6 +69,10 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   override func viewDidLoad() {
     setupViews()
     setupLayoutConstraints()
+  }
+  
+  deinit {
+    coordinator?.didFinish()
   }
 
   override func viewDidLayoutSubviews() {
@@ -83,9 +89,11 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     view.addSubview(musicTableView)
     view.addSubview(homeButton)
 
-    homeButton.addTarget(self,
-                     action: #selector(homeButtondidTap),
-                     for: .touchUpInside)
+    homeButton.addTarget(
+      self,
+      action: #selector(homeButtondidTap),
+      for: .touchUpInside
+    )
   }
 
   override func setupLayoutConstraints() {
@@ -142,9 +150,11 @@ extension MusicMatchViewController: UITableViewDataSource {
         // TODO: 뮤직킷 연동
     }
 
-    cell.configure(titleText: titleText,
-                   subTitle: subTilteText,
-                   action: action)
+    cell.configure(
+      titleText: titleText,
+      subTitle: subTilteText,
+      action: action
+    )
 
     return cell
   }
@@ -170,8 +180,10 @@ private extension MusicMatchViewController {
     gradientLayer.endPoint = CGPoint(x: 0, y: 1)
 
     let backgroundView = UIView(frame: musicTableView.bounds)
-    backgroundView.layer.insertSublayer(gradientLayer,
-                                        at: 0)
+    backgroundView.layer.insertSublayer(
+      gradientLayer,
+      at: 0
+    )
 
     musicTableView.backgroundView = backgroundView
   }
