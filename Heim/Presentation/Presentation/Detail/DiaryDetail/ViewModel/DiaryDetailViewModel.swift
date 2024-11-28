@@ -26,7 +26,7 @@ final class DiaryDetailViewModel: ViewModel {
   
   @Published var state: State
   private let useCase: DiaryUseCase
-  private let diary: Diary
+  let diary: Diary
   
   // MARK: - Initializer
   init(

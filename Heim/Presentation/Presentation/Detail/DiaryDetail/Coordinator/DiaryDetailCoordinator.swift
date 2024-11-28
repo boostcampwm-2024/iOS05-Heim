@@ -13,10 +13,9 @@ public protocol DiaryDetailCoordinator: Coordinator {
   func start(diary: Diary)
   // MARK: - 추천음악 감상하기로 이동
   func pushMusicRecommendationView()
-  // MARK: - 하임이의 답장 보러가기 이동
-  func pushHeimReplyView()
+  func pushHeimReplyView(diary: Diary)
   // MARK: - 나의 이야기 다시듣기 이동
-  func pushDiaryReplayView()
+  func pushDiaryReplayView(diary: Diary)
 }
 
 public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
@@ -46,11 +45,12 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
     // TODO: 화면 연결
   }
   
-  public func pushHeimReplyView() {
-    // TODO: 화면 연결
+  public func pushHeimReplyView(diary: Diary) {
+    let replyViewController = ReplyViewController(diary: diary)
+    navigationController.pushViewController(replyViewController, animated: true)
   }
   
-  public func pushDiaryReplayView() {
+  public func pushDiaryReplayView(diary: Diary) {
     // TODO: 화면 연결
   }
 }
