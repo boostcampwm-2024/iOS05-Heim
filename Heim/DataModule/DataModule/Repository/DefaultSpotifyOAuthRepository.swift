@@ -10,14 +10,14 @@ import Foundation
 
 public struct DefaultSpotifyOAuthRepository: SpotifyOAuthRepository {
   private let networkProvider: NetworkProvider
-  private let tokenStorage: TokenStorage
+  private let tokenManager: TokenManager
   
   public init(
     networkProvider: NetworkProvider,
-    tokenStorage: TokenStorage
+    tokenManager: TokenManager
   ) {
     self.networkProvider = networkProvider
-    self.tokenStorage = tokenStorage
+    self.tokenManager = tokenManager
   }
   
   public func createAuthorizationURL(codeChallenge: String) throws -> URL? {
@@ -37,7 +37,7 @@ public struct DefaultSpotifyOAuthRepository: SpotifyOAuthRepository {
   public func exchangeAccessToken(
     with code: String,
     codeVerifier: String
-  ) async throws -> Bool {
+  ) async throws {
     let response = try await networkProvider.request(
       target: SpotifyOAuthAPI.accessToken(
         dto: SpotifyAccessTokenRequestDTO(
@@ -51,10 +51,10 @@ public struct DefaultSpotifyOAuthRepository: SpotifyOAuthRepository {
       type: SpotifyAccessTokenResponseDTO.self
     )
     
-    // TODO: Refresh 기능 추가, expires 관리
-    return tokenStorage.save(
-      token: response.accessToken,
-      attrAccount: SpotifyEnvironment.accessTokenAttributeKey
+    try tokenManager.storeTokens(
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      expiresIn: response.expiresIn
     )
   }
 }

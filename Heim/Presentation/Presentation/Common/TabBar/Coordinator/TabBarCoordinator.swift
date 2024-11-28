@@ -52,9 +52,9 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
     addChildCoordinator(defaultRecordCoordinator)
     defaultRecordCoordinator.parentCoordinator = self
     
-    let recordViewController = defaultRecordCoordinator.provideRecordViewController()
-    recordViewController.modalPresentationStyle = .fullScreen
-    navigationController.present(recordViewController, animated: true)
+    let recordNavigationController = defaultRecordCoordinator.provideRecordViewController()
+    recordNavigationController.modalPresentationStyle = .fullScreen
+    navigationController.present(recordNavigationController, animated: true)
   }
   
   public func setReportView() {

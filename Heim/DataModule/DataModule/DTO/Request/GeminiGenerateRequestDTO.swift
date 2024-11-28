@@ -8,10 +8,10 @@
 import Foundation
 
 public struct GeminiGenerateRequestDTO: Encodable {
-  public let contents: [RequestContent]
-  public let generationConfig: GenerationConfig
+  private let contents: [RequestContent]
+  private let generationConfig: GenerationConfig
   
-  public init(
+  init(
     contents: [RequestContent],
     generationConfig: GenerationConfig
   ) {
@@ -21,29 +21,29 @@ public struct GeminiGenerateRequestDTO: Encodable {
 }
 
 public struct RequestContent: Encodable {
-  public let role: String
-  public let parts: [RequestPart]
+  private let role: String
+  private let parts: [RequestPart]
   
-  public init(role: String, parts: [RequestPart]) {
+  init(role: String, parts: [RequestPart]) {
     self.role = role
     self.parts = parts
   }
 }
 
 public struct RequestPart: Encodable {
-  public let text: String
+  private let text: String
   
-  public init(text: String) {
+  init(text: String) {
     self.text = text
   }
 }
 
 public struct GenerationConfig: Encodable {
-  public let temperature: Double
-  public let topK: Int
-  public let topP: Double
-  public let maxOutputTokens: Int
-  public let responseMimeType: String
+  private let temperature: Double
+  private let topK: Int
+  private let topP: Double
+  private let maxOutputTokens: Int
+  private let responseMimeType: String
   
   public init(
     temparature: Double,

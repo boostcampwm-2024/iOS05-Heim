@@ -92,8 +92,7 @@ extension SettingViewController: UITableViewDelegate, Alertable {
   ) {
     switch indexPath.row {
     case 0: // 이름
-      //TODO: 이름 설정 팝업창 출력
-      return
+      presentNameAlert()
     case 2: // 캐시 삭제
       // TODO: Alert창의 너비 조절
       presentAlert(
@@ -163,5 +162,13 @@ extension SettingViewController: CloudSwitchDelegate {
     isOn: Bool
   ) {
     viewModel.action(.updateSynchronizationState(isOn))
+  }
+}
+
+extension SettingViewController: Alertable {
+  func presentNameAlert() {
+    presentNameAlert(completion: { [weak self] textFieldText in
+      self?.viewModel.action(.updateUserName(textFieldText))
+    })
   }
 }

@@ -11,12 +11,14 @@ protocol Alertable {}
 
 enum AlertType {
   case removeDiary
+  case updateName
   case removeCache // 캐시 삭제
   case removeData  // 데이터 삭제
   
   var title: String {
     switch self {
     case .removeDiary: "나의 일기가 사라져요"
+    case .updateName: "이름을 입력하세요"
     case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
     }
@@ -25,6 +27,7 @@ enum AlertType {
   var message: String {
     switch self {
     case .removeDiary: "이 글은 더 이상 볼 수 없을텐데,\n정말 삭제하시겠어요?"
+    case .updateName: ""
     case .removeCache: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     case .removeData: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     }
@@ -33,6 +36,7 @@ enum AlertType {
   var leftButtonTitle: String {
     switch self {
     case .removeDiary: "다음에"
+    case .updateName: "닫기"
     case .removeCache: "닫기"
     case .removeData: "닫기"
     }
@@ -41,6 +45,7 @@ enum AlertType {
   var rightButtonTitle: String {
     switch self {
     case .removeDiary: "삭제"
+    case .updateName: "변경"
     case .removeCache: "확인"
     case .removeData: "확인"
     }
@@ -53,18 +58,44 @@ extension Alertable where Self: UIViewController {
     leftButtonAction: @escaping () -> Void,
     rightButtonAction: @escaping () -> Void = {}
   ) {
-    let alertController = AlertViewController(
+    let alertView = CommonAlertView(
       title: type.title,
       message: type.message,
       leftButtonTitle: type.leftButtonTitle,
       rightbuttonTitle: type.rightButtonTitle
     )
+    let alertController = AlertViewController(alertView: alertView)
     
-    alertController.setupLeftButtonAction(leftButtonAction)
-    alertController.setupRightButtonAction(rightButtonAction)
+    alertView.setupLeftButtonAction(UIAction { _ in
+      alertController.dismiss(animated: true)
+      leftButtonAction()
+    })
     
-    alertController.modalPresentationStyle = .overCurrentContext
-    alertController.modalTransitionStyle = .crossDissolve
+    alertView.setupRightButtonAction(UIAction { _ in
+      alertController.dismiss(animated: true)
+      rightButtonAction()
+    })
+    
+    present(alertController, animated: true)
+  }
+  
+  func presentNameAlert(completion: @escaping (String) -> Void) {
+    let alertView = NameAlertView(
+      title: AlertType.updateName.title,
+      leftButtonTitle: AlertType.updateName.leftButtonTitle,
+      rightbuttonTitle: AlertType.updateName.rightButtonTitle
+    )
+    let alertController = AlertViewController(alertView: alertView)
+    
+    alertView.setupLeftButtonAction(UIAction { _ in
+      alertController.dismiss(animated: true)
+    })
+    
+    alertView.setupCompleteButtonAction { textFieldText in
+      alertController.dismiss(animated: true)
+      completion(textFieldText)
+    }
+    
     present(alertController, animated: true)
   }
 }

@@ -18,8 +18,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Properties
   var window: UIWindow?
   private var navigationController: UINavigationController?
+  private var recordNavigationController: UINavigationController?
   private var tabBarCoordinator: TabBarCoordinator?
-
+  
   // MARK: - Methods
   func scene(
     _ scene: UIScene,
@@ -30,6 +31,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window = UIWindow(windowScene: windowScene)
 
     self.navigationController = UINavigationController()
+    self.recordNavigationController = UINavigationController()
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
 
@@ -80,6 +82,10 @@ private extension SceneDelegate {
       return DefaultSettingUseCase(settingRepository: settingRepository)
     }
     
+    DIContainer.shared.register(type: EmotionClassifyUseCase.self) { _ in
+      return DefaultEmotionClassifyUseCase()
+    }
+    
     DIContainer.shared.register(type: DiaryUseCase.self) { container in
       guard let diaryRepository = container.resolve(type: DiaryRepository.self) else {
         return
@@ -91,6 +97,7 @@ private extension SceneDelegate {
 
   func presentationAssemble() {
     guard let navigationController else { return }
+    guard let recordNavigationController else { return }
     
     DIContainer.shared.register(type: TabBarCoordinator.self) { _ in
       return DefaultTabBarCoordinator(navigationController: navigationController)
@@ -101,7 +108,7 @@ private extension SceneDelegate {
     }
     
     DIContainer.shared.register(type: RecordCoordinator.self) { _ in
-      return DefaultRecordCoordinator(navigationController: navigationController)
+      return DefaultRecordCoordinator(navigationController: recordNavigationController)
     }
     
     DIContainer.shared.register(type: HomeCoordinator.self) { _ in
@@ -110,6 +117,14 @@ private extension SceneDelegate {
     
     DIContainer.shared.register(type: DiaryDetailCoordinator.self) { _ in
       return DefaultDiaryDetailCoordinator(navigationController: navigationController)
+    }
+    
+    DIContainer.shared.register(type: EmotionAnalyzeCoordinator.self) { _ in
+      return DefaultEmotionAnalyzeCoordinator(navigationController: recordNavigationController)
+    }
+    
+    DIContainer.shared.register(type: AnalyzeResultCoordinator.self) { _ in
+      return DefaultAnalyzeResultCoordinator(navigationController: recordNavigationController)
     }
     
     DIContainer.shared.register(type: ReportCoordinator.self) { _ in

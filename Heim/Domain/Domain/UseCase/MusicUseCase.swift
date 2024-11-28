@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol MusicUseCase {
-  func fetchRecommendTracks(_ emotion: Emotion) async throws -> [Track]
+  func fetchRecommendTracks(_ emotion: Emotion) async throws -> [MusicTrack]
   func play(to isrc: String) async throws
   func pause() throws
 }
@@ -25,7 +25,7 @@ public struct DefaultMusicUseCase: MusicUseCase {
     self.musicRepository = musicRepository
   }
   
-  public func fetchRecommendTracks(_ emotion: Emotion) async throws -> [Track] {
+  public func fetchRecommendTracks(_ emotion: Emotion) async throws -> [MusicTrack] {
     return try await spotifyRepository.fetchRecommendationTrack(emotion)
   }
   

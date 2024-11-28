@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 import SnapKit
 
 protocol EmotionAnalyzeViewDelegate: AnyObject {
@@ -24,6 +25,15 @@ final class EmotionAnalyzeView: UIView {
     imageView.image = .recordRabbit
     imageView.contentMode = .scaleAspectFit
     return imageView
+  }()
+  
+  private let messageAnimation: LottieAnimationView = {
+    let bundle = Bundle(for: RecordView.self)
+    let animation = LottieAnimation.named("message", bundle: bundle)
+    let animationView = LottieAnimationView(animation: animation)
+    animationView.contentMode = .scaleAspectFit
+    animationView.loopMode = .loop
+    return animationView
   }()
   
   private let descriptionLabel: CommonLabel = CommonLabel(
@@ -63,11 +73,16 @@ final class EmotionAnalyzeView: UIView {
     nextButton.isEnabled = !isAnalyzing
     
     if isAnalyzing {
+      characterImageView.isHidden = true
       nextButton.backgroundColor = .primaryTransparent
       nextButton.setTitleColor(.gray, for: .disabled)
+      messageAnimation.play()
     } else {
       nextButton.backgroundColor = .primary
       nextButton.setTitleColor(.white, for: .normal)
+      messageAnimation.stop()
+      messageAnimation.isHidden = true
+      characterImageView.isHidden = false
     }
   }
 }
@@ -75,7 +90,7 @@ final class EmotionAnalyzeView: UIView {
 // MARK: - Settings
 private extension EmotionAnalyzeView {
   func setupViews() {
-    [characterImageView, descriptionLabel, nextButton].forEach {
+    [characterImageView, messageAnimation, descriptionLabel, nextButton].forEach {
       addSubview($0)
     }
   }
@@ -83,13 +98,19 @@ private extension EmotionAnalyzeView {
   func setupLayoutConstraints() {
     characterImageView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalToSuperview().offset(screenHeight * LayoutConstants.characterImageTopRatio)
+      $0.top.equalToSuperview().offset(screenHeight * LayoutConstants.messageAnimationTopRatio)
+      $0.width.height.equalTo(LayoutConstants.characterImageSize)
+    }
+    
+    messageAnimation.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.top.equalToSuperview().offset(screenHeight * LayoutConstants.messageAnimationTopRatio)
       $0.width.height.equalTo(LayoutConstants.characterImageSize)
     }
     
     descriptionLabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalTo(characterImageView.snp.bottom).offset(LayoutConstants.paddingInset)
+      $0.top.equalTo(messageAnimation.snp.bottom).offset(LayoutConstants.paddingInset)
     }
     
     nextButton.snp.makeConstraints {
@@ -116,7 +137,7 @@ private extension EmotionAnalyzeView {
     static let buttonHeight: CGFloat = 50
     static let characterImageSize: CGFloat = 250
     
-    static let characterImageTopRatio: CGFloat = 0.3
+    static let messageAnimationTopRatio: CGFloat = 0.3
     static let paddingInset: CGFloat = 16
   }
 }

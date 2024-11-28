@@ -7,7 +7,7 @@
 
 import Domain
 
-struct SpotifyRecommendResponseDTO: Codable {
+struct SpotifyRecommendResponseDTO: Decodable {
   let tracks: [SpotifyTrack]
   let seeds: [Seed]
 }

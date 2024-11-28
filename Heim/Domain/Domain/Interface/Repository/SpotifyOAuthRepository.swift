@@ -12,5 +12,5 @@ public protocol SpotifyOAuthRepository {
   func exchangeAccessToken(
     with code: String,
     codeVerifier: String
-  ) async throws -> Bool
+  ) async throws
 }
