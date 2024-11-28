@@ -10,6 +10,7 @@ import UIKit
 final class VisualizerView: UIView {
   private var displayLink: CADisplayLink?
   private weak var viewModel: DiaryReplayViewModel?
+  private var defaultAmplitude: CGFloat = 0.01
 
   func startVisualizer(for viewModel: DiaryReplayViewModel?) {
     self.viewModel = viewModel
@@ -28,8 +29,8 @@ final class VisualizerView: UIView {
     manager.audioPlayer.updateMeters()
 
     let power = manager.audioPlayer.averagePower(forChannel: 0)
-    let amplitude = max(0, pow(10, power / 20))
-    updateVisualizerPath(amplitude: CGFloat(amplitude))
+    let amplitude = pow(10, power / 20)
+    updateVisualizerPath(amplitude: CGFloat(max(CGFloat(amplitude) * 15, defaultAmplitude)))
   }
 
   private func updateVisualizerPath(amplitude: CGFloat) {
@@ -56,49 +57,7 @@ final class VisualizerView: UIView {
     
     let shapeLayer = CAShapeLayer()
     shapeLayer.path = path.cgPath
-    shapeLayer.fillColor = UIColor.systemBlue.cgColor
+    shapeLayer.fillColor = UIColor.secondary.cgColor
     layer.addSublayer(shapeLayer)
   }
 }
-
-
-//private func updateVisualizerPath(amplitude: CGFloat) {
-//  layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-//
-//  let path = UIBezierPath()
-//  let centerY = bounds.midY
-//  let totalPoints = 50
-//  let maxHeight = bounds.height / 2
-//  let widthStep = bounds.width / CGFloat(totalPoints - 1)
-//
-//  var previousY: CGFloat = centerY
-//
-//  for i in 0..<totalPoints {
-//    let normalizedAmplitude = amplitude * CGFloat.random(in: 0.5...1.2)
-//    let yOffset = normalizedAmplitude * maxHeight
-//    let xPosition = CGFloat(i) * widthStep
-//    let yPosition = centerY - yOffset
-//
-//    let controlY = (previousY + yPosition) / 2
-//    if i == 0 {
-//      path.move(to: CGPoint(x: xPosition, y: centerY))
-//    } else {
-//      path.addQuadCurve(
-//        to: CGPoint(x: xPosition, y: yPosition),
-//        controlPoint: CGPoint(x: xPosition - widthStep / 2, y: controlY)
-//      )
-//    }
-//    previousY = yPosition
-//  }
-//
-//  path.addLine(to: CGPoint(x: bounds.width, y: centerY))
-//  path.addLine(to: CGPoint(x: 0, y: centerY))
-//  path.close()
-//
-//  let shapeLayer = CAShapeLayer()
-//  shapeLayer.path = path.cgPath
-//  shapeLayer.fillColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor
-//  shapeLayer.strokeColor = UIColor.systemBlue.cgColor
-//  shapeLayer.lineWidth = 1
-//  layer.addSublayer(shapeLayer)
-//}
