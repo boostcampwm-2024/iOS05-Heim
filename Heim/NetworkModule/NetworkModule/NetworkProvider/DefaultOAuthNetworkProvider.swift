@@ -1,5 +1,5 @@
 //
-//  OAuthNetworkProvider.swift
+//  DefaultOAuthNetworkProvider.swift
 //  NetworkModule
 //
 //  Created by 정지용 on 11/27/24.
@@ -10,7 +10,7 @@ import Domain
 import DataModule
 import Foundation
 
-public struct OAuthNetworkProvider: NetworkProvider {
+public struct DefaultOAuthNetworkProvider: OAuthNetworkProvider {
   private let requestor: NetworkRequestable
   private let tokenManager: TokenManager
   
@@ -47,7 +47,7 @@ public struct OAuthNetworkProvider: NetworkProvider {
   }
 }
 
-private extension OAuthNetworkProvider {
+private extension DefaultOAuthNetworkProvider {
   func authentication() async throws {
     do {
       try tokenManager.isAccessTokenValid()
