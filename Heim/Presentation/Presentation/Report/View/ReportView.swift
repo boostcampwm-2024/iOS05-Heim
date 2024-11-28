@@ -24,22 +24,33 @@ final class ReportView: UIView {
     return reportCountView
   }()
 
-  private lazy var emotionLabel: UILabel = {
+  private lazy var userNameLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.boldFont(ofSize: LayoutConstants.titleThree)
     label.numberOfLines = 0
     label.text = """
     지난 30일간 \(userName)님께서 
+    """
+    label.textColor = .white
+    label.textAlignment = .center
+    return label
+  }()
+
+  private lazy var emotionLabel: UILabel = {
+    let label = UILabel()
+    label.font = UIFont.boldFont(ofSize: LayoutConstants.titleThree)
+    label.numberOfLines = 0
+    label.text = """
     가장 많이 느끼신 감정은 \(emotion)이군요
     """
     label.textColor = .white
     label.textAlignment = .center
     return label
   }()
-  
+
   private let graphView = GraphView()
   private let replyTitleLabel = CommonLabel(text: "하임이의 답장", font: .bold, size: LayoutConstants.titleTwo, textColor: .white)
-  private let replyTextView = CommonTextAreaView()
+  let replyTextView = CommonTextAreaView()
 
   // MARK: - Initialize
   override init(frame: CGRect) {
@@ -54,10 +65,16 @@ final class ReportView: UIView {
   }
 }
 
+// MARK: UILogic Methods
+extension ReportView {
+
+}
+
 // MARK: - Layout
 private extension ReportView {
   func setupViews() {
     self.backgroundColor = .clear
+    addSubview(userNameLabel)
     addSubview(emotionLabel)
     addSubview(graphView)
     addSubview(replyTitleLabel)
@@ -80,8 +97,14 @@ private extension ReportView {
       $0.centerX.equalToSuperview()
     }
 
-    emotionLabel.snp.makeConstraints {
+    userNameLabel.snp.makeConstraints {
       $0.top.equalTo(totalReportView.snp.bottom).offset(LayoutConstants.emotionLabelBottom)
+      $0.centerX.equalToSuperview()
+
+    }
+
+    emotionLabel.snp.makeConstraints {
+      $0.top.equalTo(userNameLabel.snp.bottom).offset(LayoutConstants.userNameLabelBottom)
       $0.centerX.equalToSuperview()
     }
 
@@ -117,5 +140,6 @@ private extension ReportView {
     static let emotionLabelBottom: CGFloat = 32
     static let graphViewTop: CGFloat = 32
     static let replyTitleLabelTop: CGFloat = 32
+    static let userNameLabelBottom: CGFloat = 4
   }
 }
