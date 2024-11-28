@@ -71,7 +71,6 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
       }
       .store(in: &cancellable)
 
-
     viewModel.$state
       .map(\.reply)
       .receive(on: DispatchQueue.main)
@@ -87,6 +86,15 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
         self?.reportView.updateEmotionLabel(emotion: emotion)
       }
       .store(in: &cancellable)
+
+    viewModel.$state
+      .map(\.emotionValue)
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] emotionValue in
+//        self?.reportView.updateEmotionLabel(emotion: emotionCount)
+      }
+      .store(in: &cancellable)
+
   }
 
 

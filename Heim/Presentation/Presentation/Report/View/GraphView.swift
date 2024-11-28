@@ -45,6 +45,15 @@ final class GraphView: UIView {
     setupEmojiStackView()
   }
   // TODO: [Chart]파라미터로 하는 Initializer 만들기
+
+  func updateGraphView() {
+    emotionCharts.forEach {
+      let barView = BarView(chart: $0)
+      graphStackView.addArrangedSubview(barView)
+    }
+
+  }
+
 }
 
 // MARK: - Layout
