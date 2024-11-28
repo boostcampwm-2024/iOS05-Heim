@@ -42,22 +42,9 @@
 		B307B5232CD9F946001C5040 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B307B58D2CDB012C001C5040 /* Exceptions for "Domain" folder in "Domain" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				UseCase/UseCaseTmp.swift,
-			);
-			target = B307B43C2CD9B4F3001C5040 /* Domain */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B307B43F2CD9B4F3001C5040 /* Domain */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B307B58D2CDB012C001C5040 /* Exceptions for "Domain" folder in "Domain" target */,
-			);
 			path = Domain;
 			sourceTree = "<group>";
 		};
