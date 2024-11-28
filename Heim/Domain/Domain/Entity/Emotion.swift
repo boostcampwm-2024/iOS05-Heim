@@ -10,7 +10,7 @@
 ///
 /// 단, `none`이라는 감정은 `init(rawValue:)`에서 발생하는 오류를 위한 기본 값이며,
 /// 이 값이 발생하는 경우 예외처리를 해야 함을 참고해주세요.
-public enum Emotion: String, Codable {
+public enum Emotion: String, Codable, Equatable {
   case sadness
   case happiness
   case angry

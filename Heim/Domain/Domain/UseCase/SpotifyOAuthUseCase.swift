@@ -13,7 +13,7 @@ public protocol SpotifyOAuthUseCase {
   func login(
     code authorizationCode: String,
     plainText: String
-  ) async throws -> Bool
+  ) async throws
   
   func generateCodeChallenge() -> (
     challenge: String,
@@ -35,8 +35,8 @@ public struct DefaultSpotifyOAuthUseCase: SpotifyOAuthUseCase {
   public func login(
     code authorizationCode: String,
     plainText: String
-  ) async throws -> Bool {
-    return try await repository.exchangeAccessToken(
+  ) async throws {
+    try await repository.exchangeAccessToken(
       with: authorizationCode,
       codeVerifier: plainText
     )

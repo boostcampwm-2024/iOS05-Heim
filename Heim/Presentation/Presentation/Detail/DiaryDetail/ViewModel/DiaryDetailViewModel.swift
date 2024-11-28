@@ -26,7 +26,7 @@ final class DiaryDetailViewModel: ViewModel {
   
   @Published var state: State
   private let useCase: DiaryUseCase
-  private let diary: Diary
+  let diary: Diary
   
   // MARK: - Initializer
   init(
@@ -62,7 +62,8 @@ private extension DiaryDetailViewModel {
     dateFormatter.dateFormat = "yyyyMMddHHmmss"
     let timeStamp = dateFormatter.string(from: date)
     do {
-      try await useCase.deleteDiary(timeStamp: timeStamp)
+      // TODO: useCase 파라미터 변경사항 반영
+//      try await useCase.deleteDiary(timeStamp: timeStamp)
     } catch {
       // TODO: Error Handling
     }

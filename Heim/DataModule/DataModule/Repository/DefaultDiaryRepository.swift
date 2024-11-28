@@ -10,28 +10,25 @@ import Foundation
 
 public final class DefaultDiaryRepository: DiaryRepository {
   // MARK: - Properties
-  private let dataStorage: DataStorageModule
+  private let dataStorage: DataStorage
   
   // MARK: - Initializer
-  public init(dataStorage: DataStorageModule) {
+  public init(dataStorage: DataStorage) {
     self.dataStorage = dataStorage
   }
   
   // MARK: - Methods
-  public func readDiary(timeStamp: String) async throws -> Diary {
-    let diary: Diary = try await dataStorage.readData(timeStamp: timeStamp)
-    return diary
+  public func readDiaries(calendarDate: CalendarDate) async throws -> [Diary] {
+    let diaries: [Diary] = try await dataStorage.readData(calendarDate: calendarDate)
+    return diaries
   }
   
-  public func saveDiary(
-    timeStamp: String,
-    data: Diary
-  ) async throws {
-    try await dataStorage.saveData(timeStamp: timeStamp, data: data)
+  public func saveDiary(data: Diary) async throws {
+    try await dataStorage.saveData(calendarDate: data.calendarDate, data: data)
   }
   
-  public func deleteDiary(timeStamp: String) async throws {
-    try await dataStorage.deleteData(timeStamp: timeStamp)
+  public func deleteDiary(calendarDate: CalendarDate) async throws {
+    try await dataStorage.deleteData(calendarDate: calendarDate)
   }
 
   public func countTotalDiary() async throws -> Int {

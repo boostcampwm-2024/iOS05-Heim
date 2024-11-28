@@ -6,6 +6,7 @@
 //
 
 public enum StorageError: Error {
+  case fileNotExist
   case readError
   case writeError
   case deleteError
@@ -13,6 +14,7 @@ public enum StorageError: Error {
   
   public var description: String {
     switch self {
+    case .fileNotExist: return "파일이 존재하지 않음"
     case .readError: return "파일 읽기 중 오류 발생"
     case .writeError: return "파일 쓰기 중 오류 발생"
     case .deleteError: return "파일 삭제 중 오류 발생"

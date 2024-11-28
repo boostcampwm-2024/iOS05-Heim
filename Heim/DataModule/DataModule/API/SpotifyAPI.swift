@@ -9,10 +9,7 @@ import Domain
 import Foundation
 
 enum SpotifyAPI {
-  case recommendations(
-    dto: SpotifyRecommendRequestDTO,
-    accessToken: String
-  )
+  case recommendations(dto: SpotifyRecommendRequestDTO)
 }
 
 extension SpotifyAPI: RequestTarget {
@@ -36,8 +33,8 @@ extension SpotifyAPI: RequestTarget {
   
   var headers: [String : String] {
     switch self {
-    case .recommendations(_, let token):
-      return ["Authorization": "Bearer \(token)"]
+    case .recommendations:
+      return [:]
     }
   }
   
@@ -50,7 +47,7 @@ extension SpotifyAPI: RequestTarget {
   
   var query: [String : Any] {
     switch self {
-    case .recommendations(let dto, _):
+    case .recommendations(let dto):
       return dto.dictionary
     }
   }

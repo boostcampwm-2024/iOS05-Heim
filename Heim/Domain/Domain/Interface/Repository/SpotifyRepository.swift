@@ -6,5 +6,5 @@
 //
 
 public protocol SpotifyRepository {
-  func fetchRecommendationTrack(_ emotion: Emotion) async throws -> [Track]
+  func fetchRecommendationTrack(_ dto: Emotion) async throws -> [MusicTrack]
 }

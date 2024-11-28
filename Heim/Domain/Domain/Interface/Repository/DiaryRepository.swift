@@ -6,8 +6,8 @@
 //
 
 public protocol DiaryRepository {
-  func readDiary(timeStamp: String) async throws -> Diary
-  func saveDiary(timeStamp: String, data: Diary) async throws
-  func deleteDiary(timeStamp: String) async throws
-  func countTotalDiary() async throws -> Int
+
+  func readDiaries(calendarDate: CalendarDate) async throws -> [Diary]
+  func saveDiary(data: Diary) async throws
+  func deleteDiary(calendarDate: CalendarDate) async throws
 }
