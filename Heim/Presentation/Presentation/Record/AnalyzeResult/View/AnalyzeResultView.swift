@@ -138,10 +138,12 @@ private extension AnalyzeResultView {
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
       $0.width.equalToSuperview()
+      // TODO: Layout 다시 점검
+      $0.height.greaterThanOrEqualToSuperview().priority(.low)
     }
     
     titleLabel.snp.makeConstraints {
-      $0.top.equalTo(safeAreaLayoutGuide).offset(LayoutConstants.padding)
+      $0.top.equalToSuperview().offset(LayoutConstants.padding)
       $0.centerX.equalToSuperview()
     }
     
@@ -155,7 +157,7 @@ private extension AnalyzeResultView {
       $0.top.equalTo(characterImageView.snp.bottom).offset(LayoutConstants.padding)
       $0.centerX.equalToSuperview()
     }
-
+    
     textArea.snp.makeConstraints {
       $0.top.equalTo(descriptionLabel.snp.bottom).offset(LayoutConstants.padding)
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.padding)
