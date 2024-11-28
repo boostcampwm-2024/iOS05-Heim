@@ -5,12 +5,11 @@
 //  Created by 정지용 on 11/25/24.
 //
 
+import Domain
 import Foundation
 
-public final class SpotifyRecommendRequestDTOFactory {
-  public static let shared = SpotifyRecommendRequestDTOFactory()
-  
-  public func make(_ emotion: Emotion) throws -> SpotifyRecommendRequestDTO {
+public enum SpotifyRecommendRequestDTOFactory {
+  public static func make(_ emotion: Emotion) throws -> SpotifyRecommendRequestDTO {
     switch emotion {
     case .angry:
       return SpotifyRecommendRequestDTO(
@@ -82,6 +81,8 @@ public final class SpotifyRecommendRequestDTOFactory {
         targetValence: 0.6
       )
     case .none:
+      throw EmotionError.noneEmotionException
+    @unknown default:
       throw EmotionError.noneEmotionException
     }
   }

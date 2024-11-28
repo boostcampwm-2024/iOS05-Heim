@@ -9,24 +9,15 @@ import Domain
 
 public struct DefaultSpotifyRepository: SpotifyRepository {
   private let networkProvider: NetworkProvider
-  private let tokenStorage: TokenStorage
   
-  public init(
-    networkProvider: NetworkProvider,
-    tokenStorage: TokenStorage
-  ) {
+  public init(networkProvider: NetworkProvider) {
     self.networkProvider = networkProvider
-    self.tokenStorage = tokenStorage
   }
   
-  public func fetchRecommendationTrack(_ emotion: Emotion) async throws -> [Track] {
-    guard let accessToken = tokenStorage.load(attrAccount: SpotifyEnvironment.accessTokenAttributeKey) else {
-      throw StorageError.readError
-    }
+  public func fetchRecommendationTrack(_ emotion: Emotion) async throws -> [MusicTrack] {
     return try await networkProvider.request(
       target: SpotifyAPI.recommendations(
-        dto: SpotifyRecommendRequestDTOFactory.shared.make(emotion),
-        accessToken: accessToken
+        dto: SpotifyRecommendRequestDTOFactory.make(emotion)
       ),
       type: SpotifyRecommendResponseDTO.self
     ).tracks.map { SpotifyTrack.toEntity($0) }

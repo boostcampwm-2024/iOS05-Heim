@@ -5,7 +5,7 @@
 //  Created by 정지용 on 11/25/24.
 //
 
-public struct Seed: Codable {
+public struct Seed: Decodable {
   public let id: String
   public let type: String
   public let initialPoolSize: Int
