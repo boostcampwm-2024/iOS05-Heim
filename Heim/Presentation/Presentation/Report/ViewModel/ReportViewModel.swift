@@ -44,7 +44,7 @@ final class ReportViewModel: ViewModel {
   // MARK: - Initializer
   // TODO: Initializer에 UseCase 추가
   init(useCase: DiaryUseCase) {
-    self.state = State(userName: "미래", // TODO: userName
+    self.state = State(userName: "사용자", // TODO: userName
                        totalCount: 0,
                        sequenceCount: 0,
                        monthCount: 0,

@@ -10,10 +10,6 @@ import SnapKit
 
 final class ReportView: UIView {
 
-  // MARK: - Properties
-  var userName = "성근"
-  var emotion = "슬픔"
-
   // MARK: - UI Components
   private let titleLabel = CommonLabel(text: "하임이와 함께 한 기록", font: .bold, size: LayoutConstants.titleOne, textColor: .white)
   private let totalReportView: UIView = {
@@ -28,21 +24,14 @@ final class ReportView: UIView {
     let label = UILabel()
     label.font = UIFont.boldFont(ofSize: LayoutConstants.titleThree)
     label.numberOfLines = 0
-    label.text = """
-    지난 30일간 \(userName)님께서 
-    """
     label.textColor = .white
     label.textAlignment = .center
     return label
   }()
 
-  private lazy var emotionLabel: UILabel = {
+  let emotionLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.boldFont(ofSize: LayoutConstants.titleThree)
-    label.numberOfLines = 0
-    label.text = """
-    가장 많이 느끼신 감정은 \(emotion)이군요
-    """
     label.textColor = .white
     label.textAlignment = .center
     return label
@@ -67,6 +56,18 @@ final class ReportView: UIView {
 
 // MARK: UILogic Methods
 extension ReportView {
+  func updateUserNameLabel(name: String) {
+    userNameLabel.text = "지난 30일간 \(name)님께서"
+  }
+
+  func updateEmotionLabel(emotion: String) {
+    if emotion == "" {
+      emotionLabel.text = "쓴 일기가 아직 없어요!"
+    } else {
+      emotionLabel.text = "가장 많이 느끼신 감정은 \(emotion)이군요."
+    }
+
+  }
 
 }
 

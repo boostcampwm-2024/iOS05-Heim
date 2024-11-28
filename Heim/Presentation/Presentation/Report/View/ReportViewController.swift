@@ -13,10 +13,10 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
 
   // MARK: - UI Components
   private let scrollView: UIScrollView = {
-      let scrollView = UIScrollView()
-      scrollView.showsVerticalScrollIndicator = false
-      return scrollView
-    }()
+    let scrollView = UIScrollView()
+    scrollView.showsVerticalScrollIndicator = false
+    return scrollView
+  }()
 
   private let reportView: ReportView = {
     let reportView = ReportView()
@@ -27,9 +27,10 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     setupViews()
     setupLayoutConstraints()
+    viewModel.action(.fetchData)
   }
 
   override func viewDidDisappear(_ animated: Bool) {
@@ -42,7 +43,7 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   // MARK: - LayOut Methods
   override func setupViews() {
     super.setupViews()
-    
+
     view.addSubview(scrollView)
     scrollView.addSubview(reportView)
   }
@@ -50,8 +51,8 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   override func setupLayoutConstraints() {
     super.setupLayoutConstraints()
     scrollView.snp.makeConstraints {
-         $0.edges.equalToSuperview()
-       }
+      $0.edges.equalToSuperview()
+    }
 
     reportView.snp.makeConstraints {
       $0.edges.width.equalToSuperview()
@@ -60,8 +61,36 @@ final class ReportViewController: BaseViewController<ReportViewModel>, Coordinat
   }
 
   override func bindState() {
+    super.bindState()
+
+    viewModel.$state
+      .map(\.userName)
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] userName in
+        self?.reportView.updateUserNameLabel(name: userName)
+      }
+      .store(in: &cancellable)
+
+
+    viewModel.$state
+      .map(\.reply)
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] reply in
+        self?.reportView.replyTextView.setText(reply)
+      }
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map(\.emotion)
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] emotion in
+        self?.reportView.updateEmotionLabel(emotion: emotion)
+      }
+      .store(in: &cancellable)
   }
+
 
   override func bindAction() {
   }
 }
+

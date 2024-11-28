@@ -34,8 +34,10 @@ public final class DefaultReportCoordinator: ReportCoordinator {
   }
 
   func reportViewController() -> ReportViewController? {
-    // TODO: DIContainer 의존성 주입 구현
-    let viewModel = ReportViewModel()
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else {
+      return nil
+    }
+    let viewModel = ReportViewModel(useCase: diaryUseCase)
     let reportViewController = ReportViewController(viewModel: viewModel)
     reportViewController.coordinator = self
     return reportViewController
