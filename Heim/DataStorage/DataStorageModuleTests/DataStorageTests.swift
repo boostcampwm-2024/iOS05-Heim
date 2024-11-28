@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DataStorage
+@testable import DataStorageModule
 
 final class DataStorageTests: XCTestCase {
 
