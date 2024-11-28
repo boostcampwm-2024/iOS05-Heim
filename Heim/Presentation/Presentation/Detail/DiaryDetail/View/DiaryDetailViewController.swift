@@ -37,8 +37,7 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
     }
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
+  deinit {
     coordinator?.didFinish()
   }
   
