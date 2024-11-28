@@ -56,49 +56,7 @@ final class VisualizerView: UIView {
     
     let shapeLayer = CAShapeLayer()
     shapeLayer.path = path.cgPath
-    shapeLayer.fillColor = UIColor.systemBlue.cgColor
+    shapeLayer.fillColor = UIColor.secondary.cgColor
     layer.addSublayer(shapeLayer)
   }
 }
-
-
-//private func updateVisualizerPath(amplitude: CGFloat) {
-//  layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-//
-//  let path = UIBezierPath()
-//  let centerY = bounds.midY
-//  let totalPoints = 50
-//  let maxHeight = bounds.height / 2
-//  let widthStep = bounds.width / CGFloat(totalPoints - 1)
-//
-//  var previousY: CGFloat = centerY
-//
-//  for i in 0..<totalPoints {
-//    let normalizedAmplitude = amplitude * CGFloat.random(in: 0.5...1.2)
-//    let yOffset = normalizedAmplitude * maxHeight
-//    let xPosition = CGFloat(i) * widthStep
-//    let yPosition = centerY - yOffset
-//
-//    let controlY = (previousY + yPosition) / 2
-//    if i == 0 {
-//      path.move(to: CGPoint(x: xPosition, y: centerY))
-//    } else {
-//      path.addQuadCurve(
-//        to: CGPoint(x: xPosition, y: yPosition),
-//        controlPoint: CGPoint(x: xPosition - widthStep / 2, y: controlY)
-//      )
-//    }
-//    previousY = yPosition
-//  }
-//
-//  path.addLine(to: CGPoint(x: bounds.width, y: centerY))
-//  path.addLine(to: CGPoint(x: 0, y: centerY))
-//  path.close()
-//
-//  let shapeLayer = CAShapeLayer()
-//  shapeLayer.path = path.cgPath
-//  shapeLayer.fillColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor
-//  shapeLayer.strokeColor = UIColor.systemBlue.cgColor
-//  shapeLayer.lineWidth = 1
-//  layer.addSublayer(shapeLayer)
-//}
