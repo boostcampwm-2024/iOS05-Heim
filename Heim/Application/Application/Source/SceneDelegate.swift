@@ -99,7 +99,7 @@ private extension SceneDelegate {
       return DefaultDiaryRepository(dataStorage: localStorage)
     }
     
-    DIContainer.shared.register(type: GeminiGenerativeAIRepository.self) { container in
+    DIContainer.shared.register(type: GenerativeAIRepository.self) { container in
       guard let networkProvider = container.resolve(type: NetworkProvider.self) else {
         return
       }
@@ -165,6 +165,41 @@ private extension SceneDelegate {
       }
       
       return DefaultSpotifyOAuthUseCase(repository: spotifyOAuthRepository)
+    }
+    
+    DIContainer.shared.register(type: SummaryPromptGenerating.self) { _ in
+      return SummaryPromptGenerator()
+    }
+    
+    DIContainer.shared.register(type: GenerativeSummaryPromptUseCase.self) { container in
+      guard let generativeAIRepository = container.resolve(type: GenerativeAIRepository.self),
+            let summaryPromptGenerator = container.resolve(type: SummaryPromptGenerating.self) else {
+        return
+      }
+      
+      return GeminiGenerativeSummaryPromptUseCase(
+        repository: generativeAIRepository,
+        generator: summaryPromptGenerator
+      )
+    }
+    
+    DIContainer.shared.register(type: EmotionPromptGenerating.self) { _ in
+      return EmotionPromptGenerator(userName: "성근")
+    }
+    
+    DIContainer.shared.register(type: GenerativeEmotionPromptUseCase.self) { container in
+      guard let generativeAIRepository = container.resolve(type: GenerativeAIRepository.self) else {
+        return
+      }
+      
+      guard let emotionPromptGenerator = container.resolve(type: EmotionPromptGenerating.self) else {
+        return
+      }
+      
+      return GeminiGenerativeEmotionPromptUseCase(
+        repository: generativeAIRepository,
+        generator: emotionPromptGenerator
+      )
     }
   }
 
