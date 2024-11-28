@@ -7,31 +7,10 @@
 
 import UIKit
 
-class CalendarCell: UICollectionViewCell {
-  // MARK: - Properties
-  static let identifier = "CalendarCell"
-
+final class CalendarCell: UICollectionViewCell {
   // MARK: - UI Components
-  private let dateLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .center
-    label.font = UIFont.regularFont(ofSize: LayoutContants.fontSize)
-    label.textColor = .white
-    return label
-  }()
-
-  private let emojiView: UIImageView = {
-    let view = UIImageView()
-    view.frame.size = CGSize(width: LayoutContants.emojiSize, height: LayoutContants.emojiSize)
-    view.layer.cornerRadius = view.frame.width / 2
-    return view
-  }()
-
-  private lazy var stackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [emojiView, dateLabel])
-    stackView.axis = .vertical
-    return stackView
-  }()
+  private let dateLabel = CommonLabel(font: .regular, size: LayoutContants.fontSize, textColor: .white)
+  private let emojiView = UIImageView()
 
   // MARK: - Initializer
   override init(frame: CGRect) {
@@ -47,38 +26,61 @@ class CalendarCell: UICollectionViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
     dateLabel.text = ""
+    dateLabel.textColor = .white
+    emojiView.image = nil
     emojiView.backgroundColor = .clear
   }
 
   // MARK: - Methods
-  private func setupViews() {
-    self.addSubview(stackView)
-
-    stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+  func configure(_ dataSource: CalendarCellModel) {
+    dateLabel.text = dataSource.day
+    
+    switch dataSource.emotion {
+    case .sadness: emojiView.image = .sadIcon
+    case .happiness: emojiView.image = .happyIcon
+    case .angry: emojiView.image = .angryIcon
+    case .surprise: emojiView.image = .surpriseIcon
+    case .fear: emojiView.image = .fearIcon
+    case .disgust: emojiView.image = .disgustIcon
+    case .neutral: emojiView.image = .neutralIcon
+    case .none: emojiView.image = nil
     }
-
-    emojiView.snp.makeConstraints {
-      $0.height.equalTo(LayoutContants.emojiSize)
+    
+    if dataSource.day.isEmpty || dataSource.emotion != .none {
+      emojiView.backgroundColor = .clear
+    } else {
+      emojiView.backgroundColor = .whiteGray
     }
   }
   
-  func update(day: String) {
-    //TODO: 수정필요 - 애초에 View가 그려지지 않도록 하는 방법 찾기
-    self.emojiView.backgroundColor = day.isEmpty ? .clear : .whiteGray
-    self.dateLabel.text = day
-    
-    // TODO: 화면 테스트용 임시 데이터 적용
-    if day == "17" {
-      emojiView.image = .smileIcon
-    }
+  func updateDayLabelColor(_ color: UIColor) {
+    dateLabel.textColor = color
   }
 }
 
+// MARK: - Private Extenion
 private extension CalendarCell {
+  private func setupViews() {
+    emojiView.cornerRadius(radius: CGFloat(LayoutContants.cellWidth) / 2)
+    contentView.addSubview(emojiView)
+    contentView.addSubview(dateLabel)
+    
+    emojiView.snp.makeConstraints {
+      $0.width.equalToSuperview()
+      $0.height.equalTo(emojiView.snp.width)
+      $0.top.centerX.equalToSuperview()
+    }
+    
+    dateLabel.snp.makeConstraints {
+      $0.top.equalTo(emojiView.snp.bottom)
+      $0.centerX.equalTo(emojiView)
+      $0.bottom.equalToSuperview()
+    }
+  }
+  
   enum LayoutContants {
     static let fontSize: CGFloat = 14
-    static let emojiSize: CGFloat = 40
-
+    static let collectionViewHorizontalPadding: CGFloat = 48
+    static let cellWidth: Int = Int(UIApplication.screenWidth - Self.collectionViewHorizontalPadding) / 9
   }
 }

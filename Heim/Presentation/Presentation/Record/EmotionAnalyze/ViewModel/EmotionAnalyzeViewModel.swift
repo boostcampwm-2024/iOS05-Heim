@@ -68,6 +68,12 @@ final class EmotionAnalyzeViewModel: ViewModel {
   }
   
   func diaryData() -> Diary {
-    return Diary(emotion: emotion, emotionReport: heimReply, voice: voice, summary: summary)
+    return Diary(
+      calendarDate: Date().calendarDate(),
+      emotion: emotion,
+      emotionReport: heimReply,
+      voice: voice,
+      summary: summary
+    )
   }
 }

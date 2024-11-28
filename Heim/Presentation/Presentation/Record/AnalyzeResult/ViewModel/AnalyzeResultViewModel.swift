@@ -61,7 +61,7 @@ private extension AnalyzeResultViewModel {
     dateFormatter.dateFormat = "yyyyMMddHHmmss"
     let timeStamp = dateFormatter.string(from: date)
     do {
-      try await useCase.saveDiary(timeStamp: timeStamp, data: diary)
+//      try await useCase.saveDiary(timeStamp: timeStamp, data: diary)
     } catch {
       // TODO: Error Handling
     }

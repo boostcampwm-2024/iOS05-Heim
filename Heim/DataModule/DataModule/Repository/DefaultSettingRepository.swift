@@ -9,7 +9,7 @@ import Domain
 
 public final class DefaultSettingRepository: SettingRepository {
   // MARK: - Properties
-  private let localStorage: DataStorageModule
+  private let localStorage: DataStorage
   
   /* TODO: 추후 구현
    private let networkProvider: NetworkProvidable
@@ -21,7 +21,7 @@ public final class DefaultSettingRepository: SettingRepository {
   // TODO: 추후 구현
   public init(
 //    networkProvider: NetworkProvidable
-    localStorage: DataStorageModule
+    localStorage: DataStorage
   ) {
 //    self.networkProvider = networkProvider
     self.localStorage = localStorage

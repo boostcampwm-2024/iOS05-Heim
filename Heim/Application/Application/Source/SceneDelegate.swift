@@ -7,7 +7,7 @@
 
 import Core
 import DataModule
-import DataStorage
+import DataStorageModule
 import Domain
 import Presentation
 import NetworkModule
@@ -43,21 +43,21 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Private Extenion
 private extension SceneDelegate {
   func dependencyAssemble() {
-    storageAssemble()
+    dataStorageAssemble()
     dataAssemble()
     domainAssemble()
     presentationAssemble()
   }
   
-  func storageAssemble() {
-    DIContainer.shared.register(type: DataStorageModule.self) { _ in
+  func dataStorageAssemble() {
+    DIContainer.shared.register(type: DataStorage.self) { _ in
       return DefaultLocalStorage()
     }
   }
 
   func dataAssemble() {
     DIContainer.shared.register(type: SettingRepository.self) { container in
-      guard let localStorage = container.resolve(type: DataStorageModule.self) else {
+      guard let localStorage = container.resolve(type: DataStorage.self) else {
         return
       }
       
@@ -65,7 +65,7 @@ private extension SceneDelegate {
     }
     
     DIContainer.shared.register(type: DiaryRepository.self) { container in
-      guard let localStorage = container.resolve(type: DataStorageModule.self) else {
+      guard let localStorage = container.resolve(type: DataStorage.self) else {
         return
       }
       

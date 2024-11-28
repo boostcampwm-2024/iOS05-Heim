@@ -10,7 +10,7 @@ import Domain
 import UIKit
 
 public protocol HomeCoordinator: Coordinator {
-  func provideHomeViewController() -> HomeViewController
+  func provideHomeViewController() -> HomeViewController?
   func pushDiaryDetailView(diary: Diary)
   func pushSettingView()
 }
@@ -32,8 +32,8 @@ public final class DefaultHomeCoordinator: HomeCoordinator {
     navigationController.pushViewController(homeViewController, animated: true)
   }
   
-  public func provideHomeViewController() -> HomeViewController {
-    guard let homeViewController = createHomeViewController() else { return HomeViewController() }
+  public func provideHomeViewController() -> HomeViewController? {
+    guard let homeViewController = createHomeViewController() else { return nil }
     return homeViewController
   }
   
@@ -63,8 +63,10 @@ public final class DefaultHomeCoordinator: HomeCoordinator {
 // MARK: - Private
 private extension DefaultHomeCoordinator {
   func createHomeViewController() -> HomeViewController? {
-    // TODO: 추후 도메인 모듈 주입 예정
-    let viewController = HomeViewController()
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    
+    let viewModel = HomeViewModel(useCase: diaryUseCase)
+    let viewController = HomeViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController
   }
