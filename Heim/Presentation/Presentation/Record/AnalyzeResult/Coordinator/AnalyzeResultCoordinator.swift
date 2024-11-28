@@ -20,7 +20,7 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
-
+  
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -42,7 +42,7 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
   }
   
   public func backToApproachView() {
-    // TODO: 홈 화면으로 이동
+    // TODO: 접근했던 화면으로 이동
   }
 }
 

@@ -40,7 +40,7 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    coordinator?.didFinish()
+    // coordinator?.didFinish()
   }
   
   override func bindState() {

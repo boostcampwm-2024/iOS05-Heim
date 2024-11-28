@@ -88,11 +88,21 @@ extension RecordViewController: RecordViewDelegate {
     case .refresh:
       viewModel.action(.refresh)
     case .next:
-      // TODO: 다음 화면으로 이동
-      coordinator?.pushEmotionAnalyzeView(voice: viewModel.voiceData())
+      moveToEmotionAnalyzeView()
     case .close:
       coordinator?.didFinish()
       dismiss(animated: true)
     }
+  }
+}
+
+private extension RecordViewController {
+  func moveToEmotionAnalyzeView() {
+    guard let recognizedText = viewModel.recognizedTextData(),
+          let voice = viewModel.voiceData()
+    else {
+      return
+    }
+    coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
   }
 }
