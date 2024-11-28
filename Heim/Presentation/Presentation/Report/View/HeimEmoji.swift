@@ -17,22 +17,20 @@ final class HeimEmoji: UIImageView {
     case fear
     case disgust
     case neutral
-    case none
   }
 
   // MARK: - Initializer
   init(icon: HeimEmotion) {
     super.init(frame: .zero)
+
     switch icon {
-      // TODO: - 이미지 추가 후 수정 
     case .disgust: self.image = .disgustIcon
-    case .sadness: self.image = .disgustIcon
-    case .happiness: self.image = .disgustIcon
-    case .angry: self.image = .disgustIcon
-    case .surprise: self.image = .disgustIcon
-    case .fear: self.image = .disgustIcon
-    case .neutral: self.image = .disgustIcon
-    case .none: self.image = .disgustIcon
+    case .sadness: self.image = .sadIcon
+    case .happiness: self.image = .happyIcon
+    case .angry: self.image = .angryIcon
+    case .surprise: self.image = .surpriseIcon
+    case .fear: self.image = .fearIcon
+    case .neutral: self.image = .neutralIcon
     }
   }
   
@@ -41,12 +39,12 @@ final class HeimEmoji: UIImageView {
   }
 
   static func defaultEmotions() -> [HeimEmoji] {
-    return [HeimEmoji(icon: .disgust),
+    return [HeimEmoji(icon: .happiness),
+            HeimEmoji(icon: .sadness),
             HeimEmoji(icon: .disgust),
-            HeimEmoji(icon: .disgust),
-            HeimEmoji(icon: .disgust),
-            HeimEmoji(icon: .disgust),
-            HeimEmoji(icon: .disgust),
-            HeimEmoji(icon: .disgust)]
+            HeimEmoji(icon: .surprise),
+            HeimEmoji(icon: .fear),
+            HeimEmoji(icon: .angry),
+            HeimEmoji(icon: .neutral)]
   }
 }

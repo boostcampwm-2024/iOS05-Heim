@@ -379,6 +379,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Application/Resource/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "음악을 재생하려면 Apple Music 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Assign Microphone Usage Description";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Assign Speech Recognition Usage Description";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -392,7 +393,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.Application;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -415,6 +416,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Application/Resource/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "음악을 재생하려면 Apple Music 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Assign Microphone Usage Description";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Assign Speech Recognition Usage Description";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -428,7 +430,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.Application;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

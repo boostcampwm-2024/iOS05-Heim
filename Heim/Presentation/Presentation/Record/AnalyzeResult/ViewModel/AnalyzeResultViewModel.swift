@@ -1,8 +1,8 @@
 //
-//  DiaryDetailViewModel.swift
+//  AnalyzeResultViewModel.swift
 //  Presentation
 //
-//  Created by 박성근 on 11/19/24.
+//  Created by 박성근 on 11/27/24.
 //
 
 import Combine
@@ -10,18 +10,17 @@ import Core
 import Domain
 import Foundation
 
-final class DiaryDetailViewModel: ViewModel {
+final class AnalyzeResultViewModel: ViewModel {
   // MARK: - Properties
   enum Action {
     case fetchDiary
-    case deleteDiary
+    case saveDiary
   }
   
   struct State: Equatable {
-    var date: String = ""
     var description: String = ""
     var content: String = ""
-    var isDeleted: Bool = false
+    var isSaved: Bool = false
   }
   
   @Published var state: State
@@ -43,35 +42,35 @@ final class DiaryDetailViewModel: ViewModel {
     switch action {
     case .fetchDiary:
       setupInitialState()
-    case .deleteDiary:
+    case .saveDiary:
       Task {
-        await handleDeleteDiary()
-        state.isDeleted = true
+        await handleSaveDiary()
+        state.isSaved = true
       }
     }
   }
 }
 
 // MARK: - Private Extenion
-private extension DiaryDetailViewModel {
+private extension AnalyzeResultViewModel {
   // TODO: 현재 timeStamp를 직접 생성하여 코드가 길어져 메서드를 따로 분리
-  func handleDeleteDiary() async {
+  func handleSaveDiary() async {
     // TODO: date 선언해서 파라미터로 넣는 것이 아닌 diary.id로 변경(미정)
     let date = Date()
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyyMMddHHmmss"
     let timeStamp = dateFormatter.string(from: date)
     do {
-      try await useCase.deleteDiary(timeStamp: timeStamp)
+      try await useCase.saveDiary(timeStamp: timeStamp, data: diary)
     } catch {
       // TODO: Error Handling
     }
   }
   
-  // TODO: 날짜 정보 초기화하는 기능 구현
   func setupInitialState() {
-    // state.date = diary.id
+    // TODO:
     state.description = diary.emotion.rawValue
-    state.content = diary.summary.text
+    state.content = diary.emotionReport.text
   }
 }
+
