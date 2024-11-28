@@ -22,7 +22,7 @@ struct SettingItem {
   static func defaultItems() -> [SettingItem] {
     return [
       SettingItem(title: "이름", icon: .smileIcon),
-      SettingItem(title: "iCloud 동기화", icon: .cloudIcon),
+//      SettingItem(title: "iCloud 동기화", icon: .cloudIcon), // TODO: 추후 구현
       SettingItem(title: "캐시 삭제", icon: .trashIcon),
       SettingItem(title: "데이터 초기화", icon: .trashIcon),
       SettingItem(title: "앱 버전", icon: .infoIcon),

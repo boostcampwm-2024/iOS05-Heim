@@ -96,6 +96,10 @@ final class CalendarView: UIView {
     self.diaries = diaries
     updateCalendar()
   }
+  
+  func provideCurrentCalendarDate() -> CalendarDate {
+    return currentCalendarDate.calendarDate()
+  }
 }
 
 // MARK: - Private Extenion
@@ -279,15 +283,16 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
     didSelectItemAt indexPath: IndexPath
   ) {
     // TODO: 테스트용 임시 데이터 적용
-//    delegate?.collectionViewCellDidTap(
-//      collectionView, 
-//      diary: Diary(
-//        emotion: .happiness, 
-//        emotionReport: EmotionReport(text: ""), 
-//        voice: Voice(audioBuffer: Data()), 
-//        summary: Summary(text: "")
-//      )
-//    )
+    delegate?.collectionViewCellDidTap(
+      collectionView, 
+      diary: Diary(
+        calendarDate: CalendarDate(year: 2024, month: 11, day: 25, hour: 3, minute: 2, second: 1),
+        emotion: .happiness,
+        emotionReport: EmotionReport(text: "emotionReport"),
+        voice: Voice(audioBuffer: Data()),
+        summary: Summary(text: "summary")
+      )
+    )
   }
 }
 
