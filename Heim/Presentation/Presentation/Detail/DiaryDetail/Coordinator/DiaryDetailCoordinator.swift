@@ -51,7 +51,10 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   public func pushDiaryReplayView(diary: Diary) {
-    // TODO: 화면 연결
+    let diaryReplayViewController = DiaryReplayViewController(
+      viewModel: DiaryReplayViewModel(),
+      diary: diary
+    )
   }
 }
 
