@@ -38,11 +38,20 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    // TODO: 노래 추천으로 이동
+    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
+      return
+    }
+    
+    addChildCoordinator(defaultMusicMatchCoordinator)
+    defaultMusicMatchCoordinator.parentCoordinator = self
+    defaultMusicMatchCoordinator.start()
   }
   
   public func backToApproachView() {
-    // TODO: 접근했던 화면으로 이동
+    parentCoordinator?.removeChild(self)
+    parentCoordinator?.parentCoordinator?.removeChild(parentCoordinator)
+    
+    navigationController.dismiss(animated: true)
   }
 }
 

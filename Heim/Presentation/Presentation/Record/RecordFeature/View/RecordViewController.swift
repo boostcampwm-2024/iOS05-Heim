@@ -16,12 +16,8 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
   weak var coordinator: DefaultRecordCoordinator?
   
   // MARK: - LifeCycle
-  public override func viewDidLoad() {
-    super.viewDidLoad()
-  }
-  
-  public override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
+  deinit {
+    coordinator?.didFinish()
   }
   
   public override func setupViews() {
