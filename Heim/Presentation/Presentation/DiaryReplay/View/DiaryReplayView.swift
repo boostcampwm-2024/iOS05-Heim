@@ -27,15 +27,6 @@ final class DiaryReplayView: UIView {
   private let visualizerView: VisualizerView
   
   // MARK: - UI Components
-  private let closeButton: UIButton = {
-    let button = UIButton()
-    button.setImage(.xmark, for: .normal)
-    button.tintColor = .white
-    button.backgroundColor = .secondary
-    button.layer.cornerRadius = LayoutConstants.closeButtonSize / 2
-    return button
-  }()
-  
   private let timeLabel: UILabel = {
     let label = UILabel()
     label.text = "00:00"
@@ -69,7 +60,7 @@ final class DiaryReplayView: UIView {
   // MARK: - Initialize
   init(visualizerView: VisualizerView) {
     self.visualizerView = visualizerView
-    super.init()
+    super.init(frame: .null)
     setupViews()
     setupLayoutConstraints()
     setupActions()
@@ -91,7 +82,7 @@ final class DiaryReplayView: UIView {
 private extension DiaryReplayView {
   // MARK: - Setup
   private func setupViews() {
-    [closeButton, visualizerView, timeLabel, buttonStackView].forEach {
+    [visualizerView, timeLabel, buttonStackView].forEach {
       addSubview($0)
     }
     
@@ -102,12 +93,6 @@ private extension DiaryReplayView {
   
   private func setupLayoutConstraints() {
     let screenHeight = UIApplication.screenHeight
-    
-    closeButton.snp.makeConstraints {
-      $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(LayoutConstants.topPadding)
-      $0.trailing.equalToSuperview().offset(-LayoutConstants.horizontalPadding)
-      $0.width.height.equalTo(LayoutConstants.closeButtonSize)
-    }
     
     visualizerView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
@@ -151,13 +136,11 @@ private extension DiaryReplayView {
 private extension DiaryReplayView {
   enum LayoutConstants {
     // Button sizes
-    static let closeButtonSize: CGFloat = 30
     static let controlButtonSize: CGFloat = 24
     static let nextButtonHeight: CGFloat = 50
     
     // Corner radius
     static let nextButtonCornerRadius: CGFloat = 16
-    static let closeButtonCornerRadius: CGFloat = closeButtonSize / 2
     
     // Padding & Offset
     static let topPadding: CGFloat = 16
