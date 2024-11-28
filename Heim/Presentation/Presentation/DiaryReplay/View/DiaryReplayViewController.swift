@@ -36,6 +36,7 @@ final class DiaryReplayViewController: BaseViewController<DiaryReplayViewModel> 
   override func setupViews() {
     super.setupViews()
     contentView.delegate = self
+    self.visualizerView.startVisualizer(for: self.viewModel)
     view.addSubview(contentView)
   }
   
@@ -55,10 +56,8 @@ final class DiaryReplayViewController: BaseViewController<DiaryReplayViewModel> 
         self?.contentView.updatePlayButtonImage(isPlaying: isPlaying)
         if isPlaying {
           self?.viewModel.startTimeObservation()
-          self?.visualizerView.startVisualizer(for: self?.viewModel)
         } else {
           self?.viewModel.stopTimeObservation()
-          self?.visualizerView.stopVisualizer()
         }
       }
       .store(in: &cancellable)
