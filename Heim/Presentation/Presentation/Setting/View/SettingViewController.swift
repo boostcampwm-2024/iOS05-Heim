@@ -85,7 +85,7 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
   }
 }
 
-extension SettingViewController: UITableViewDelegate, Alertable {
+extension SettingViewController: UITableViewDelegate {
   func tableView(
     _ tableView: UITableView,
     didSelectRowAt indexPath: IndexPath
@@ -94,22 +94,9 @@ extension SettingViewController: UITableViewDelegate, Alertable {
     case 0: // 이름
       presentNameAlert()
     case 2: // 캐시 삭제
-      // TODO: Alert창의 너비 조절
-      presentAlert(
-        type: .removeCache,
-        leftButtonAction: {},
-        rightButtonAction: { [weak self] in
-          self?.viewModel.action(.removeCache)
-        }
-      )
+      presentRemoveCacheAlert()
     case 3: // 데이터 초기화
-      presentAlert(
-        type: .removeCache,
-        leftButtonAction: {},
-        rightButtonAction: { [weak self] in
-          self?.viewModel.action(.resetData)
-        }
-      )
+      presentDataResetAlert()
     case 5: // 문의하기
       coordinator?.openQuestionURL()
     default:
@@ -167,8 +154,28 @@ extension SettingViewController: CloudSwitchDelegate {
 
 extension SettingViewController: Alertable {
   func presentNameAlert() {
-    presentNameAlert(completion: { [weak self] textFieldText in
+    presentNameAlert { [weak self] textFieldText in
       self?.viewModel.action(.updateUserName(textFieldText))
-    })
+    }
+  }
+  
+  func presentRemoveCacheAlert() {
+    presentAlert(
+      type: .removeCache,
+      leftButtonAction: {},
+      rightButtonAction: { [weak self] in
+        self?.viewModel.action(.removeCache)
+      }
+    )
+  }
+  
+  func presentDataResetAlert() {
+    presentAlert(
+      type: .removeData,
+      leftButtonAction: {},
+      rightButtonAction: { [weak self] in
+        self?.viewModel.action(.resetData)
+      }
+    )
   }
 }
