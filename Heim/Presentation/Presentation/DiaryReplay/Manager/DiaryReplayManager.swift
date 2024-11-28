@@ -7,12 +7,15 @@
 
 import AVFoundation
 
-final class DiaryReplayManager {
+final class DiaryReplayManager: NSObject, AVAudioPlayerDelegate {
   let audioPlayer: AVAudioPlayer
+  var onPlaybackFinished: (() -> Void)?
   
   init(data: Data) throws {
     self.audioPlayer = try AVAudioPlayer(data: data)
+    super.init()
     self.audioPlayer.isMeteringEnabled = true
+    self.audioPlayer.delegate = self
   }
   
   var currentTime: String {
@@ -31,6 +34,10 @@ final class DiaryReplayManager {
   func reset() {
     audioPlayer.currentTime = 0
     audioPlayer.stop()
+  }
+  
+  func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    onPlaybackFinished?()
   }
   
   private func formatTimeIntervalToMMSS(_ time: TimeInterval) -> String {
