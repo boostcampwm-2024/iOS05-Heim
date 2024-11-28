@@ -126,6 +126,10 @@ private extension SceneDelegate {
     DIContainer.shared.register(type: AnalyzeResultCoordinator.self) { _ in
       return DefaultAnalyzeResultCoordinator(navigationController: recordNavigationController)
     }
+    
+    DIContainer.shared.register(type: ReportCoordinator.self) { _ in
+      return DefaultReportCoordinator(navigationController: navigationController)
+    }
   }
 
   func startScene() {

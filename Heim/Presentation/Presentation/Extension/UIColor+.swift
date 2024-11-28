@@ -64,11 +64,60 @@ extension UIColor {
     alpha: 1.0
   )
 
-  
   static let primaryTransparent = UIColor(
     red: 28 / 255,
     green: 7 / 255,
     blue: 93 / 255,
     alpha: 0.5
   )
+
+  static let whiteBlue = UIColor(
+    red: 106 / 255,
+    green: 140 / 255,
+    blue: 236 / 255,
+    alpha: 1.0
+  )
+
+  static let heimRed = UIColor(
+    red: 236 / 255,
+    green: 106 / 255,
+    blue: 101 / 255,
+    alpha: 1.0
+  )
+
+  static let heimYellow = UIColor(
+    red: 254 / 255,
+    green: 247 / 255,
+    blue: 108 / 255,
+    alpha: 1.0
+  )
+
+  static let heimViolet = UIColor(
+    red: 130 / 255,
+    green: 55 / 255,
+    blue: 246 / 255,
+    alpha: 1.0
+  )
+
+  static let heimBlack = UIColor(
+    red: 61 / 255,
+    green: 61 / 255,
+    blue: 61 / 255,
+    alpha: 1.0
+  )
+
+  static let heimGreen = UIColor(
+    red: 121 / 255,
+    green: 252 / 255,
+    blue: 111 / 255,
+    alpha: 1.0
+  )
+
+  static let darkGray = UIColor(
+    red: 188 / 255,
+    green: 188 / 255,
+    blue: 188 / 255,
+    alpha: 1.0
+  )
+
 }

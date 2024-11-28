@@ -7,18 +7,9 @@
 
 import UIKit
 
-// 그래프의 막대 부분
 final class BarView: UIView {
-  let contentView: UIView = {
-    let view = UIView()
-    return view
-  }()
-
-  let bar: UIView = {
-    let view = UIView()
-    return view
-  }()
-
+  let contentView = UIView()
+  let bar: UIView = UIView()
   let chart: Chart
 
   required init?(coder: NSCoder) {
@@ -49,19 +40,19 @@ final class BarView: UIView {
   func setBarColor(emotion: HeimEmotion) -> UIColor {
     switch emotion {
     case .sadness:
-      return .red
+      return .darkGray
     case .happiness:
-      return .blue
+      return .heimYellow
     case .angry:
-      return .white
+      return .heimRed
     case .surprise:
-      return .yellow
+      return .heimViolet
     case .fear:
-      return .black
+      return .heimBlack
     case .disgust:
-      return .orange
+      return .heimGreen
     case .neutral:
-      return .brown
+      return .whiteBlue
     }
   }
 }
