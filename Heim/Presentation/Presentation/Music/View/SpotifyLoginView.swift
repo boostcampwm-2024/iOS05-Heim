@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 final class SpotifyLoginView: UIView {
-
   private let logoImageView: UIImageView = {
     let view = UIImageView()
     view.image = .spotifyFullLogo
@@ -23,8 +22,9 @@ final class SpotifyLoginView: UIView {
     config.image = .spotifyLogo
     config.imagePadding = 10
     config.imagePlacement = .leading
+    config.background.strokeColor = .black
     var titleAttribute = AttributedString.init("Login with Spotify")
-    titleAttribute.font = .systemFont(ofSize: 26.0, weight: .medium)
+    titleAttribute.font = .systemFont(ofSize: 20.0, weight: .medium)
     config.attributedTitle = titleAttribute
     let button = UIButton(configuration: config)
 
@@ -51,24 +51,25 @@ private extension SpotifyLoginView {
 
   func setupConstraints() {
     logoImageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(UIApplication.screenHeight * 0.276)
-      $0.height.equalTo(UIApplication.screenHeight * 0.1)
-      $0.leading.trailing.equalToSuperview().inset(20)
-
+      $0.top.equalToSuperview().offset(LayoutConstants.logoImageViewTop)
+      $0.height.equalTo(LayoutConstants.logoImageViewHeight)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.logoImageViewPadding)
     }
 
     loginButton.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding * 2)
-      $0.top.equalTo(logoImageView.snp.bottom).offset(LayoutConstants.loginButtonTopTop)
-      $0.height.equalTo(LayoutConstants.loginButtonTop)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.loginButtonPadding)
+      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.loginButtonPadding)
+      $0.top.equalTo(logoImageView.snp.bottom).offset(LayoutConstants.loginButtonTop)
+      $0.height.equalTo(LayoutConstants.loginButtonHeight)
     }
 
     enum LayoutConstants {
-      static let defaultPadding: CGFloat = 16
-    
-      static let loginButtonTopTop: CGFloat = 158
-      static let loginButtonTop = UIApplication.screenHeight * 0.07
+      static let loginButtonPadding: CGFloat = 48
+      static let logoImageViewTop: CGFloat = UIApplication.screenHeight * 0.276
+      static let logoImageViewHeight: CGFloat = UIApplication.screenHeight * 0.1
+      static let logoImageViewPadding = 32
+      static let loginButtonTop: CGFloat = UIApplication.screenHeight * 0.25
+      static let loginButtonHeight = UIApplication.screenHeight * 0.07
     }
-
   }
 }
