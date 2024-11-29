@@ -42,13 +42,9 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-      return
-    }
-    
-    addChildCoordinator(defaultMusicMatchCoordinator)
-    defaultMusicMatchCoordinator.parentCoordinator = self
-    defaultMusicMatchCoordinator.start()
+    let musicViewModel = MusicMatchViewModel()
+    let musicViewController = MusicMatchViewController(musics: [Music(title: "Supernova", artist: "aespa")], viewModel: musicViewModel)
+    navigationController.pushViewController(musicViewController, animated: true)
   }
   
   public func pushHeimReplyView(diary: Diary) {
