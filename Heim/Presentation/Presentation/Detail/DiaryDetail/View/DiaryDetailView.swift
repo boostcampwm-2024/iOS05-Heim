@@ -82,7 +82,6 @@ final class DiaryDetailView: UIView {
     button.backgroundColor = .primary
     button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
-    button.addTarget(self, action: #selector(heimReplyButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -93,7 +92,6 @@ final class DiaryDetailView: UIView {
     button.backgroundColor = .primary
     button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
-    button.addTarget(self, action: #selector(replayVoiceButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -102,6 +100,7 @@ final class DiaryDetailView: UIView {
     super.init(frame: frame)
     setupViews()
     setupLayoutConstraints()
+    setupActions()
   }
   
   required init?(coder: NSCoder) {
@@ -114,7 +113,7 @@ final class DiaryDetailView: UIView {
     description: String,
     content: String
   ) {
-    dateLabel.text = date
+    dateLabel.text = formatDate(date)
     descriptionLabel.text = description
     textArea.setText(content)
   }
@@ -137,7 +136,8 @@ private extension DiaryDetailView {
   
   func setupLayoutConstraints() {
     scrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.bottom.equalTo(safeAreaLayoutGuide)
+      $0.leading.trailing.equalToSuperview()
     }
     
     contentView.snp.makeConstraints {
@@ -180,17 +180,41 @@ private extension DiaryDetailView {
     }
   }
   
+  func setupActions() {
+    heimReplyButton.addTarget(self, action: #selector(heimReplyButtonTapped), for: .touchUpInside)
+    replayVoiceButton.addTarget(self, action: #selector(replayVoiceButtonTapped), for: .touchUpInside)
+  }
+  
   // MARK: - Action Methods
-  @objc func musicRecomendationButtonTapped() {
+  @objc
+  func musicRecomendationButtonTapped() {
     delegate?.buttonDidTap(self, .musicRecomendation)
   }
   
-  @objc func heimReplyButtonTapped() {
+  @objc
+  func heimReplyButtonTapped() {
     delegate?.buttonDidTap(self, .heimReply)
   }
   
-  @objc func replayVoiceButtonTapped() {
+  @objc
+  func replayVoiceButtonTapped() {
     delegate?.buttonDidTap(self, .replayVoice)
+  }
+  
+  // MARK: - Date Formatter
+  func formatDate(_ dateString: String) -> String {
+    let inputFormatter = DateFormatter()
+    inputFormatter.dateFormat = "yyyyMMddSSS"
+    
+    guard let date = inputFormatter.date(from: dateString) else {
+      return dateString
+    }
+    
+    let outputFormatter = DateFormatter()
+    outputFormatter.dateFormat = "yyyy년 MM월 dd일"
+    outputFormatter.locale = Locale(identifier: "ko_KR")
+    
+    return outputFormatter.string(from: date)
   }
 }
 
