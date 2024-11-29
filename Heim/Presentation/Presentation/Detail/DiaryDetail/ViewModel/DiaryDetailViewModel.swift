@@ -48,7 +48,6 @@ final class DiaryDetailViewModel: ViewModel {
     case .deleteDiary:
       Task {
         await handleDeleteDiary()
-        state.isDeleted = true
       }
     }
   }
@@ -59,6 +58,7 @@ private extension DiaryDetailViewModel {
   func handleDeleteDiary() async {
     do {
       try await useCase.deleteDiary(calendarDate: diary.calendarDate)
+      state.isDeleted = true
     } catch {
       // TODO: Error Handling
     }
