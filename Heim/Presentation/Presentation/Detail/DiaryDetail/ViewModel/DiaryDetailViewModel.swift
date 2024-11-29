@@ -58,15 +58,14 @@ final class DiaryDetailViewModel: ViewModel {
 private extension DiaryDetailViewModel {
   func handleDeleteDiary() async {
     do {
-      // TODO: useCase 파라미터 변경사항 반영
-//      try await useCase.deleteDiary(timeStamp: timeStamp)
+      try await useCase.deleteDiary(calendarDate: diary.calendarDate)
     } catch {
       // TODO: Error Handling
     }
   }
   
   func setupInitialState() {
-    state.calendarDate = diary.calendarDate.toTimeStamp()
+    state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
     state.description = diary.emotion.diaryDetailDescription(with: userName)
     state.content = diary.summary.text
   }

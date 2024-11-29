@@ -113,7 +113,7 @@ final class DiaryDetailView: UIView {
     description: String,
     content: String
   ) {
-    dateLabel.text = formatDate(date)
+    dateLabel.text = date
     descriptionLabel.text = description
     textArea.setText(content)
   }
@@ -199,22 +199,6 @@ private extension DiaryDetailView {
   @objc
   func replayVoiceButtonTapped() {
     delegate?.buttonDidTap(self, .replayVoice)
-  }
-  
-  // MARK: - Date Formatter
-  func formatDate(_ dateString: String) -> String {
-    let inputFormatter = DateFormatter()
-    inputFormatter.dateFormat = "yyyyMMddSSS"
-    
-    guard let date = inputFormatter.date(from: dateString) else {
-      return dateString
-    }
-    
-    let outputFormatter = DateFormatter()
-    outputFormatter.dateFormat = "yyyy년 MM월 dd일"
-    outputFormatter.locale = Locale(identifier: "ko_KR")
-    
-    return outputFormatter.string(from: date)
   }
 }
 
