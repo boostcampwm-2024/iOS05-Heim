@@ -7,17 +7,12 @@
 import Domain
 import UIKit
 
-// TODO: 수정
-struct Music {
-  let title: String
-  let artist: String
-}
-
 final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable{
   // MARK: - Properties
   // TODO: let 수정
   private var musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
+//  weak var delegate: MusicTableViewCellButtonDelegate?
 
   // MARK: - UI Components
   private let titleLabel = CommonLabel(text: "하임이가 추천하는 음악을 가져왔어요!", font: .bold, size: LayoutConstants.titleThree)
@@ -49,11 +44,11 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     // TODO: 삭제
     //self.musicDataSources = musics
     self.musicDataSources = [
-      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
-      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
-      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
-      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
-      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123")
+      MusicTrack(thumbnail: nil, title: "아틀란티스", artist: "샤이니", isrc: "KRA302100123"),
+      MusicTrack(thumbnail: nil, title: "Celebrity", artist: "아이유", isrc: "KRA402100001"),
+      MusicTrack(thumbnail: nil, title: "이제 나만 믿어요", artist: "임영웅", isrc: "KRA402000261"),
+      MusicTrack(thumbnail: nil, title: "How You Like That", artist: "블랙핑크", isrc: "KRA301900353"),
+      MusicTrack(thumbnail: nil, title: "Dolphin", artist: "오마이걸", isrc: "KRA402000460")
     ]
 
     self.homeButton.isHidden = isHiddenHomeButton
@@ -66,6 +61,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
 
   // MARK: - LifeCycle
   override func viewDidLoad() {
+    super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
   }
@@ -119,6 +115,26 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   @objc func homeButtondidTap() {
     coordinator?.backToMainView()
   }
+
+  override func bindState() {
+    super.bindState()
+
+    viewModel.$state
+      .receive(on: DispatchQueue.main)
+      .removeDuplicates(by: { $0 == $1 })
+      .sink { [weak self] (state) in
+        self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
+          guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
+          let item = self?.musicDataSources[indexPath.row] else { return }
+          cell.updatePlayButton(isPlaying: item.isrc == state.currentTrack)
+        })
+      }
+      .store(in: &cancellable)
+  }
+
+  func update() {
+
+  }
 }
 
 extension MusicMatchViewController: UITableViewDelegate {
@@ -130,7 +146,10 @@ extension MusicMatchViewController: UITableViewDelegate {
   }
 }
 
-extension MusicMatchViewController: UITableViewDataSource {
+extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellButtonDelegate {
+
+  
+
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
@@ -144,20 +163,53 @@ extension MusicMatchViewController: UITableViewDataSource {
     let subTilteText = musicDataSources[indexPath.row].artist
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
-    
+    cell.delegate = self
+
+    let item = self.musicDataSources[indexPath.row]
+//    viewModel.$state
+//      .receive(on: DispatchQueue.main)
+//      .sink { [weak cell] state in
+//
+//        cell?.updatePlayButton(isPlaying: state.currentTrack?.isrc == item.isrc)
+//      }
+//      .store(in: &cell.cancellables)
+
+//    let action = UIAction { _ in
+//      let track = self.musicDataSources[indexPath.row]
+//      self.viewModel.action(.playMusic(track))
+//    }
+//
+//    cell.configure(
+//      titleText: titleText,
+//      subTitle: subTilteText,
+//      action: action
+//    )
+
     let action = UIAction { _ in
-      let isrc = self.musicDataSources[indexPath.row].isrc
-      self.viewModel.action(.playMusic(isrc))
+      let track = self.musicDataSources[indexPath.row]
+//      self.viewModel.action(.playMusic(track))
     }
 
     cell.configure(
       titleText: titleText,
       subTitle: subTilteText,
-      action: action
+      action: action,
+      track: item.isrc
     )
 
     return cell
   }
+
+  func pauseButtonDidTap() {
+    print("컨트롤까지 와야함")
+    viewModel.action(.pauseMusic)
+  }
+
+  func playButtonDidTap(isrc: String?) {
+    guard let isrc else { return }
+    viewModel.action(.playMusic(isrc))
+  }
+
 }
 
 private extension MusicMatchViewController {

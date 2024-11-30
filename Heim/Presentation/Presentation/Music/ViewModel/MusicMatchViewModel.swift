@@ -17,7 +17,7 @@ final class MusicMatchViewModel: ViewModel {
   }
 
   struct State: Equatable {
-    var isPlaying: Bool
+    var currentTrack: String?
   }
 
   let useCase: MusicUseCase
@@ -26,14 +26,14 @@ final class MusicMatchViewModel: ViewModel {
   // MARK: - Initializer
   init(useCase: MusicUseCase) {
     self.useCase = useCase
-    self.state = State(isPlaying: false)
+    self.state = State(currentTrack: nil)
   }
 
   func action(_ action: Action) {
     switch action {
-    case .playMusic(let isrc):
-      Task{
-        await playMusic(isrc: isrc)
+    case .playMusic(let track):
+      Task {
+        await playMusic(track: track)
       }
 
     case .pauseMusic:
@@ -46,10 +46,11 @@ final class MusicMatchViewModel: ViewModel {
 
 // MARK: - Private Extenion
 private extension MusicMatchViewModel {
-  func playMusic(isrc: String) async {
+  func playMusic(track: String) async {
     do {
-      try await useCase.play(to: isrc)
-      state.isPlaying = true
+      try await useCase.play(to: track)
+      state.currentTrack = track
+      print("재생됨")
     } catch {
       // TODO: Error 처리
     }
@@ -57,9 +58,11 @@ private extension MusicMatchViewModel {
   func pauseMusic() async {
     do {
       try useCase.pause()
-      state.isPlaying = false
+      print("여기까지옴")
+//      state.isPlaying = false
     } catch {
       // TODO: Error 처리
+      print("여기까지옴~~~~")
     }
 
   }
