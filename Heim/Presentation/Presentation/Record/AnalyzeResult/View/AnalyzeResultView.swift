@@ -132,7 +132,8 @@ private extension AnalyzeResultView {
   
   func setupLayoutConstraints() {
     scrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.bottom.equalTo(safeAreaLayoutGuide)
+      $0.leading.trailing.equalToSuperview()
     }
     
     contentView.snp.makeConstraints {

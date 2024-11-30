@@ -20,6 +20,11 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
     coordinator?.didFinish()
   }
   
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    setupNavigationBar()
+  }
+  
   public override func setupViews() {
     super.setupViews()
     contentView.delegate = self
@@ -100,5 +105,17 @@ private extension RecordViewController {
       return
     }
     coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
+  }
+  
+  func setupNavigationBar() {
+    navigationController?.navigationBar.isHidden = true
+    
+    let backButton: UIButton = {
+      let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+      button.setImage(.backIcon, for: .normal)
+      return button
+    }()
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backButton)
+    self.navigationItem.backBarButtonItem?.tintColor = .white
   }
 }

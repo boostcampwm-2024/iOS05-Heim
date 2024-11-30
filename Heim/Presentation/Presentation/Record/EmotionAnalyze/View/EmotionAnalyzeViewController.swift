@@ -21,7 +21,7 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
     setupViews()
     setupLayoutConstraints()
     contentView.delegate = self
-    // TODO: setupNavigationBar()
+    setupNavigationBar()
     viewModel.action(.analyze)
   }
   
@@ -59,6 +59,20 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
         self?.contentView.updateNextButton(isAnalyzing: isAnalyzing)
       }
       .store(in: &cancellable)
+  }
+}
+
+private extension EmotionAnalyzeViewController {
+  func setupNavigationBar() {
+    self.navigationController?.navigationBar.isHidden = false
+    
+    let backButton: UIButton = {
+      let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+      button.setImage(.backIcon, for: .normal)
+      return button
+    }()
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backButton)
+    self.navigationItem.backBarButtonItem?.tintColor = .white
   }
 }
 
