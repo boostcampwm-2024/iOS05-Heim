@@ -10,11 +10,9 @@ import Core
 import Domain
 
 final class MusicMatchViewModel: ViewModel {
-
   // MARK: - Properties
   enum Action {
-    //TODO: 수정
-    case playMusic
+    case playMusic(String)
     case pauseMusic
   }
 
@@ -22,26 +20,47 @@ final class MusicMatchViewModel: ViewModel {
     var isPlaying: Bool
   }
 
-// TODO: UseCase 추가
+  let useCase: MusicUseCase
   @Published var state: State
 
   // MARK: - Initializer
-  init() {
+  init(useCase: MusicUseCase) {
+    self.useCase = useCase
     self.state = State(isPlaying: false)
   }
 
   func action(_ action: Action) {
     switch action {
-    case .playMusic:
-      playMusic()
+    case .playMusic(let isrc):
+      Task{
+        await playMusic(isrc: isrc)
+      }
+
     case .pauseMusic:
-      pauseMusic()
+      Task {
+        await pauseMusic()
+      }
     }
   }
 }
 
 // MARK: - Private Extenion
 private extension MusicMatchViewModel {
-  func playMusic() {}
-  func pauseMusic() {}
+  func playMusic(isrc: String) async {
+    do {
+      try await useCase.play(to: isrc)
+      state.isPlaying = true
+    } catch {
+      // TODO: Error 처리
+    }
+  }
+  func pauseMusic() async {
+    do {
+      try useCase.pause()
+      state.isPlaying = false
+    } catch {
+      // TODO: Error 처리
+    }
+
+  }
 }

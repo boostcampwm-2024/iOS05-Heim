@@ -4,7 +4,7 @@
 //
 //  Created by 김미래 on 11/25/24.
 //
-
+import Domain
 import UIKit
 
 // TODO: 수정
@@ -16,7 +16,7 @@ struct Music {
 final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable{
   // MARK: - Properties
   // TODO: let 수정
-  private var musicDataSources: [Music]
+  private var musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
 
   // MARK: - UI Components
@@ -45,16 +45,15 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   }()
 
   // MARK: - Initializer
-  init(musics: [Music], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
-
-    self.musicDataSources = musics
+  init(musics: [MusicTrack], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
     // TODO: 삭제
+    //self.musicDataSources = musics
     self.musicDataSources = [
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")
+      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
+      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
+      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
+      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123"),
+      MusicTrack(thumbnail: nil, title: "슈퍼노바", artist: "에스파", isrc: "KRA302100123")
     ]
 
     self.homeButton.isHidden = isHiddenHomeButton
@@ -145,9 +144,10 @@ extension MusicMatchViewController: UITableViewDataSource {
     let subTilteText = musicDataSources[indexPath.row].artist
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
-
+    
     let action = UIAction { _ in
-        // TODO: 뮤직킷 연동
+      let isrc = self.musicDataSources[indexPath.row].isrc
+      self.viewModel.action(.playMusic(isrc))
     }
 
     cell.configure(
