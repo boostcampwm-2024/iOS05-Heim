@@ -44,13 +44,12 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
   override func bindState() {
     super.bindState()
     
-    // TODO: state를 통해 configure를 사용할 예정
     viewModel.$state
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
       .sink { [weak self] state in
         self?.contentView.configure(
-          date: state.date,
+          date: state.calendarDate,
           description: state.description,
           content: state.content
         )
@@ -59,7 +58,7 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
     
     viewModel.$state
       .map { $0.isDeleted }
-      .filter { $0 }  // true인 경우만 처리
+      .filter { $0 }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] _ in
         self?.coordinator?.didFinish()
@@ -67,7 +66,8 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
       .store(in: &cancellable)
   }
   
-  @objc func deleteButtonTapped() {
+  @objc
+  func deleteButtonTapped() {
     presentAlert(
       type: .removeDiary,
       leftButtonAction: {},
@@ -88,6 +88,14 @@ private extension DiaryDetailViewController {
     }()
     deleteButton.tintColor = .white
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: deleteButton)
+    
+    let backButton: UIButton = {
+      let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+      button.setImage(.backIcon, for: .normal)
+      return button
+    }()
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backButton)
+    self.navigationItem.backBarButtonItem?.tintColor = .white
   }
 }
 

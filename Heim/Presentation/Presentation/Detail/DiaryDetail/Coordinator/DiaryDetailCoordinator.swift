@@ -23,7 +23,7 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
-
+  
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -39,16 +39,14 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   
   public func didFinish() {
     parentCoordinator?.removeChild(self)
+    navigationController.popViewController(animated: true)
   }
   
   public func pushMusicRecommendationView() {
-    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-      return
-    }
-    
-    addChildCoordinator(defaultMusicMatchCoordinator)
-    defaultMusicMatchCoordinator.parentCoordinator = self
-    defaultMusicMatchCoordinator.start()
+    // TODO: 구현 구체화 - 현재는 MusicMatchView를 띄우기 위한 기능만을 추가.
+    let musicViewModel = MusicMatchViewModel()
+    let musicViewController = MusicMatchViewController(musics: [Music(title: "Supernova", artist: "aespa")], viewModel: musicViewModel)
+    navigationController.pushViewController(musicViewController, animated: true)
   }
   
   public func pushHeimReplyView(diary: Diary) {
