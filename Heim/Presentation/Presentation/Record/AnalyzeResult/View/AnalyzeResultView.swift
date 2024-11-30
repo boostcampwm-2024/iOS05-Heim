@@ -104,7 +104,8 @@ final class AnalyzeResultView: UIView {
     content: String
   ) {
     // TODO: titleLabel.text = name
-    characterImageView.image = configureIcon(emotion: description)
+    characterImageView.image = UIImage.configureImage(emotion: description)
+    // TODO: description -> Emotion extension 적용
     descriptionLabel.text = description
     textArea.setText(content)
   }
@@ -139,8 +140,6 @@ private extension AnalyzeResultView {
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
       $0.width.equalToSuperview()
-      // TODO: Layout 다시 점검
-      $0.height.greaterThanOrEqualToSuperview().priority(.low)
     }
     
     titleLabel.snp.makeConstraints {
@@ -174,27 +173,6 @@ private extension AnalyzeResultView {
       $0.snp.makeConstraints {
         $0.height.equalTo(LayoutConstants.buttonHeight)
       }
-    }
-  }
-  
-  func configureIcon(emotion: String) -> UIImage {
-    switch emotion {
-    case "sadness":
-      return .sadIcon
-    case "happiness":
-      return .happyIcon
-    case "angry":
-      return .angryIcon
-    case "surprise":
-      return .surpriseIcon
-    case "fear":
-      return .fearIcon
-    case "disgust":
-      return .disgustIcon
-    case "neutral":
-      return .neutralIcon
-    default:
-      return UIImage()
     }
   }
   
