@@ -53,7 +53,6 @@ final class AnalyzeResultView: UIView {
   // TODO: 감정에 맞게 이미지 변경
   private let characterImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .angryIcon
     imageView.contentMode = .scaleAspectFit
     return imageView
   }()
@@ -100,11 +99,12 @@ final class AnalyzeResultView: UIView {
   
   // MARK: - Public Methods
   func configure(
-    // TODO: name: String,
+    // TODO: name: String
     description: String,
     content: String
   ) {
     // TODO: titleLabel.text = name
+    characterImageView.image = configureIcon(emotion: description)
     descriptionLabel.text = description
     textArea.setText(content)
   }
@@ -174,6 +174,27 @@ private extension AnalyzeResultView {
       $0.snp.makeConstraints {
         $0.height.equalTo(LayoutConstants.buttonHeight)
       }
+    }
+  }
+  
+  func configureIcon(emotion: String) -> UIImage {
+    switch emotion {
+    case "sadness":
+      return .sadIcon
+    case "happiness":
+      return .happyIcon
+    case "angry":
+      return .angryIcon
+    case "surprise":
+      return .surpriseIcon
+    case "fear":
+      return .fearIcon
+    case "disgust":
+      return .disgustIcon
+    case "neutral":
+      return .neutralIcon
+    default:
+      return UIImage()
     }
   }
   
