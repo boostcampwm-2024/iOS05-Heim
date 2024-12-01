@@ -16,6 +16,7 @@ final class CommonLabel: UILabel {
   // MARK: - Initializer
   init(
     text: String = "", 
+    textAlignment: NSTextAlignment = .left,
     font: HeimFontStyle,
     size: CGFloat,
     textColor: UIColor = .white
@@ -23,6 +24,7 @@ final class CommonLabel: UILabel {
     super.init(frame: .zero)
     
     self.text = text
+    self.textAlignment = textAlignment 
     self.textColor = textColor
     self.numberOfLines = 0
     
