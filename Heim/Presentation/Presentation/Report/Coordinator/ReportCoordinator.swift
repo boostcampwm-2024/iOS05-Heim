@@ -9,8 +9,9 @@ import Core
 import Domain
 import UIKit
 
-//MARK: 수정 필요
-public protocol ReportCoordinator: Coordinator {}
+public protocol ReportCoordinator: Coordinator {
+  func provideReportViewController() -> ReportViewController?
+}
 
 public final class DefaultReportCoordinator: ReportCoordinator {
   // MARK: - Properties
@@ -24,22 +25,26 @@ public final class DefaultReportCoordinator: ReportCoordinator {
   }
 
   // MARK: - Methods
-  public func start() {
-    guard let reportViewController = reportViewController() else { return }
-    navigationController.pushViewController(reportViewController, animated: true)
-  }
+  public func start() {}
   
   public func didFinish() {
     parentCoordinator?.removeChild(self)
   }
 
-  func reportViewController() -> ReportViewController? {
-    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else {
-      return nil
-    }
-    let viewModel = ReportViewModel(useCase: diaryUseCase)
-    let reportViewController = ReportViewController(viewModel: viewModel)
-    reportViewController.coordinator = self
+  public func provideReportViewController() -> ReportViewController? {
+    guard let reportViewController = createReportViewController() else { return nil }
     return reportViewController
+  }
+}
+
+private extension DefaultReportCoordinator {
+  func createReportViewController() -> ReportViewController? {
+    guard let userUseCase = DIContainer.shared.resolve(type: UserUseCase.self) else { return nil }
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    
+    let viewModel = ReportViewModel(userUseCase: userUseCase, diaryUseCase: diaryUseCase)
+    let viewController = ReportViewController(viewModel: viewModel)
+    viewController.coordinator = self
+    return viewController
   }
 }
