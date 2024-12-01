@@ -15,6 +15,7 @@ final class DiaryDetailViewModel: ViewModel {
   enum Action {
     case fetchDiary
     case deleteDiary
+    case fetchMusicTrack
   }
   
   struct State: Equatable {
@@ -22,21 +23,26 @@ final class DiaryDetailViewModel: ViewModel {
     var description: String = ""
     var content: String = ""
     var isDeleted: Bool = false
+    var musicTrack: [MusicTrack] = []
+    var errorMessage: String?
   }
   
   @Published var state: State
-  private let useCase: DiaryUseCase
+  private let diaryUseCase: DiaryUseCase
+  private let musicUseCase: MusicUseCase
   // TODO: 이름 가져오는 기능 추가
   private let userName: String = "성근"
   let diary: Diary
   
   // MARK: - Initializer
   init(
-    useCase: DiaryUseCase,
+    diaryUseCase: DiaryUseCase,
+    musicUseCase: MusicUseCase,
     diary: Diary
   ) {
     state = State()
-    self.useCase = useCase
+    self.diaryUseCase = diaryUseCase
+    self.musicUseCase = musicUseCase
     self.diary = diary
   }
   
@@ -49,6 +55,8 @@ final class DiaryDetailViewModel: ViewModel {
       Task {
         await handleDeleteDiary()
       }
+    case .fetchMusicTrack:
+      fetchMusicTrack()
     }
   }
 }
@@ -57,7 +65,7 @@ final class DiaryDetailViewModel: ViewModel {
 private extension DiaryDetailViewModel {
   func handleDeleteDiary() async {
     do {
-      try await useCase.deleteDiary(calendarDate: diary.calendarDate)
+      try await diaryUseCase.deleteDiary(calendarDate: diary.calendarDate)
       state.isDeleted = true
     } catch {
       // TODO: Error Handling
@@ -68,5 +76,17 @@ private extension DiaryDetailViewModel {
     state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
     state.description = diary.emotion.diaryDetailDescription(with: userName)
     state.content = diary.summary.text
+  }
+  
+  func fetchMusicTrack() {
+    Task.detached { [weak self] in
+      guard let self else { return }
+      do {
+        let tracks = try await musicUseCase.fetchRecommendTracks(self.diary.emotion)
+        self.state.musicTrack = tracks
+      } catch TokenError.refreshTokenExpired {
+        self.state.errorMessage = TokenError.refreshTokenExpired.description
+      }
+    }
   }
 }

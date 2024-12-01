@@ -11,10 +11,8 @@ import UIKit
 
 public protocol DiaryDetailCoordinator: Coordinator {
   func start(diary: Diary)
-  // MARK: - 추천음악 감상하기로 이동
-  func pushMusicRecommendationView()
+  func pushMusicRecommendationView(tracks: [MusicTrack])
   func pushHeimReplyView(diary: Diary)
-  // MARK: - 나의 이야기 다시듣기 이동
   func pushDiaryReplayView(diary: Diary)
 }
 
@@ -42,16 +40,11 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
     navigationController.popViewController(animated: true)
   }
   
-  public func pushMusicRecommendationView() {
-    guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-      return
-    }
-    
-    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
-      return
-    }
-    
-    navigationController.pushViewController(musicMatchViewController, animated: true)
+  public func pushMusicRecommendationView(tracks: [MusicTrack]) {
+    guard let musicUseCase = DIContainer.shared.resolve(type: MusicUseCase.self) else { return }
+    let musicViewModel = MusicMatchViewModel(useCase: musicUseCase)
+    let musicViewController = MusicMatchViewController(musics: tracks, viewModel: musicViewModel)
+    navigationController.pushViewController(musicViewController, animated: true)
   }
   
   public func pushHeimReplyView(diary: Diary) {
@@ -72,9 +65,13 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
 private extension DefaultDiaryDetailCoordinator {
   func createDiaryDetailViewController(diary: Diary) -> DiaryDetailViewController? {
     guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    guard let musicUseCase = DIContainer.shared.resolve(type: MusicUseCase.self) else { return nil }
     
-    
-    let viewModel = DiaryDetailViewModel(useCase: diaryUseCase, diary: diary)
+    let viewModel = DiaryDetailViewModel(
+      diaryUseCase: diaryUseCase,
+      musicUseCase: musicUseCase,
+      diary: diary
+    )
     let viewController = DiaryDetailViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController
