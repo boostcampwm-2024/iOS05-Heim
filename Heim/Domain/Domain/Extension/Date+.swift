@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import Domain
 
-extension Date {
+public extension Date {
   func calendarDate() -> CalendarDate {
     let calendar = Calendar.current
     let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
