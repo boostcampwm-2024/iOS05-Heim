@@ -51,13 +51,11 @@ final class SettingViewModel: ViewModel {
 // MARK: - Private Extenion
 private extension SettingViewModel {
   func fetchUserName() {
-    Task {
+    Task.detached { [weak self] in
       do {
-        let userName = try await useCase.fetchUserName()
-        state.userName = userName
-      } catch(let error) {
-        state.userName = ""
-        Logger.log(message: "fetchUserName Error: \(error)")
+        self?.state.userName = try await self?.useCase.fetchUserName() ?? "User"
+      } catch {
+        self?.state.userName = "User"
       }
     }
   }
@@ -75,10 +73,9 @@ private extension SettingViewModel {
   }
   
   func updateUserName(_ name: String) {
-    Task {
+    Task.detached { [weak self] in
       do {
-        try await useCase.updateUserName(name)
-        state.userName = name
+        self?.state.userName = try await self?.useCase.updateUserName(to: name) ?? "User"
       } catch(let error) {
         Logger.log(message: "updateUserName Error: \(error)")
       }
