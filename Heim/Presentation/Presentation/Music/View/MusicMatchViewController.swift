@@ -19,10 +19,9 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     let tableView = UITableView(frame: .zero)
     tableView.registerCellClass(cellType: MusicTableViewCell.self)
     tableView.separatorStyle = .none
-    tableView.isScrollEnabled = false
     tableView.layer.masksToBounds = true
     tableView.layer.cornerRadius = LayoutConstants.cornerRadius
-    tableView.isScrollEnabled = true
+    tableView.isScrollEnabled = false
     return tableView
   }()
 
@@ -53,8 +52,11 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
+    musicTableView.rowHeight = UITableView.automaticDimension
+    musicTableView.estimatedRowHeight = UITableView.automaticDimension
+
   }
-  
+
   deinit {
     coordinator?.didFinish()
   }
@@ -91,13 +93,13 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     musicTableView.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.bottom.equalToSuperview().offset(LayoutConstants.tableViewBottom)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(LayoutConstants.tableViewBottom)
     }
 
     homeButton.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.top.equalTo(musicTableView.snp.bottom).offset(LayoutConstants.homeButtonTop)
       $0.height.equalTo(LayoutConstants.homeButtonHeight)
+      $0.bottom.equalToSuperview().offset(LayoutConstants.homeButtonBottom)
     }
   }
 
@@ -179,10 +181,12 @@ private extension MusicMatchViewController {
     static let defaultPadding: CGFloat = 16
     static let titleThree: CGFloat = 20
     static let homeButtonFont: CGFloat = 18
-    static let homeButtonTop: CGFloat = 32
+    static let homeButtonTop: CGFloat = 25
     static let cornerRadius: CGFloat = 10
-    static let tableViewBottom = UIApplication.screenHeight * 170 / UIApplication.screenHeight * -1
-    static let homeButtonHeight = UIApplication.screenHeight * 0.07
+    static let tableViewBottom = -75
+    static let homeButtonHeight = UIApplication.screenHeight * 0.06
+    static let homeButtonBottom = -32
+
   }
 
   // MARK: - Layout
