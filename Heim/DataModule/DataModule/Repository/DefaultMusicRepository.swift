@@ -35,14 +35,23 @@ public struct DefaultMusicRepository: MusicRepository {
   }
   
   public func playPreviewWithAVPlayer(_ isrc: String) async throws {
-    var searchRequest = MusicCatalogSearchRequest(term: isrc, types: [Song.self])
-    searchRequest.limit = 1
-    let searchResponse = try await searchRequest.response()
-    guard let song = searchResponse.songs.first,
-          let previewURL = song.previewAssets?.first?.url else { return }
+    // 1. ISRC로 곡 검색
+    let request = MusicCatalogResourceRequest<Song>(matching: \.isrc, equalTo: isrc)
+    let searchResponse = try await request.response()
+
+    guard let song = searchResponse.items.first else {
+      throw MusicError.invalidURL
+    }
+
+    // 2. 미리듣기 URL 확인
+    guard let previewURL = song.previewAssets?.first?.url else {
+      throw MusicError.invalidURL
+    }
+
+    // 3. AVPlayer로 재생
     await avPlayerManager.play(url: previewURL)
   }
-  
+
   public func pause() throws {
     if musicKitPlayer.state.playbackStatus == .playing {
       musicKitPlayer.pause()
