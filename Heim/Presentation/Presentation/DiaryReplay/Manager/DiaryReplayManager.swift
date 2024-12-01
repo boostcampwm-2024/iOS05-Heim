@@ -68,6 +68,71 @@ final class DiaryReplayManager: NSObject, AVAudioPlayerDelegate {
     onPlaybackFinished?()
   }
   
+  func calculateMaxDecibel(completion: @escaping (Float?) -> Void) {
+    guard let audioFileURL,
+          let reader = createAssetReader(for: audioFileURL),
+          let output = reader.outputs.first as? AVAssetReaderTrackOutput else {
+      completion(nil)
+      return
+    }
+    
+    do {
+      let maxDecibel = try calculateMaxDecibel(with: reader, output: output)
+      completion(maxDecibel)
+    } catch {
+      completion(nil)
+    }
+  }
+  
+  private func createAssetReader(for url: URL) -> AVAssetReader? {
+    let asset = AVURLAsset(url: url)
+    guard let track = asset.tracks(withMediaType: .audio).first else { return nil }
+    
+    do {
+      let reader = try AVAssetReader(asset: asset)
+      let settings: [String: Any] = [
+        AVFormatIDKey: kAudioFormatLinearPCM,
+        AVSampleRateKey: 44100,
+        AVLinearPCMBitDepthKey: 16,
+        AVLinearPCMIsNonInterleaved: false,
+        AVLinearPCMIsFloatKey: false,
+        AVLinearPCMIsBigEndianKey: false
+      ]
+      let output = AVAssetReaderTrackOutput(track: track, outputSettings: settings)
+      reader.add(output)
+      return reader
+    } catch {
+      return nil
+    }
+  }
+  
+  private func calculateMaxDecibel(with reader: AVAssetReader, output: AVAssetReaderTrackOutput) throws -> Float {
+    reader.startReading()
+    
+    var maxAmplitude: Float = -160.0
+    while let sampleBuffer = output.copyNextSampleBuffer() {
+      if let blockBuffer = CMSampleBufferGetDataBuffer(sampleBuffer) {
+        maxAmplitude = max(maxAmplitude, processBlockBuffer(blockBuffer))
+      }
+    }
+    return maxAmplitude
+  }
+  
+  private func processBlockBuffer(_ blockBuffer: CMBlockBuffer) -> Float {
+    let length = CMBlockBufferGetDataLength(blockBuffer)
+    var data = [Int16](repeating: 0, count: length / MemoryLayout<Int16>.size)
+    CMBlockBufferCopyDataBytes(blockBuffer, atOffset: 0, dataLength: length, destination: &data)
+    
+    var maxDecibel: Float = -160.0
+    for sample in data {
+      let amplitude = Float(sample) / Float(Int16.max)
+      let decibel = 20 * log10(abs(amplitude))
+      maxDecibel = max(maxDecibel, decibel)
+    }
+    
+    return maxDecibel
+  }
+  
   private func formatTimeIntervalToMMSS(_ time: TimeInterval) -> String {
     let minutes = Int(time) / 60
     let seconds = Int(time) % 60
