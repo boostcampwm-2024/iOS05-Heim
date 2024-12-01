@@ -47,6 +47,20 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
     defaultMusicMatchCoordinator.start()
   }
   
+  public func presentLoginView() {
+    guard let oauthUseCase = DIContainer.shared.resolve(type: SpotifyOAuthUseCase.self) else { return }
+    let viewModel = SpotifyLoginViewModel(useCase: oauthUseCase)
+    let viewController = SpotifyLoginViewController(viewModel: viewModel)
+    viewController.modalPresentationStyle = .fullScreen
+    navigationController.present(viewController, animated: true)
+  }
+  
+  public func dismissLoginView() {
+    navigationController.dismiss(animated: true) {
+      self.didFinish()
+    }
+  }
+  
   public func backToApproachView() {
     parentCoordinator?.removeChild(self)
     parentCoordinator?.parentCoordinator?.removeChild(parentCoordinator)

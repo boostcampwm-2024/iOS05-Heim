@@ -55,6 +55,20 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
         )
       }
       .store(in: &cancellable)
+    
+    viewModel.$state
+      .receive(on: DispatchQueue.main)
+      .map { $0.errorMessage }
+      .removeDuplicates()
+      .sink { [weak self] _ in
+        self?.presentAlert(
+          type: .authorization,
+          leftButtonAction: { [weak self] in
+            self?.coordinator?.presentLoginView()
+          }
+        )
+      }
+      .store(in: &cancellable)
   }
 }
 
