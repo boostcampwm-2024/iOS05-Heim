@@ -22,11 +22,11 @@ final class RecordManager {
   private(set) var minuteAndSeconds: Int
   
   // MARK: - 음성 녹음을 위한 Properties
-  //  private var audioRecorder: AVAudioRecorder?
+  private var audioRecorder: AVAudioRecorder?
+  private var recordingURL: URL
   private var timer: Timer?
   
   // MARK: - 음성 데이터
-  private var recordingData: Data
   private(set) var voice: Voice?
   
   var formattedTime: String {
@@ -40,7 +40,10 @@ final class RecordManager {
     self.audioEngine = AVAudioEngine()
     self.recognizedText = ""
     self.minuteAndSeconds = 0
-    self.recordingData = Data()
+    
+    // 임시 녹음 파일 URL 생성
+    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    self.recordingURL = documentsPath.appendingPathComponent("temporaryRecording.wav")
   }
   
   // MARK: - 녹음과정 준비
@@ -74,7 +77,14 @@ final class RecordManager {
   // MARK: - 일시중지
   func stopRecording() {
     audioEngine.pause()
-    voice = Voice(audioBuffer: recordingData)
+    audioRecorder?.stop()
+    
+    // 녹음된 파일을 Data로 변환
+    guard let audioData = try? Data(contentsOf: recordingURL) else {
+      return
+    }
+    
+    voice = Voice(audioBuffer: audioData)
     timer?.invalidate()
     timer = nil
   }
@@ -96,7 +106,9 @@ final class RecordManager {
     recognizedText = ""
     
     voice = nil
-    recordingData = Data()
+    
+    // 임시 파일 삭제
+    try? FileManager.default.removeItem(at: recordingURL)
   }
 }
 
@@ -105,6 +117,7 @@ private extension RecordManager {
   func resumeRecording() throws {
     do {
       try audioEngine.start()
+      audioRecorder?.record()
       startTimer()
     } catch {
       throw RecordingError.audioError
@@ -121,8 +134,37 @@ private extension RecordManager {
       
       // 오디오 세션 설정
       let audioSession = AVAudioSession.sharedInstance()
-      try audioSession.setCategory(.record, mode: .measurement)
+      try audioSession.setCategory(.playAndRecord,
+                                 mode: .default,
+                                 options: [.defaultToSpeaker, .allowBluetooth])
       try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+
+      // PCM 설정
+      let settings: [String: Any] = [
+          AVFormatIDKey: Int(kAudioFormatLinearPCM),
+          AVSampleRateKey: 44100.0,
+          AVNumberOfChannelsKey: 2,  // 스테레오로 변경
+          AVLinearPCMBitDepthKey: 16,
+          AVLinearPCMIsFloatKey: false,
+          AVLinearPCMIsBigEndianKey: false,
+          AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+      ]
+      
+      // 기존 파일이 있다면 제거
+      if FileManager.default.fileExists(atPath: recordingURL.path) {
+        try FileManager.default.removeItem(at: recordingURL)
+      }
+      
+      audioRecorder = try AVAudioRecorder(url: recordingURL, settings: settings)
+      
+      guard let audioRecorder = audioRecorder else {
+        throw RecordingError.audioError
+      }
+      
+      audioRecorder.isMeteringEnabled = true
+      guard audioRecorder.prepareToRecord() else {
+        throw RecordingError.audioError
+      }
       
       // 음성 인식 요청 설정
       recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
@@ -139,18 +181,11 @@ private extension RecordManager {
       
       inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
         self?.recognitionRequest?.append(buffer)
-        
-        // AVAudioPCMBuffer을 Data 타입으로 변환
-        if let channelData = buffer.floatChannelData?[0] {
-          let frames = buffer.frameLength
-          let data = Data(bytes: channelData, count: Int(frames) * MemoryLayout<Float>.size)
-          self?.recordingData.append(data)
-        }
       }
       
       audioEngine.prepare()
-      
       try audioEngine.start()
+      audioRecorder.record()
       
       // 음성 인식 작업 시작
       recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
