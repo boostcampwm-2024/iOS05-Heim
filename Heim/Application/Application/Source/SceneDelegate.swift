@@ -131,11 +131,12 @@ private extension SceneDelegate {
 
   func domainAssemble() {
     DIContainer.shared.register(type: SettingUseCase.self) { container in
-      guard let settingRepository = container.resolve(type: SettingRepository.self) else {
+      guard let settingRepository = container.resolve(type: SettingRepository.self),
+            let userRepository = container.resolve(type: UserRepository.self) else {
         return
       }
 
-      return DefaultSettingUseCase(settingRepository: settingRepository)
+      return DefaultSettingUseCase(settingRepository: settingRepository, userRepository: userRepository)
     }
     
     DIContainer.shared.register(type: EmotionClassifyUseCase.self) { _ in
