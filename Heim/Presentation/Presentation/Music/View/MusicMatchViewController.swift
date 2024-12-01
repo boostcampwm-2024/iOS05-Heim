@@ -12,7 +12,6 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   // TODO: let 수정
   private var musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
-//  weak var delegate: MusicTableViewCellButtonDelegate?
 
   // MARK: - UI Components
   private let titleLabel = CommonLabel(text: "하임이가 추천하는 음악을 가져왔어요!", font: .bold, size: LayoutConstants.titleThree)
@@ -121,19 +120,15 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
 
     viewModel.$state
       .receive(on: DispatchQueue.main)
-      .removeDuplicates(by: { $0 == $1 })
-      .sink { [weak self] (state) in
+      .removeDuplicates()
+      .sink { [weak self] state in
         self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
           guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
           let item = self?.musicDataSources[indexPath.row] else { return }
-          cell.updatePlayButton(isPlaying: item.isrc == state.currentTrack)
+          cell.updatePlayButton(isPlaying: item.isrc == state.isrc)
         })
       }
       .store(in: &cancellable)
-  }
-
-  func update() {
-
   }
 }
 
@@ -147,62 +142,36 @@ extension MusicMatchViewController: UITableViewDelegate {
 }
 
 extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellButtonDelegate {
-
-  
-
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
   -> UITableViewCell {
-    // TODO: 이미지 url 넘기기
     guard indexPath.row < musicDataSources.count else {
       return UITableViewCell()
     }
 
     let titleText = musicDataSources[indexPath.row].title
     let subTilteText = musicDataSources[indexPath.row].artist
+    var imageData: Data?
+
+    let musicTrack = self.musicDataSources[indexPath.row]
+    if let imageUrl = musicTrack.thumbnail {
+      if let data = try? Data(contentsOf: imageUrl) {
+        imageData = data
+      }
+    }
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
     cell.delegate = self
 
-    let item = self.musicDataSources[indexPath.row]
-//    viewModel.$state
-//      .receive(on: DispatchQueue.main)
-//      .sink { [weak cell] state in
-//
-//        cell?.updatePlayButton(isPlaying: state.currentTrack?.isrc == item.isrc)
-//      }
-//      .store(in: &cell.cancellables)
-
-//    let action = UIAction { _ in
-//      let track = self.musicDataSources[indexPath.row]
-//      self.viewModel.action(.playMusic(track))
-//    }
-//
-//    cell.configure(
-//      titleText: titleText,
-//      subTitle: subTilteText,
-//      action: action
-//    )
-
-    let action = UIAction { _ in
-      let track = self.musicDataSources[indexPath.row]
-//      self.viewModel.action(.playMusic(track))
-    }
-
     cell.configure(
+      imageData: imageData,
       titleText: titleText,
       subTitle: subTilteText,
-      action: action,
-      track: item.isrc
+      track: musicTrack.isrc
     )
 
     return cell
-  }
-
-  func pauseButtonDidTap() {
-    print("컨트롤까지 와야함")
-    viewModel.action(.pauseMusic)
   }
 
   func playButtonDidTap(isrc: String?) {
@@ -210,6 +179,9 @@ extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellBut
     viewModel.action(.playMusic(isrc))
   }
 
+  func pauseButtonDidTap() {
+    viewModel.action(.pauseMusic)
+  }
 }
 
 private extension MusicMatchViewController {
