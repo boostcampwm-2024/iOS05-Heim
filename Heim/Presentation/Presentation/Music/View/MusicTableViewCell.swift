@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol MusicTableViewCellButtonDelegate: AnyObject {
+protocol MusicTableViewCellDelegate: AnyObject {
   func playButtonDidTap(isrc: String?)
   func pauseButtonDidTap()
 }
 
 final class MusicTableViewCell: UITableViewCell {
 
-  weak var delegate: MusicTableViewCellButtonDelegate?
+  weak var delegate: MusicTableViewCellDelegate?
   var isrc: String?
   private let albumImage: UIImageView = {
     let view = UIImageView()
@@ -28,12 +28,12 @@ final class MusicTableViewCell: UITableViewCell {
     return view
   }()
 
-  private let titleLabel =  CommonLabel(text: "제목" ,font: .regular, size: LayoutConstants.titleLabel, textColor: .black)
+  private let titleLabel = CommonLabel(text: "제목", font: .regular, size: LayoutConstants.titleLabel, textColor: .black)
 
   private let subLabel = CommonLabel(font: .regular, size: LayoutConstants.bodyThree, textColor: .black)
 
-  private let playButton: UIButton = CommonRectangleButton(title: "듣기",fontStyle: .regularFont(ofSize: LayoutConstants.bodyThree), backgroundColor: .violet, radius: LayoutConstants.cornerRadius)
-
+  private let playButton: UIButton = CommonRectangleButton(title: "듣기", fontStyle: .regularFont(ofSize: LayoutConstants.bodyThree), backgroundColor: .violet, radius: LayoutConstants.cornerRadius)
+  
   // MARK: - Initializer
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)

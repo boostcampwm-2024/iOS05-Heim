@@ -9,8 +9,7 @@ import UIKit
 
 final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable{
   // MARK: - Properties
-  // TODO: let 수정
-  private var musicDataSources: [MusicTrack]
+  private let musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
 
   // MARK: - UI Components
@@ -40,16 +39,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
 
   // MARK: - Initializer
   init(musics: [MusicTrack], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
-    // TODO: 삭제
-    //self.musicDataSources = musics
-    self.musicDataSources = [
-      MusicTrack(thumbnail: nil, title: "Atlantis", artist: "샤이니", isrc: "KRA302100123"),
-      MusicTrack(thumbnail: nil, title: "Hero", artist: "임영웅", isrc: "KRA382006253"),
-      MusicTrack(thumbnail: nil, title: "스물셋", artist: "아이유", isrc: "KRA381500393"),
-      MusicTrack(thumbnail: nil, title: "다시 만난 세계", artist: "소녀시대", isrc: "KRA301300044"),
-      MusicTrack(thumbnail: nil, title: "Dun Dun Dance", artist: "오마이걸", isrc: "KRB462100515")
-    ]
-
+    self.musicDataSources = musics
     self.homeButton.isHidden = isHiddenHomeButton
     super.init(viewModel: viewModel)
   }
@@ -141,7 +131,7 @@ extension MusicMatchViewController: UITableViewDelegate {
   }
 }
 
-extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellButtonDelegate {
+extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellDelegate {
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
@@ -208,7 +198,6 @@ private extension MusicMatchViewController {
       gradientLayer,
       at: 0
     )
-
     musicTableView.backgroundView = backgroundView
   }
 }

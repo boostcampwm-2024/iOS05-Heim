@@ -51,14 +51,14 @@ private extension MusicMatchViewModel {
       try await useCase.play(to: track)
       state.isrc = track
     } catch {
-      // TODO: Error 처리
+      MusicError.invalidURL
     }
   }
   func pauseMusic() async {
     do {
       try useCase.pause()
     } catch {
-      // TODO: Error 처리
+      MusicError.nothingToPause
     }
   }
 }
