@@ -9,144 +9,137 @@ import Combine
 import Core
 import Domain
 
-struct EmotionValue: Equatable {
-  var sadCount: Int
-  var happyCount: Int
-  var surpriseCount: Int
-  var fearCount: Int
-  var disgustCount: Int
-  var neutralCount: Int
-  var angryCount: Int
-}
-
-final class ReportViewModel: ViewModel {
+public final class ReportViewModel: ViewModel {
 
   // MARK: - Properties
-  enum Action {
-    //TODO: 수정
-    case fetchData
+  public enum Action {
+    case fetchUserName
+    case fetchTotalDiaryCount
+    case fetchContinuousCount
+    case fetchMonthCount
   }
 
-
-
-  struct State: Equatable {
+  public struct State: Equatable {
     var userName: String
-    var totalCount: Int
-    var sequenceCount: Int
-    var monthCount: Int
-    var emotionValue: EmotionValue
-    var emotion: String
+    var totalCount: String
+    var continuousCount: String
+    var monthCount: String
+    var emotionCountDictionary: [Emotion: Int]
+    var mainEmotionTitle: String
     var reply: String
-
   }
 
-  // TODO: UseCase 추가
-  private let useCase: DiaryUseCase
-  @Published var state: State
+  let userUseCase: UserUseCase
+  let diaryUseCase: DiaryUseCase
+  @Published public var state: State
 
   // MARK: - Initializer
-  // TODO: Initializer에 UseCase 추가
-  init(useCase: DiaryUseCase) {
-    self.state = State(userName: "사용자", // TODO: userName
-                       totalCount: 0,
-                       sequenceCount: 0,
-                       monthCount: 0,
-                       emotionValue: EmotionValue(sadCount: 0,
-                                                  happyCount: 0,
-                                                  surpriseCount: 0,
-                                                  fearCount: 0,
-                                                  disgustCount: 0,
-                                                  neutralCount: 0,
-                                                  angryCount: 0),
-                       emotion: "",
-                       reply: "답장이 도착하지 않았어요!")
-    self.useCase = useCase
+  init(
+    userUseCase: UserUseCase,
+    diaryUseCase: DiaryUseCase
+  ) {
+    self.userUseCase = userUseCase
+    self.diaryUseCase = diaryUseCase
+    
+    state = State(
+      userName: "",
+      totalCount: "0",
+      continuousCount: "0",
+      monthCount: "0",
+      emotionCountDictionary: [:],
+      mainEmotionTitle: "",
+      reply: ""
+    )
   }
 
-  func action(_ action: Action) {
+  // MARK: - Methods
+  public func action(_ action: Action) {
     switch action {
-    case .fetchData:
-      Task {
-        await fetchData()
-      }
+    case .fetchUserName: fetchUserName()
+    case .fetchTotalDiaryCount: fetchTotalDiaryCount()
+    case .fetchContinuousCount: fetchContinuousCount()
+    case .fetchMonthCount: fetchMonthCount()
     }
   }
 }
 
 // MARK: - Private Extenion
 private extension ReportViewModel {
-  func fetchData() async{
-    do {
-      state.totalCount = try await useCase.countTotalDiary()
-      // TODO: 30일 다이어리 가지고 오기
-      // TODO: countEmotion()
-      // TODO: returnMajorEmotion()
-    } catch {
-      // TODO: 에러
-    }
-  }
-
-  func countEmotion(diarys: [Diary]) {
-    let totalCount = diarys.count
-    var sadCount = 0
-    var happyCount = 0
-    var surpriseCount = 0
-    var fearCount = 0
-    var disgustCount = 0
-    var neutralCount = 0
-    var angryCount = 0
-
-    for diary in diarys {
-      switch diary.emotion {
-      case .sadness:
-        sadCount += 1
-      case .happiness:
-        happyCount += 1
-      case .angry:
-        angryCount += 1
-      case .surprise:
-        surpriseCount += 1
-      case .fear:
-        fearCount += 1
-      case .disgust:
-        disgustCount += 1
-      case .neutral:
-        neutralCount += 1
-      case .none:
-        break
-      @unknown default:
-        continue
+  func fetchUserName() {
+    Task.detached { [weak self] in
+      do {
+        self?.state.userName = try await self?.userUseCase.fetchUserName() ?? "User"
+      } catch {
+        self?.state.userName = "User"
       }
     }
-
-    state.emotionValue = EmotionValue(sadCount: sadCount / totalCount,
-                                     happyCount: happyCount / totalCount,
-                                     surpriseCount: surpriseCount / totalCount,
-                                     fearCount: fearCount / totalCount,
-                                     disgustCount: disgustCount / totalCount,
-                                     neutralCount: neutralCount / totalCount,
-                                     angryCount: angryCount / totalCount)
-
   }
-
-  func returnMajorEmotion() {
-    let emotionCounts = state.emotionValue
-    let totalEmotionCounts = [
-      ("슬픔", emotionCounts.sadCount),
-      ("행복", emotionCounts.happyCount),
-      ("화남", emotionCounts.angryCount),
-      ("놀람", emotionCounts.surpriseCount),
-      ("공포", emotionCounts.fearCount),
-      ("혐오", emotionCounts.disgustCount),
-      ("중립", emotionCounts.neutralCount)
-    ]
-
-    guard let majorEmotion = totalEmotionCounts.max(by: { $0.1 < $1.1 }) else {
-      state.emotion = "없음"
-      return
+  
+  func fetchTotalDiaryCount() {
+    Task.detached { [weak self] in
+      do {
+        let diaries = try await self?.diaryUseCase.readTotalDiaries()
+        self?.state.totalCount = String(diaries?.count ?? 0)
+        self?.setEmotionCount(from: diaries ?? [])
+      } catch {
+        self?.state.totalCount = "0"
+        self?.setEmotionCount(from: [])
+      }
     }
-    state.emotion = majorEmotion.0
-    // TODO: 재미나이 호출
-    // state.reply
+  }
+  
+  func fetchContinuousCount() {
+    Task.detached { [weak self] in
+      do {
+        self?.state.continuousCount = String(try await self?.diaryUseCase.fetchContinuousCount() ?? 0)
+      } catch {
+        self?.state.continuousCount = "0"
+      }
+    }
+  }
+  
+  func fetchMonthCount() {
+    Task.detached { [weak self] in
+      do {
+        self?.state.monthCount = String(try await self?.diaryUseCase.fetchMonthCount() ?? 0)
+      } catch {
+        self?.state.monthCount = "0"
+      }
+    }
+  }
+  
+  func setEmotionCount(from diaries: [Diary]) {
+    var emotionCountDictionary: [Emotion: Int] = [:]
+    
+    diaries
+      .map { $0.emotion }
+      .forEach {
+        emotionCountDictionary[$0, default: 0] += 1
+      }
+    
+    for emotion in Emotion.allCases where emotionCountDictionary[emotion] == nil && emotion != .none {
+      emotionCountDictionary[emotion] = 0
+    }
+    
+    let maxEmotion = emotionCountDictionary.max { $0.value < $1.value }
+    state.emotionCountDictionary = emotionCountDictionary
+    state.mainEmotionTitle = maxEmotion?.value != 0 ? maxEmotion?.key.title ?? "" : ""
+    
+    let recentReply = diaries
+      .filter { $0.emotion == maxEmotion?.key }
+      .sorted { $0.calendarDate.year > $1.calendarDate.year }
+      .sorted { $0.calendarDate.month > $1.calendarDate.month }
+      .sorted { $0.calendarDate.day > $1.calendarDate.day }
+      .first?
+      .emotionReport
+    
+    let defaultReply = """
+    오늘 하루의 이야기를 써 내려가는 일은, 당신의 마음을 정리하고 성장의 기반을 다지는 소중한 시간이 됩니다.
+    하임이와 함께 당신의 감정을 기록하며 숨겨진 마음의 이야기를 발견해보세요.
+    매일 단 몇 줄이라도, 당신만의 특별한 감정을 따뜻하게 보듬고 멋진 이야기를 만들어갈 수 있습니다. 
+    오늘부터 하임이와 함께 시작해볼까요? 
+    당신의 하루는 분명 기록을 남길 가치가 있습니다!
+    """
+    state.reply = recentReply?.text ?? defaultReply
   }
 }
