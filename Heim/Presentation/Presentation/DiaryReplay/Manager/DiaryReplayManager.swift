@@ -11,6 +11,8 @@ import Domain
 final class DiaryReplayManager: NSObject, AVAudioPlayerDelegate {
   let audioPlayer: AVAudioPlayer
   var onPlaybackFinished: (() -> Void)?
+  private(set) var audioFileURL: URL?
+  private var tmpFilePath: URL?
   
   init(data: Data) throws {
     // 1. 오디오 세션 설정
@@ -25,6 +27,7 @@ final class DiaryReplayManager: NSObject, AVAudioPlayerDelegate {
       try data.write(to: tempFile)
       
       // 3. URL로 플레이어 초기화
+      self.audioFileURL = tempFile
       self.audioPlayer = try AVAudioPlayer(contentsOf: tempFile)
       super.init()
       
@@ -33,12 +36,14 @@ final class DiaryReplayManager: NSObject, AVAudioPlayerDelegate {
       self.audioPlayer.delegate = self
       self.audioPlayer.prepareToPlay()
       
-      // 5. 임시 파일 삭제
-      try FileManager.default.removeItem(at: tempFile)
-      
     } catch {
-      throw RecordingError.audioError
+      throw NSError()
     }
+  }
+  
+  deinit {
+    guard let path = tmpFilePath else { return }
+    try? FileManager.default.removeItem(at: path)
   }
   
   var currentTime: String {
