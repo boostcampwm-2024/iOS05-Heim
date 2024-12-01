@@ -64,6 +64,14 @@ private extension SceneDelegate {
       return DefaultSettingRepository(localStorage: localStorage)
     }
     
+    DIContainer.shared.register(type: UserRepository.self) { container in
+      guard let localStorage = container.resolve(type: DataStorage.self) else {
+        return
+      }
+      
+      return DefaultUserRepository(dataStorage: localStorage)
+    }
+    
     DIContainer.shared.register(type: DiaryRepository.self) { container in
       guard let localStorage = container.resolve(type: DataStorage.self) else {
         return
@@ -74,6 +82,11 @@ private extension SceneDelegate {
   }
 
   func domainAssemble() {
+    DIContainer.shared.register(type: UserUseCase.self) { container in
+      guard let userRepository = container.resolve(type: UserRepository.self) else { return }
+      return DefaultUserUseCase(userRepository: userRepository)
+    }
+    
     DIContainer.shared.register(type: SettingUseCase.self) { container in
       guard let settingRepository = container.resolve(type: SettingRepository.self) else {
         return
