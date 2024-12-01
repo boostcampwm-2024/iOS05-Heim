@@ -51,6 +51,10 @@ private extension SceneDelegate {
       for: .normal
     )
     barButtonItemAppearance.tintColor = .white
+    
+    let backImage = UIImage(named: "back")
+    UINavigationBar.appearance().backIndicatorImage = backImage
+    UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
   }
   
   func dependencyAssemble() {
