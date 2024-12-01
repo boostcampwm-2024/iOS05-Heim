@@ -18,7 +18,6 @@ final class CustomTabBarViewController: UIViewController, Coordinatable {
     super.viewDidLoad()
     
     setupUI()
-    setupNavigationBar()
     switchView(.home)
   }
 }
@@ -39,16 +38,6 @@ private extension CustomTabBarViewController {
     case .mic: coordinator?.setRecordView()
     case .report: coordinator?.setReportView()
     }
-  }
-  
-  func setupNavigationBar() {
-    let backButton: UIButton = {
-      let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
-      button.setImage(.backIcon, for: .normal)
-      return button
-    }()
-    self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backButton)
-    self.navigationItem.backBarButtonItem?.tintColor = .white
   }
 }
 
