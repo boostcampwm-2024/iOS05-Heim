@@ -11,20 +11,26 @@ import SnapKit
 final class SpotifyLoginView: UIView {
   private let logoImageView: UIImageView = {
     let view = UIImageView()
-    view.image = .spotifyFullLogo
+    view.image = .splashRabbit
     return view
   }()
 
+  private let infoLabel = CommonLabel(text: """
+                                      Spotify에 로그인해서 음악 추천 기능을 즐겨보세요 !
+                                      로그인 하지 않으면 음악 추천 기능을 사용할 수 없습니다!
+                                      """,
+                                      font: .regular,
+                                      size: LayoutConstants.infoLabelFont,
+                                      textColor: .white)
+
   private let loginButton: UIButton = {
     var config = UIButton.Configuration.filled()
-    config.baseForegroundColor = .black
-    config.baseBackgroundColor = .white
+    config.baseBackgroundColor = .primary
     config.image = .spotifyLogo
-    config.imagePadding = 10
+    config.imagePadding = 30
     config.imagePlacement = .leading
-    config.background.strokeColor = .black
     var titleAttribute = AttributedString.init("Login with Spotify")
-    titleAttribute.font = .systemFont(ofSize: 20.0, weight: .medium)
+    titleAttribute.font = .systemFont(ofSize: LayoutConstants.loginButtonFont, weight: .medium)
     config.attributedTitle = titleAttribute
     let button = UIButton(configuration: config)
 
@@ -46,30 +52,38 @@ final class SpotifyLoginView: UIView {
 private extension SpotifyLoginView {
   func setupView() {
     addSubview(logoImageView)
+    addSubview(infoLabel)
     addSubview(loginButton)
+    infoLabel.textAlignment = .center
   }
 
   func setupConstraints() {
     logoImageView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(LayoutConstants.logoImageViewTop)
-      $0.height.equalTo(LayoutConstants.logoImageViewHeight)
-      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.logoImageViewPadding)
+      $0.height.equalTo(LayoutConstants.logoSize)
+      $0.width.equalTo(LayoutConstants.logoSize)
+      $0.centerX.equalToSuperview()
+    }
+
+    infoLabel.snp.makeConstraints {
+      $0.top.equalTo(logoImageView.snp.bottom).offset(LayoutConstants.infoLabelTop)
+      $0.centerX.equalToSuperview()
     }
 
     loginButton.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.loginButtonPadding)
-      $0.leading.trailing.equalToSuperview().inset(LayoutConstants.loginButtonPadding)
-      $0.top.equalTo(logoImageView.snp.bottom).offset(LayoutConstants.loginButtonTop)
+      $0.bottom.equalToSuperview().offset(LayoutConstants.loginButtonButtom)
       $0.height.equalTo(LayoutConstants.loginButtonHeight)
     }
-
-    enum LayoutConstants {
-      static let loginButtonPadding: CGFloat = 48
-      static let logoImageViewTop: CGFloat = UIApplication.screenHeight * 0.276
-      static let logoImageViewHeight: CGFloat = UIApplication.screenHeight * 0.1
-      static let logoImageViewPadding = 32
-      static let loginButtonTop: CGFloat = UIApplication.screenHeight * 0.25
-      static let loginButtonHeight = UIApplication.screenHeight * 0.07
-    }
+  }
+  enum LayoutConstants {
+    static let loginButtonPadding: CGFloat = 16
+    static let logoSize: CGFloat = UIApplication.screenHeight * 0.28
+    static let logoImageViewTop: CGFloat = UIApplication.screenHeight * 0.14
+    static let loginButtonButtom: CGFloat = -64
+    static let loginButtonHeight = UIApplication.screenHeight * 0.07
+    static let infoLabelFont: CGFloat = 16
+    static let infoLabelTop: CGFloat = 64
+    static let loginButtonFont: CGFloat = 20
   }
 }
