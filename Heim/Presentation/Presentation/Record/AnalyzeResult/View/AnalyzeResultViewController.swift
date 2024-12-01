@@ -38,9 +38,8 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
     }
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    // coordinator?.didFinish()
+  deinit {
+    coordinator?.didFinish()
   }
   
   override func bindState() {
@@ -56,15 +55,6 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
         )
       }
       .store(in: &cancellable)
-    
-    viewModel.$state
-      .map { $0.isSaved }
-      .filter { $0 }
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] _ in
-        self?.coordinator?.backToApproachView()
-      }
-      .store(in: &cancellable)
   }
 }
 
@@ -77,7 +67,7 @@ extension AnalyzeResultViewController: AnalyzeResultViewDelegate {
     case .musicRecomendation:
       coordinator?.pushMusicRecommendationView()
     case .moveToHome:
-      viewModel.action(.saveDiary)
+      coordinator?.backToApproachView()
     }
   }
 }

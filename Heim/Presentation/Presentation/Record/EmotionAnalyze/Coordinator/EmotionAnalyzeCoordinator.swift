@@ -54,8 +54,15 @@ public final class DefaultEmotionAnalyzeCoordinator: EmotionAnalyzeCoordinator {
 // MARK: - Private
 private extension DefaultEmotionAnalyzeCoordinator {
   func createEmotionAnalyzeViewController(text: String, voice: Voice) -> EmotionAnalyzeViewController? {
-    // TODO: - TODO: GEMINI UseCase도 추가 해야함.
     guard let emotionClassfiyUseCase = DIContainer.shared.resolve(type: EmotionClassifyUseCase.self) else {
+      return nil
+    }
+  
+    guard let summaryUseCase = DIContainer.shared.resolve(type: GenerativeSummaryPromptUseCase.self) else {
+      return nil
+    }
+    
+    guard let emotionUseCase = DIContainer.shared.resolve(type: GenerativeEmotionPromptUseCase.self) else {
       return nil
     }
     
@@ -63,7 +70,9 @@ private extension DefaultEmotionAnalyzeCoordinator {
     let viewModel = EmotionAnalyzeViewModel(
       recognizedText: text,
       voice: voice,
-      classifyUseCase: emotionClassfiyUseCase
+      classifyUseCase: emotionClassfiyUseCase,
+      emotionUseCase: emotionUseCase,
+      summaryUseCase: summaryUseCase
     )
     
     let viewController = EmotionAnalyzeViewController(viewModel: viewModel)

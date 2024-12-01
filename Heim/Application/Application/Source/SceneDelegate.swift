@@ -44,6 +44,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 private extension SceneDelegate {
   func dependencyAssemble() {
     dataStorageAssemble()
+    networkAssemble()
     dataAssemble()
     domainAssemble()
     presentationAssemble()
@@ -53,8 +54,34 @@ private extension SceneDelegate {
     DIContainer.shared.register(type: DataStorage.self) { _ in
       return DefaultLocalStorage()
     }
+    
+    DIContainer.shared.register(type: KeychainStorage.self) { _ in
+      return DefaultKeychainStorage()
+    }
   }
-
+  
+  func networkAssemble() {
+    DIContainer.shared.register(type: NetworkProvider.self) { _ in
+      return DefaultNetworkProvider(requestor: URLSession.shared)
+    }
+    
+    DIContainer.shared.register(type: TokenManager.self) { container in
+      guard let keychainStorage = container.resolve(type: KeychainStorage.self) else {
+        return
+      }
+      
+      return DefaultTokenManager(keychainStorage: keychainStorage)
+    }
+    
+    DIContainer.shared.register(type: OAuthNetworkProvider.self) { container in
+      guard let tokenManager = container.resolve(type: TokenManager.self) else {
+        return
+      }
+      
+      return DefaultOAuthNetworkProvider(requestor: URLSession.shared, tokenManager: tokenManager)
+    }
+  }
+  
   func dataAssemble() {
     DIContainer.shared.register(type: SettingRepository.self) { container in
       guard let localStorage = container.resolve(type: DataStorage.self) else {
@@ -78,6 +105,35 @@ private extension SceneDelegate {
       }
       
       return DefaultDiaryRepository(dataStorage: localStorage)
+    }
+    
+    DIContainer.shared.register(type: GenerativeAIRepository.self) { container in
+      guard let networkProvider = container.resolve(type: NetworkProvider.self) else {
+        return
+      }
+      
+      return GeminiGenerativeAIRepository(networkProvider: networkProvider)
+    }
+    
+    DIContainer.shared.register(type: MusicRepository.self) { _ in
+      return DefaultMusicRepository()
+    }
+    
+    DIContainer.shared.register(type: SpotifyRepository.self) { container in
+      guard let oauthNetworkProvider = container.resolve(type: OAuthNetworkProvider.self) else {
+        return
+      }
+      
+      return DefaultSpotifyRepository(networkProvider: oauthNetworkProvider)
+    }
+    
+    DIContainer.shared.register(type: SpotifyOAuthRepository.self) { container in
+      guard let networkProvider = container.resolve(type: NetworkProvider.self),
+            let tokenManager = container.resolve(type: TokenManager.self) else {
+        return
+      }
+      
+      return DefaultSpotifyOAuthRepository(networkProvider: networkProvider, tokenManager: tokenManager)
     }
   }
 
@@ -106,6 +162,58 @@ private extension SceneDelegate {
 
       return DefaultDiaryUseCase(diaryRepository: diaryRepository)
     }
+    
+    DIContainer.shared.register(type: MusicUseCase.self) { container in
+      guard let spotifyRepository = container.resolve(type: SpotifyRepository.self),
+            let musicRepository = container.resolve(type: MusicRepository.self) else {
+        return
+      }
+      
+      return DefaultMusicUseCase(spotifyRepository: spotifyRepository, musicRepository: musicRepository)
+    }
+    
+    DIContainer.shared.register(type: SpotifyOAuthUseCase.self) { container in
+      guard let spotifyOAuthRepository = container.resolve(type: SpotifyOAuthRepository.self) else {
+        return
+      }
+      
+      return DefaultSpotifyOAuthUseCase(repository: spotifyOAuthRepository)
+    }
+    
+    DIContainer.shared.register(type: SummaryPromptGenerating.self) { _ in
+      return SummaryPromptGenerator()
+    }
+    
+    DIContainer.shared.register(type: GenerativeSummaryPromptUseCase.self) { container in
+      guard let generativeAIRepository = container.resolve(type: GenerativeAIRepository.self),
+            let summaryPromptGenerator = container.resolve(type: SummaryPromptGenerating.self) else {
+        return
+      }
+      
+      return GeminiGenerativeSummaryPromptUseCase(
+        repository: generativeAIRepository,
+        generator: summaryPromptGenerator
+      )
+    }
+    
+    DIContainer.shared.register(type: EmotionPromptGenerating.self) { _ in
+      return EmotionPromptGenerator(userName: "성근")
+    }
+    
+    DIContainer.shared.register(type: GenerativeEmotionPromptUseCase.self) { container in
+      guard let generativeAIRepository = container.resolve(type: GenerativeAIRepository.self) else {
+        return
+      }
+      
+      guard let emotionPromptGenerator = container.resolve(type: EmotionPromptGenerating.self) else {
+        return
+      }
+      
+      return GeminiGenerativeEmotionPromptUseCase(
+        repository: generativeAIRepository,
+        generator: emotionPromptGenerator
+      )
+    }
   }
 
   func presentationAssemble() {
@@ -114,6 +222,10 @@ private extension SceneDelegate {
     
     DIContainer.shared.register(type: TabBarCoordinator.self) { _ in
       return DefaultTabBarCoordinator(navigationController: navigationController)
+    }
+    
+    DIContainer.shared.register(type: MusicMatchCoordinator.self) { _ in
+      return DefaultMusicMatchCoordinator(navigationController: recordNavigationController)
     }
     
     DIContainer.shared.register(type: SettingCoordinator.self) { _ in

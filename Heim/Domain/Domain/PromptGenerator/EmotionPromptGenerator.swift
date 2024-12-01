@@ -7,7 +7,9 @@
 
 import Foundation
 
-public struct EmotionPromptGenerator: PromptGenerating {
+public protocol EmotionPromptGenerating: PromptGenerating {}
+
+public struct EmotionPromptGenerator: EmotionPromptGenerating {
   private let userName: String
   
   public var additionalPrompt: String {
@@ -16,7 +18,7 @@ public struct EmotionPromptGenerator: PromptGenerating {
     """
   }
   
-  init(userName: String) {
+  public init(userName: String) {
     self.userName = userName
   }
   

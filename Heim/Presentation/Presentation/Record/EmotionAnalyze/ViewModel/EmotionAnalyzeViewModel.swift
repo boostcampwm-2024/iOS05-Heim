@@ -23,6 +23,8 @@ final class EmotionAnalyzeViewModel: ViewModel {
   private let recognizedText: String // RecordView에서 넘어온 인식된 텍스트
   private let voice: Voice // RecordView에서 넘어온 음성 녹음
   private let classifyUseCase: EmotionClassifyUseCase
+  private let emotionUseCase: GenerativeEmotionPromptUseCase
+  private let summaryUseCase: GenerativeSummaryPromptUseCase
   private var emotion: Emotion = .none
   private var heimReply: EmotionReport = EmotionReport(text: "")
   private var summary: Summary = Summary(text: "")
@@ -33,35 +35,38 @@ final class EmotionAnalyzeViewModel: ViewModel {
   init(
     recognizedText: String,
     voice: Voice,
-    classifyUseCase: EmotionClassifyUseCase
+    classifyUseCase: EmotionClassifyUseCase,
+    emotionUseCase: GenerativeEmotionPromptUseCase,
+    summaryUseCase: GenerativeSummaryPromptUseCase
     // TODO: GEMINI 이용 UseCase 추가
   ) {
     self.recognizedText = recognizedText
     self.voice = voice
     self.state = State(isAnalyzing: true)
     self.classifyUseCase = classifyUseCase
+    self.emotionUseCase = emotionUseCase
+    self.summaryUseCase = summaryUseCase
   }
   
   func action(_ action: Action) {
     Task {
-      async let emotionResult = classifyUseCase.validate(recognizedText) // 2개의 구조적 동시성 작업을 위해 async let을 사용
-      
-      // TODO: GEMINI UseCase 추가. 아래는 예시로 더미데이터를 사용, 삭제 예정
-      let heimResult = EmotionReport(text: "감정분석")
-      let summary = Summary(text: "요약")
+      async let emotionResult = classifyUseCase.validate(recognizedText)
+      async let summary = summaryUseCase.generate(recognizedText)
       
       do {
-        let (emotion, heimReply, summary) = try await (emotionResult, heimResult, summary)
+        let emotion = try await emotionResult
         self.emotion = emotion
-        self.heimReply = heimReply
-        self.summary = summary
         
-        sleep(5) // GEMINI의 응답이 5초 걸린다고 가정
+        let heimReply = try await emotionUseCase.generate(emotion.rawValue)
+        let summary = try await summary
         
-        // 모든 작업이 완료되면 isAnalyzing을 false로 설정
+        guard let heimReply = heimReply else { return }
+        
+        self.heimReply = EmotionReport(text: heimReply)
+        self.summary = Summary(text: summary ?? "")
+        
         state.isAnalyzing = false
       } catch {
-        // TODO: 에러 처리
         state.isAnalyzing = false
       }
     }

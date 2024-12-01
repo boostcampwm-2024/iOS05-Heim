@@ -25,6 +25,10 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
     viewModel.action(.analyze)
   }
   
+  deinit {
+    coordinator?.didFinish()
+  }
+  
   override func setupViews() {
     super.setupViews()
     view.addSubview(contentView)

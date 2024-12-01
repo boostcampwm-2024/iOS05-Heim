@@ -18,7 +18,7 @@ public final class ReportViewModel: ViewModel {
     case fetchContinuousCount
     case fetchMonthCount
   }
-
+  
   public struct State: Equatable {
     var userName: String
     var totalCount: String
