@@ -43,11 +43,11 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     // TODO: 삭제
     //self.musicDataSources = musics
     self.musicDataSources = [
-      MusicTrack(thumbnail: nil, title: "아틀란티스", artist: "샤이니", isrc: "KRA302100123"),
-      MusicTrack(thumbnail: nil, title: "Celebrity", artist: "아이유", isrc: "KRA402100001"),
-      MusicTrack(thumbnail: nil, title: "이제 나만 믿어요", artist: "임영웅", isrc: "KRA402000261"),
-      MusicTrack(thumbnail: nil, title: "How You Like That", artist: "블랙핑크", isrc: "KRA301900353"),
-      MusicTrack(thumbnail: nil, title: "Dolphin", artist: "오마이걸", isrc: "KRA402000460")
+      MusicTrack(thumbnail: nil, title: "Atlantis", artist: "샤이니", isrc: "KRA302100123"),
+      MusicTrack(thumbnail: nil, title: "Hero", artist: "임영웅", isrc: "KRA382006253"),
+      MusicTrack(thumbnail: nil, title: "스물셋", artist: "아이유", isrc: "KRA381500393"),
+      MusicTrack(thumbnail: nil, title: "다시 만난 세계", artist: "소녀시대", isrc: "KRA301300044"),
+      MusicTrack(thumbnail: nil, title: "Dun Dun Dance", artist: "오마이걸", isrc: "KRB462100515")
     ]
 
     self.homeButton.isHidden = isHiddenHomeButton
