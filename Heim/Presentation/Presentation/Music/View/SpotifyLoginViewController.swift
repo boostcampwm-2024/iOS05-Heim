@@ -7,17 +7,33 @@
 
 import UIKit
 
-public class SpotifyLoginViewController: UIViewController {
+final class SpotifyLoginViewController: BaseViewController<SpotifyLoginViewModel> {
+  // MARK: - UIComponents
   private let spotifyView = SpotifyLoginView()
+
+  // MARK: - Initializer
+  override init(viewModel: SpotifyLoginViewModel) {
+    super.init(viewModel: viewModel)
+  }
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
-  public override func viewDidLoad() {
+  // MARK: - LifeCycle
+  override func viewDidLoad() {
     super.viewDidLoad()
-    setup()
+    setupViews()
+    setupLayoutConstraints()
   }
 
-  private func setup() {
-    view.backgroundColor = .white
+  // MARK: - Methods
+  override func setupViews() {
+    super.setupViews()
     view.addSubview(spotifyView)
+  }
+
+  override func setupLayoutConstraints() {
+    super.setupLayoutConstraints()
     spotifyView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
