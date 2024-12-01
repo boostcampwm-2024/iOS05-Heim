@@ -29,7 +29,7 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
   // MARK: - Methods
   public func start() {}
   public func start(diary: Diary) {
-    guard let analyzeResultViewController = analyzeResultViewController(diary: diary) else { return }
+    guard let analyzeResultViewController = createAnalyzeResultViewController(diary: diary) else { return }
     navigationController.pushViewController(analyzeResultViewController, animated: true)
   }
   
@@ -57,7 +57,7 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
 
 // MARK: - Private
 private extension DefaultAnalyzeResultCoordinator {
-  func analyzeResultViewController(diary: Diary) -> AnalyzeResultViewController? {
+  func createAnalyzeResultViewController(diary: Diary) -> AnalyzeResultViewController? {
     guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
     
     let viewModel = AnalyzeResultViewModel(useCase: diaryUseCase, diary: diary)
