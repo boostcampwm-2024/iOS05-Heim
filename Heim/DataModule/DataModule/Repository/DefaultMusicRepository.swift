@@ -35,6 +35,9 @@ public struct DefaultMusicRepository: MusicRepository {
   }
   
   public func playPreviewWithAVPlayer(_ isrc: String) async throws {
+    // 0. AudioSession 설정
+    try avPlayerManager.setupAudioSession()
+    
     // 1. ISRC로 곡 검색
     let request = MusicCatalogResourceRequest<Song>(matching: \.isrc, equalTo: isrc)
     let searchResponse = try await request.response()
@@ -58,7 +61,7 @@ public struct DefaultMusicRepository: MusicRepository {
     } else if avPlayerManager.isPlaying {
       avPlayerManager.pause()
     } else {
-      throw MusicError.nothingToPause
+      throw MusicError.playingError
     }
   }
 }

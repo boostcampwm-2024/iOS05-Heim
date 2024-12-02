@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import Domain
 import MusicKit
 
 final class AVPlayerManager {
@@ -19,9 +20,7 @@ final class AVPlayerManager {
   }
 
   // MARK: - Initialization
-  init() {
-    setupAudioSession()
-  }
+  init() {}
 
   deinit {
     if let timeObserver = timeObserver {
@@ -61,8 +60,7 @@ final class AVPlayerManager {
     player?.volume = max(0.0, min(1.0, volume))
   }
 
-  // MARK: - Private Methods
-  private func setupAudioSession() {
+  func setupAudioSession() throws {
     do {
       try AVAudioSession.sharedInstance().setCategory(
         .playback,
@@ -71,11 +69,11 @@ final class AVPlayerManager {
       )
       try AVAudioSession.sharedInstance().setActive(true)
     } catch {
-      // TODO: 에러 핸들링
-      fatalError()
+      throw MusicError.playingError
     }
   }
 
+  // MARK: - Private Methods
   private func cleanup() {
     player?.pause()
     if let timeObserver = timeObserver {
