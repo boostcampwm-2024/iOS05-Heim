@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SpotifyLoginViewController: BaseViewController<SpotifyLoginViewModel> {
+final class SpotifyLoginViewController: BaseViewController<SpotifyLoginViewModel>, Alertable {
   // MARK: - UIComponents
   private let spotifyView = SpotifyLoginView()
 
@@ -24,11 +24,13 @@ final class SpotifyLoginViewController: BaseViewController<SpotifyLoginViewModel
     super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
+    viewModel.action(.setup)
   }
 
   // MARK: - Methods
   override func setupViews() {
     super.setupViews()
+    spotifyView.delegate = self
     view.addSubview(spotifyView)
   }
 
@@ -37,5 +39,36 @@ final class SpotifyLoginViewController: BaseViewController<SpotifyLoginViewModel
     spotifyView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+  }
+  
+  override func bindState() {
+    super.bindState()
+    
+    viewModel.$state
+      .receive(on: DispatchQueue.main)
+      .map { $0.isLoginFailed ?? false }
+      .removeDuplicates()
+      .sink { [weak self] flag in
+        guard flag else { return }
+        self?.presentAlert(type: .loginFailed, leftButtonAction: {})
+      }
+      .store(in: &cancellable)
+    
+    viewModel.$state
+      .receive(on: DispatchQueue.main)
+      .map { $0.isLogined }
+      .removeDuplicates()
+      .sink { [weak self] flag in
+        guard flag else { return }
+        self?.dismiss(animated: true)
+      }
+      .store(in: &cancellable)
+  }
+}
+
+extension SpotifyLoginViewController: SpotifyLoginViewDelegate {
+  func didTapLoginButton(loginView: SpotifyLoginView) {
+    viewModel.action(.authorize)
+    print("hi?")
   }
 }

@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-public final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable {
+public final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable, MusicTableViewCellDelegate {
   // MARK: - Properties
   private let musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
@@ -38,7 +38,11 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
   }()
 
   // MARK: - Initializer
-  init(musics: [MusicTrack], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
+  init(
+    musics: [MusicTrack],
+    isHiddenHomeButton: Bool = false,
+    viewModel: MusicMatchViewModel
+  ) {
     self.musicDataSources = musics
     self.homeButton.isHidden = isHiddenHomeButton
     super.init(viewModel: viewModel)
@@ -114,12 +118,12 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
     viewModel.$state
       .map(\.isrc)
       .receive(on: DispatchQueue.main)
-      .removeDuplicatesㄴ()
+      .removeDuplicates()
       .sink { [weak self] isrc in
         self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
           guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
           let item = self?.musicDataSources[indexPath.row] else { return }
-          cell.updatePlayButton(isPlaying: item.isrc == isrc.isrc)
+          cell.updatePlayButton(isPlaying: item.isrc == isrc)
         })
       }
       .store(in: &cancellable)
@@ -129,7 +133,7 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
       .filter { $0 }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] isError in
-        presentPlayAlert()
+        self?.presentPlayAlert()
       }
       .store(in: &cancellable)
   }

@@ -11,7 +11,7 @@ import UIKit
 
 public protocol AnalyzeResultCoordinator: Coordinator {
   func start(diary: Diary)
-  func pushMusicRecommendationView()
+  func pushMusicRecommendationView(tracks: [MusicTrack])
   func backToApproachView()
 }
 
@@ -37,14 +37,14 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
     parentCoordinator?.removeChild(self)
   }
   
-  public func pushMusicRecommendationView() {
+  public func pushMusicRecommendationView(tracks: [MusicTrack]) {
     guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
       return
     }
     
     addChildCoordinator(defaultMusicMatchCoordinator)
     defaultMusicMatchCoordinator.parentCoordinator = self
-    defaultMusicMatchCoordinator.start()
+    defaultMusicMatchCoordinator.start(musicTracks: tracks)
   }
   
   public func presentLoginView() {
@@ -73,8 +73,13 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
 private extension DefaultAnalyzeResultCoordinator {
   func createAnalyzeResultViewController(diary: Diary) -> AnalyzeResultViewController? {
     guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    guard let musicUseCase = DIContainer.shared.resolve(type: MusicUseCase.self) else { return nil }
     
-    let viewModel = AnalyzeResultViewModel(useCase: diaryUseCase, diary: diary)
+    let viewModel = AnalyzeResultViewModel(
+      diaryUseCase: diaryUseCase,
+      musicUseCase: musicUseCase,
+      diary: diary
+    )
     let viewController = AnalyzeResultViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController

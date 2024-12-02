@@ -8,20 +8,28 @@
 import UIKit
 import SnapKit
 
+protocol SpotifyLoginViewDelegate: AnyObject {
+  func didTapLoginButton(loginView: SpotifyLoginView)
+}
+
 final class SpotifyLoginView: UIView {
+  weak var delegate: SpotifyLoginViewDelegate?
+  
   private let logoImageView: UIImageView = {
     let view = UIImageView()
     view.image = .splashRabbit
     return view
   }()
 
-  private let infoLabel = CommonLabel(text: """
-                                      Spotify에 로그인해서 음악 추천 기능을 즐겨보세요 !
-                                      로그인 하지 않으면 음악 추천 기능을 사용할 수 없습니다!
-                                      """,
-                                      font: .regular,
-                                      size: LayoutConstants.infoLabelFont,
-                                      textColor: .white)
+  private let infoLabel = CommonLabel(
+    text: """
+  Spotify에 로그인해서 음악 추천 기능을 즐겨보세요 !
+  로그인 하지 않으면 음악 추천 기능을 사용할 수 없습니다!
+""",
+    font: .regular,
+    size: LayoutConstants.infoLabelFont,
+    textColor: .white
+  )
 
   private let loginButton: UIButton = {
     var config = UIButton.Configuration.filled()
@@ -55,6 +63,10 @@ private extension SpotifyLoginView {
     addSubview(infoLabel)
     addSubview(loginButton)
     infoLabel.textAlignment = .center
+    loginButton.addAction(UIAction { [weak self] _ in
+      guard let self else { return }
+      self.delegate?.didTapLoginButton(loginView: self)
+    }, for: .touchUpInside)
   }
 
   func setupConstraints() {

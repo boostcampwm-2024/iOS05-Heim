@@ -23,6 +23,7 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
     setupViews()
     setupLayoutConstraints()
     viewModel.action(.fetchDiary)
+    viewModel.action(.fetchMusicTrack)
   }
   
   override func setupViews() {
@@ -58,9 +59,10 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
     
     viewModel.$state
       .receive(on: DispatchQueue.main)
-      .map { $0.errorMessage }
+      .map { $0.isFetchFailed }
       .removeDuplicates()
-      .sink { [weak self] _ in
+      .sink { [weak self] flag in
+        guard flag else { return }
         self?.presentAlert(
           type: .authorization,
           leftButtonAction: { [weak self] in
@@ -79,7 +81,7 @@ extension AnalyzeResultViewController: AnalyzeResultViewDelegate {
   ) {
     switch item {
     case .musicRecomendation:
-      coordinator?.pushMusicRecommendationView()
+      coordinator?.pushMusicRecommendationView(tracks: viewModel.state.musicTrack)
     case .moveToHome:
       coordinator?.backToApproachView()
     }

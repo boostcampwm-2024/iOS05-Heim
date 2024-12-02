@@ -14,24 +14,30 @@ final class AnalyzeResultViewModel: ViewModel {
   // MARK: - Properties
   enum Action {
     case fetchDiary
+    case fetchMusicTrack
   }
   
   struct State: Equatable {
     var description: String = ""
     var content: String = ""
+    var isFetchFailed: Bool = false
+    var musicTrack: [MusicTrack] = []
   }
   
   @Published var state: State
-  private let useCase: DiaryUseCase
+  private let diaryUseCase: DiaryUseCase
+  private let musicUseCase: MusicUseCase
   private var diary: Diary
   
   // MARK: - Initializer
   init(
-    useCase: DiaryUseCase,
+    diaryUseCase: DiaryUseCase,
+    musicUseCase: MusicUseCase,
     diary: Diary
   ) {
     state = State()
-    self.useCase = useCase
+    self.diaryUseCase = diaryUseCase
+    self.musicUseCase = musicUseCase
     self.diary = diary
   }
   
@@ -41,6 +47,8 @@ final class AnalyzeResultViewModel: ViewModel {
     case .fetchDiary:
       setupInitialState()
       handleSaveDiary()
+    case .fetchMusicTrack:
+      fetchMusicTrack()
     }
   }
 }
@@ -51,7 +59,7 @@ private extension AnalyzeResultViewModel {
     Task.detached { [weak self] in
       do {
         guard let diary = self?.diary else { return }
-        try await self?.useCase.saveDiary(data: diary)
+        try await self?.diaryUseCase.saveDiary(data: diary)
       } catch {
         // TODO: Error Handling
       }
@@ -62,6 +70,20 @@ private extension AnalyzeResultViewModel {
     // TODO:
     state.description = diary.emotion.rawValue
     state.content = diary.emotionReport.text
+  }
+  
+  func fetchMusicTrack() {
+    Task.detached { [weak self] in
+      guard let self else { return }
+      do {
+        let tracks = try await musicUseCase.fetchRecommendTracks(self.diary.emotion)
+        self.state.musicTrack = tracks
+      } catch TokenError.refreshTokenExpired {
+        self.state.isFetchFailed = true
+      } catch {
+        print(error)
+      }
+    }
   }
 }
 

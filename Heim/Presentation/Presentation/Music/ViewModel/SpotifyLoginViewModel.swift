@@ -21,6 +21,7 @@ public final class SpotifyLoginViewModel: NSObject, ObservableObject, ViewModel 
     var challengeCode: String?
     var verifier: String?
     var authorizationURL: URL?
+    var isLoginFailed: Bool?
   }
 
   let useCase: SpotifyOAuthUseCase
@@ -71,7 +72,7 @@ private extension SpotifyLoginViewModel {
       authSession.presentationContextProvider = self
       authSession.start()
     } catch {
-      return
+      state.isLoginFailed = true
     }
   }
 
@@ -80,9 +81,9 @@ private extension SpotifyLoginViewModel {
     Task {
       do {
         try await useCase.login(code: authorizationCode, plainText: challengeString)
+        state.isLogined = true
       } catch {
-        // TODO
-        throw NSError()
+        state.isLoginFailed = true
       }
     }
   }
