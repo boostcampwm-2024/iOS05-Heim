@@ -12,7 +12,7 @@ import UIKit
 public protocol DiaryDetailCoordinator: Coordinator {
   func start(diary: Diary)
   // MARK: - 추천음악 감상하기로 이동
-  func pushMusicRecommendationView()
+  func pushMusicRecommendationView(musicTracks: [MusicTrack])
   func pushHeimReplyView(diary: Diary)
   // MARK: - 나의 이야기 다시듣기 이동
   func pushDiaryReplayView(diary: Diary)
@@ -42,12 +42,12 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
     navigationController.popViewController(animated: true)
   }
   
-  public func pushMusicRecommendationView() {
+  public func pushMusicRecommendationView(musicTracks: [MusicTrack]) {
     guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
       return
     }
     
-    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
+    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController(musicTracks: musicTracks) else {
       return
     }
     

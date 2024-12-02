@@ -12,7 +12,7 @@ import UIKit
 public protocol MusicMatchCoordinator: Coordinator {
   func start(musicTracks: [MusicTrack])
   func backToMainView()
-  func createMusicMatchViewController() -> MusicMatchViewController?
+  func createMusicMatchViewController(musicTracks: [MusicTrack]) -> MusicMatchViewController?
 }
 
 public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
