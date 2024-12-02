@@ -42,17 +42,7 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
     navigationController.popViewController(animated: true)
   }
   
-  public func pushMusicRecommendationView() {
-//    guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-//      return
-//    }
-//    
-//    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
-//      return
-//    }
-//    
-//    navigationController.pushViewController(musicMatchViewController, animated: true)
-  }
+  public func pushMusicRecommendationView() {}
   
   public func pushHeimReplyView(diary: Diary) {
     let replyViewController = ReplyViewController(diary: diary)
