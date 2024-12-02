@@ -63,14 +63,15 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
     defaultReportCoordinator.parentCoordinator = self
     
     guard let reportViewController = defaultReportCoordinator.provideReportViewController() else { return }
-    navigationController.navigationBar.isHidden = true
     addChildView(reportViewController)
   }
 }
 
 private extension DefaultTabBarCoordinator {
   func createTabBarViewController() -> CustomTabBarViewController? {
-    let viewController = CustomTabBarViewController()
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    let viewModel = CustomTabBarViewModel(useCase: diaryUseCase)
+    let viewController = CustomTabBarViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController
   }

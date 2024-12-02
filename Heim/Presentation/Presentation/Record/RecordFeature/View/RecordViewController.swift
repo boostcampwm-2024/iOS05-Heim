@@ -23,7 +23,6 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
   
   public override func viewDidLoad() {
     super.viewDidLoad()
-    setupNavigationBar()
     
     // 앱 종료 시 알림 받기
     NotificationCenter.default.addObserver(
@@ -40,6 +39,12 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
       name: UIApplication.didEnterBackgroundNotification,
       object: nil
     )
+  }
+  
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    navigationController?.navigationBar.isHidden = true
   }
   
   public override func viewWillDisappear(_ animated: Bool) {
@@ -142,10 +147,6 @@ private extension RecordViewController {
     }
     removeTemporaryFiles()
     coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
-  }
-  
-  func setupNavigationBar() {
-    navigationController?.navigationBar.isHidden = true
   }
   
   func removeTemporaryFiles() {

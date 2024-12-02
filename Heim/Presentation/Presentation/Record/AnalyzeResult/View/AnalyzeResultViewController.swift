@@ -77,8 +77,6 @@ extension AnalyzeResultViewController: AnalyzeResultViewDelegate {
     _ item: AnalyzeResultViewButtonItem
   ) {
     switch item {
-    case .musicRecomendation:
-      coordinator?.pushMusicRecommendationView()
     case .moveToHome:
       coordinator?.backToApproachView()
     }

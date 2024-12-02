@@ -111,8 +111,6 @@ extension DiaryDetailViewController: DiaryDetailViewDelegate {
     _ item: DiaryDetailViewButtonItem
   ) {
     switch item {
-    case .musicRecomendation:
-      coordinator?.pushMusicRecommendationView()
     case .heimReply:
       coordinator?.pushHeimReplyView(diary: viewModel.diary)
     case .replayVoice:

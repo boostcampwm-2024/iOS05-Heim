@@ -18,6 +18,7 @@ enum AlertType {
   case saveError
   case recordError
   case settingError
+  case alreadyWrittenDiary
 
   var title: String {
     switch self {
@@ -29,6 +30,7 @@ enum AlertType {
     case .saveError: "일기 저장중\n 오류가 발생했어요"
     case .recordError: "음성 녹음중\n 오류가 발생했어요"
     case .settingError: "설정 중\n 오류가 발생했어요"
+    case .alreadyWrittenDiary: "이미 일기를 작성했어요"
     }
   }
   
@@ -42,6 +44,7 @@ enum AlertType {
     case .saveError: "일기 저장 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요"
     case .recordError: "음성 녹음 중 오류가 발생했습니다.\n앱을 재시작해주세요"
     case .settingError: "설정 변경 중 오류가 발생했습니다.\n앱을 재시작해주세요"
+    case .alreadyWrittenDiary: "일기는 하루에 한 개만 작성할 수 있어요.\n이미 작성한 일기를 삭제해주세요!"
     }
   }
   
@@ -55,6 +58,7 @@ enum AlertType {
     case .saveError: "닫기"
     case .recordError: "닫기"
     case .settingError: "닫기"
+    case .alreadyWrittenDiary: "닫기"
     }
   }
   
@@ -68,6 +72,7 @@ enum AlertType {
     case .saveError: ""
     case .recordError: ""
     case .settingError: ""
+    case .alreadyWrittenDiary: ""
     }
   }
 }

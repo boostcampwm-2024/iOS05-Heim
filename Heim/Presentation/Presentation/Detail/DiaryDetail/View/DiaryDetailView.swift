@@ -10,7 +10,6 @@ import SnapKit
 
 // MARK: - 현재 뷰에 존재하는 버튼들의 종류를 구분하기 위함
 enum DiaryDetailViewButtonItem {
-  case musicRecomendation
   case heimReply
   case replayVoice
 }
@@ -62,17 +61,6 @@ final class DiaryDetailView: UIView {
     stackView.spacing = LayoutConstants.buttonStackSpacing
     stackView.distribution = .fillEqually
     return stackView
-  }()
-  
-  private let musicRecomendationButton: UIButton = {
-    let button = UIButton()
-    button.setTitle("추천 음악 감상하기", for: .normal)
-    button.setTitleColor(.white, for: .normal)
-    button.backgroundColor = .primary
-    button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
-    button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
-    button.addTarget(self, action: #selector(musicRecomendationButtonTapped), for: .touchUpInside)
-    return button
   }()
   
   private let heimReplyButton: UIButton = {
@@ -129,7 +117,7 @@ private extension DiaryDetailView {
       contentView.addSubview($0)
     }
     
-    [musicRecomendationButton, heimReplyButton, replayVoiceButton].forEach {
+    [heimReplyButton, replayVoiceButton].forEach {
       buttonStackView.addArrangedSubview($0)
     }
   }
@@ -172,7 +160,7 @@ private extension DiaryDetailView {
       $0.bottom.equalToSuperview().offset(-LayoutConstants.contentInset)
     }
     
-    [musicRecomendationButton, heimReplyButton, replayVoiceButton].forEach {
+    [heimReplyButton, replayVoiceButton].forEach {
       $0.layer.cornerRadius = LayoutConstants.buttonCornerRadius
       $0.snp.makeConstraints {
         $0.height.equalTo(LayoutConstants.buttonHeight)
@@ -186,11 +174,6 @@ private extension DiaryDetailView {
   }
   
   // MARK: - Action Methods
-  @objc
-  func musicRecomendationButtonTapped() {
-    delegate?.buttonDidTap(self, .musicRecomendation)
-  }
-  
   @objc
   func heimReplyButtonTapped() {
     delegate?.buttonDidTap(self, .heimReply)
