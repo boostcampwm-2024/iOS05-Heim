@@ -82,7 +82,6 @@ final class DiaryDetailView: UIView {
     button.backgroundColor = .primary
     button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
-    button.addTarget(self, action: #selector(heimReplyButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -93,7 +92,6 @@ final class DiaryDetailView: UIView {
     button.backgroundColor = .primary
     button.titleLabel?.font = .boldFont(ofSize: LayoutConstants.buttonLabelFontSize)
     button.layer.cornerRadius = LayoutConstants.buttonCornerRadius
-    button.addTarget(self, action: #selector(replayVoiceButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -102,6 +100,7 @@ final class DiaryDetailView: UIView {
     super.init(frame: frame)
     setupViews()
     setupLayoutConstraints()
+    setupActions()
   }
   
   required init?(coder: NSCoder) {
@@ -137,7 +136,8 @@ private extension DiaryDetailView {
   
   func setupLayoutConstraints() {
     scrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.bottom.equalTo(safeAreaLayoutGuide)
+      $0.leading.trailing.equalToSuperview()
     }
     
     contentView.snp.makeConstraints {
@@ -180,16 +180,24 @@ private extension DiaryDetailView {
     }
   }
   
+  func setupActions() {
+    heimReplyButton.addTarget(self, action: #selector(heimReplyButtonTapped), for: .touchUpInside)
+    replayVoiceButton.addTarget(self, action: #selector(replayVoiceButtonTapped), for: .touchUpInside)
+  }
+  
   // MARK: - Action Methods
-  @objc func musicRecomendationButtonTapped() {
+  @objc
+  func musicRecomendationButtonTapped() {
     delegate?.buttonDidTap(self, .musicRecomendation)
   }
   
-  @objc func heimReplyButtonTapped() {
+  @objc
+  func heimReplyButtonTapped() {
     delegate?.buttonDidTap(self, .heimReply)
   }
   
-  @objc func replayVoiceButtonTapped() {
+  @objc
+  func replayVoiceButtonTapped() {
     delegate?.buttonDidTap(self, .replayVoice)
   }
 }

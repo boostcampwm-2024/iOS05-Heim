@@ -18,7 +18,7 @@ final class DiaryDetailViewModel: ViewModel {
   }
   
   struct State: Equatable {
-    var date: String = ""
+    var calendarDate: String = ""
     var description: String = ""
     var content: String = ""
     var isDeleted: Bool = false
@@ -26,6 +26,8 @@ final class DiaryDetailViewModel: ViewModel {
   
   @Published var state: State
   private let useCase: DiaryUseCase
+  // TODO: 이름 가져오는 기능 추가
+  private let userName: String = "성근"
   let diary: Diary
   
   // MARK: - Initializer
@@ -46,7 +48,6 @@ final class DiaryDetailViewModel: ViewModel {
     case .deleteDiary:
       Task {
         await handleDeleteDiary()
-        state.isDeleted = true
       }
     }
   }
@@ -54,25 +55,18 @@ final class DiaryDetailViewModel: ViewModel {
 
 // MARK: - Private Extenion
 private extension DiaryDetailViewModel {
-  // TODO: 현재 timeStamp를 직접 생성하여 코드가 길어져 메서드를 따로 분리
   func handleDeleteDiary() async {
-    // TODO: date 선언해서 파라미터로 넣는 것이 아닌 diary.id로 변경(미정)
-    let date = Date()
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyyMMddHHmmss"
-    let timeStamp = dateFormatter.string(from: date)
     do {
-      // TODO: useCase 파라미터 변경사항 반영
-//      try await useCase.deleteDiary(timeStamp: timeStamp)
+      try await useCase.deleteDiary(calendarDate: diary.calendarDate)
+      state.isDeleted = true
     } catch {
       // TODO: Error Handling
     }
   }
   
-  // TODO: 날짜 정보 초기화하는 기능 구현
   func setupInitialState() {
-    // state.date = diary.id
-    state.description = diary.emotion.rawValue
+    state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
+    state.description = diary.emotion.diaryDetailDescription(with: userName)
     state.content = diary.summary.text
   }
 }

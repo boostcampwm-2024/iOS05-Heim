@@ -30,6 +30,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
 
+    setupNavigationBar()
+
     self.navigationController = UINavigationController()
     self.recordNavigationController = UINavigationController()
     window?.rootViewController = navigationController
@@ -42,6 +44,19 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   // MARK: - Private Extenion
 private extension SceneDelegate {
+  func setupNavigationBar() {
+    let barButtonItemAppearance = UIBarButtonItem.appearance()
+    barButtonItemAppearance.setTitleTextAttributes(
+      [NSAttributedString.Key.foregroundColor: UIColor.clear],
+      for: .normal
+    )
+    barButtonItemAppearance.tintColor = .white
+    
+    let backImage = UIImage(named: "back")
+    UINavigationBar.appearance().backIndicatorImage = backImage
+    UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
+  }
+  
   func dependencyAssemble() {
     dataStorageAssemble()
     networkAssemble()

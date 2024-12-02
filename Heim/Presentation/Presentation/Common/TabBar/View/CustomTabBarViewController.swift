@@ -35,7 +35,7 @@ private extension CustomTabBarViewController {
   func switchView(_ tabBarItem: TabBarItems) {
     switch tabBarItem {
     case .home: coordinator?.setHomeView()
-    case .mic: coordinator?.setRecordView()  
+    case .mic: coordinator?.setRecordView()
     case .report: coordinator?.setReportView()
     }
   }
@@ -43,7 +43,7 @@ private extension CustomTabBarViewController {
 
 extension CustomTabBarViewController: CustomTabBarViewDelegate {
   func buttonDidTap(
-    _ tabBarView: CustomTabBarView, 
+    _ tabBarView: CustomTabBarView,
     item: TabBarItems
   ) {
     switchView(item)
