@@ -117,7 +117,7 @@ final class RecordView: UIView {
   
   func updateNextButton(isEnabled: Bool) {
     nextButton.isEnabled = isEnabled
-    nextButton.backgroundColor = isEnabled ? .primary : .secondary
+    nextButton.backgroundColor = isEnabled ? .primary : .primaryTransparent
   }
 }
 

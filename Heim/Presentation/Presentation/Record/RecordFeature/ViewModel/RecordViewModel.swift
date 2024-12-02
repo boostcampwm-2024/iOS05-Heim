@@ -96,9 +96,6 @@ private extension RecordViewModel {
   func startTimeObservation() {
     stopTimeObservation()
     
-    if isPaused {
-      state.timeText = "00:00"
-    }
     isPaused = false
     
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in

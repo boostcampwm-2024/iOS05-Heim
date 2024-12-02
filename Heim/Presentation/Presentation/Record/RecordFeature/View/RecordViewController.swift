@@ -18,6 +18,33 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
   // MARK: - LifeCycle
   deinit {
     coordinator?.didFinish()
+    removeTemporaryFiles()
+  }
+  
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    setupNavigationBar()
+    
+    // 앱 종료 시 알림 받기
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(applicationWillTerminate),
+      name: UIApplication.willTerminateNotification,
+      object: nil
+    )
+    
+    // 백그라운드 진입 시 알림 받기
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(applicationDidEnterBackground),
+      name: UIApplication.didEnterBackgroundNotification,
+      object: nil
+    )
+  }
+  
+  public override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    NotificationCenter.default.removeObserver(self)
   }
   
   public override func setupViews() {
@@ -99,6 +126,28 @@ private extension RecordViewController {
     else {
       return
     }
+    removeTemporaryFiles()
     coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
+  }
+  
+  func setupNavigationBar() {
+    navigationController?.navigationBar.isHidden = true
+  }
+  
+  func removeTemporaryFiles() {
+    let documentsPath = FileManager.default.temporaryDirectory
+    let temporaryRecordingURL = documentsPath.appendingPathComponent("temporaryRecording.wav")
+    
+    try? FileManager.default.removeItem(at: temporaryRecordingURL)
+  }
+  
+  @objc
+  func applicationWillTerminate() {
+    removeTemporaryFiles()
+  }
+  
+  @objc
+  func applicationDidEnterBackground() {
+    removeTemporaryFiles()
   }
 }
