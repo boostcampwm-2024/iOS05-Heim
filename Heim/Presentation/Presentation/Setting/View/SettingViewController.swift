@@ -78,11 +78,9 @@ extension SettingViewController: UITableViewDelegate {
     switch indexPath.row {
     case 0: // 이름
       presentNameAlert()
-    case 1: // 캐시 삭제
-      presentRemoveCacheAlert()
-    case 2: // 데이터 초기화
+    case 1: // 데이터 초기화
       presentDataResetAlert()
-    case 4: // 문의하기
+    case 3: // 문의하기
       coordinator?.openQuestionURL()
     default:
       return
@@ -116,7 +114,7 @@ extension SettingViewController: UITableViewDataSource {
     switch indexPath.row {
     case 0: // 이름
       cell.setupNameLabel(name: viewModel.state.userName)
-    case 3: // 앱 버전
+    case 2: // 앱 버전
       cell.setupVersionLabel()
     default: 
       return cell
@@ -142,16 +140,16 @@ extension SettingViewController: Alertable {
       self?.viewModel.action(.updateUserName(textFieldText))
     }
   }
-  
-  func presentRemoveCacheAlert() {
-    presentAlert(
-      type: .removeCache,
-      leftButtonAction: {},
-      rightButtonAction: { [weak self] in
-        self?.viewModel.action(.removeCache)
-      }
-    )
-  }
+  // TODO: 캐시삭제 구현 예정
+//  func presentRemoveCacheAlert() {
+//    presentAlert(
+//      type: .removeCache,
+//      leftButtonAction: {},
+//      rightButtonAction: { [weak self] in
+//        self?.viewModel.action(.removeCache)
+//      }
+//    )
+//  }
   
   func presentDataResetAlert() {
     presentAlert(
