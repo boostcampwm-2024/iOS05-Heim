@@ -33,10 +33,16 @@ final class DiaryReplayViewController: BaseViewController<DiaryReplayViewModel> 
     setupActions()
   }
   
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    contentView.setNeedsLayout()
+    contentView.layoutIfNeeded()
+    visualizerView.startVisualizer(for: self.viewModel)
+  }
+  
   override func setupViews() {
     super.setupViews()
     contentView.delegate = self
-    self.visualizerView.startVisualizer(for: self.viewModel)
     view.addSubview(contentView)
   }
   
