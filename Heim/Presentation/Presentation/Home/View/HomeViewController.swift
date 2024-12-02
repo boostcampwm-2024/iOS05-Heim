@@ -94,8 +94,10 @@ extension HomeViewController: CalendarDelegate {
   
   func collectionViewCellDidTap(
     _ collectionView: UICollectionView,
-    diary: Diary
+    diary: Diary?
   ) {
+    guard let diary else { return }
+    
     coordinator?.pushDiaryDetailView(diary: diary)
   }
 }
