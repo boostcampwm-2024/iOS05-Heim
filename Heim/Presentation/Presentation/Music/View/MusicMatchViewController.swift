@@ -5,18 +5,12 @@
 //  Created by 김미래 on 11/25/24.
 //
 
+import Domain
 import UIKit
-
-// TODO: 수정
-struct Music {
-  let title: String
-  let artist: String
-}
 
 public final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable {
   // MARK: - Properties
-  // TODO: let 수정
-  private var musicDataSources: [Music]
+  private let musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
 
   // MARK: - UI Components
@@ -26,10 +20,9 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
     let tableView = UITableView(frame: .zero)
     tableView.registerCellClass(cellType: MusicTableViewCell.self)
     tableView.separatorStyle = .none
-    tableView.isScrollEnabled = false
     tableView.layer.masksToBounds = true
     tableView.layer.cornerRadius = LayoutConstants.cornerRadius
-    tableView.isScrollEnabled = true
+    tableView.isScrollEnabled = false
     return tableView
   }()
 
@@ -45,18 +38,8 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
   }()
 
   // MARK: - Initializer
-  init(musics: [Music], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
-
+  init(musics: [MusicTrack], isHiddenHomeButton: Bool = false, viewModel: MusicMatchViewModel) {
     self.musicDataSources = musics
-    // TODO: 삭제
-    self.musicDataSources = [
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태..."),
-      Music(title: "슈퍼노바", artist: "#감성힙합#플레이리스트 #해시태그 #해시태...")
-    ]
-
     self.homeButton.isHidden = isHiddenHomeButton
     super.init(viewModel: viewModel)
   }
@@ -67,10 +50,14 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
 
   // MARK: - LifeCycle
   public override func viewDidLoad() {
+    super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
+    musicTableView.rowHeight = UITableView.automaticDimension
+    musicTableView.estimatedRowHeight = UITableView.automaticDimension
+
   }
-  
+
   deinit {
     coordinator?.didFinish()
   }
@@ -107,13 +94,13 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
     musicTableView.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.defaultPadding)
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.bottom.equalToSuperview().offset(LayoutConstants.tableViewBottom)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(LayoutConstants.tableViewBottom)
     }
 
     homeButton.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(LayoutConstants.defaultPadding)
-      $0.top.equalTo(musicTableView.snp.bottom).offset(LayoutConstants.homeButtonTop)
       $0.height.equalTo(LayoutConstants.homeButtonHeight)
+      $0.bottom.equalToSuperview().offset(LayoutConstants.homeButtonBottom)
     }
   }
 
@@ -153,7 +140,7 @@ extension MusicMatchViewController: UITableViewDelegate {
     _ tableView: UITableView,
     numberOfRowsInSection section: Int)
   -> Int {
-    5
+    musicDataSources.count
   }
 }
 
@@ -162,7 +149,6 @@ extension MusicMatchViewController: UITableViewDataSource {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
   -> UITableViewCell {
-    // TODO: 이미지 url 넘기기
     guard indexPath.row < musicDataSources.count else {
       return UITableViewCell()
     }
@@ -177,18 +163,36 @@ extension MusicMatchViewController: UITableViewDataSource {
     }
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
-
-    let action = UIAction { _ in
-        // TODO: 뮤직킷 연동
-    }
+    cell.delegate = self
 
     cell.configure(
+      imageData: imageData,
       titleText: titleText,
       subTitle: subTilteText,
-      action: action
+      track: musicTrack.isrc
     )
 
     return cell
+  }
+
+  func playButtonDidTap(isrc: String?) {
+    guard let isrc else { return }
+    viewModel.action(.playMusic(isrc))
+  }
+
+  func pauseButtonDidTap() {
+    viewModel.action(.pauseMusic)
+  }
+}
+
+extension MusicMatchViewController: Alertable {
+  func presentPlayAlert() {
+    presentAlert(
+      type: .playError,
+      leftButtonAction: { [weak self] in
+        self?.viewModel.action(.isError)
+      }
+    )
   }
 }
 
@@ -197,10 +201,11 @@ private extension MusicMatchViewController {
     static let defaultPadding: CGFloat = 16
     static let titleThree: CGFloat = 20
     static let homeButtonFont: CGFloat = 18
-    static let homeButtonTop: CGFloat = 32
+    static let homeButtonTop: CGFloat = 25
     static let cornerRadius: CGFloat = 10
-    static let tableViewBottom = UIApplication.screenHeight * 170 / UIApplication.screenHeight * -1
-    static let homeButtonHeight = UIApplication.screenHeight * 0.07
+    static let tableViewBottom = -75
+    static let homeButtonHeight = UIApplication.screenHeight * 0.06
+    static let homeButtonBottom = -32
   }
 
   // MARK: - Layout
@@ -216,7 +221,7 @@ private extension MusicMatchViewController {
       gradientLayer,
       at: 0
     )
-
     musicTableView.backgroundView = backgroundView
   }
 }
+

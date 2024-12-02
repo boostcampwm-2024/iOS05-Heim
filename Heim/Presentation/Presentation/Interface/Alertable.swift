@@ -14,16 +14,18 @@ enum AlertType {
   case updateName
   case removeCache // 캐시 삭제
   case removeData  // 데이터 삭제
-  
+  case playError
+
   var title: String {
     switch self {
     case .removeDiary: "나의 일기가 사라져요"
     case .updateName: "이름을 입력하세요"
     case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
+    case .playError: "재생 중 오류가 발생했습니다."
     }
   }
-  
+
   var message: String {
     switch self {
     case .removeDiary: "이 글은 더 이상 볼 수 없을텐데,\n정말 삭제하시겠어요?"
@@ -33,7 +35,7 @@ enum AlertType {
     case .playError: "다시 시도해 주세요!"
     }
   }
-  
+
   var leftButtonTitle: String {
     switch self {
     case .removeDiary: "다음에"
@@ -43,7 +45,7 @@ enum AlertType {
     case .playError: "확인"
     }
   }
-  
+
   var rightButtonTitle: String {
     switch self {
     case .removeDiary: "삭제"
@@ -68,20 +70,20 @@ extension Alertable where Self: UIViewController {
       rightbuttonTitle: type.rightButtonTitle
     )
     let alertController = AlertViewController(alertView: alertView)
-    
+
     alertView.setupLeftButtonAction(UIAction { _ in
       alertController.dismiss(animated: true)
       leftButtonAction()
     })
-    
+
     alertView.setupRightButtonAction(UIAction { _ in
       alertController.dismiss(animated: true)
       rightButtonAction()
     })
-    
+
     present(alertController, animated: true)
   }
-  
+
   func presentNameAlert(completion: @escaping (String) -> Void) {
     let alertView = NameAlertView(
       title: AlertType.updateName.title,
@@ -89,16 +91,17 @@ extension Alertable where Self: UIViewController {
       rightbuttonTitle: AlertType.updateName.rightButtonTitle
     )
     let alertController = AlertViewController(alertView: alertView)
-    
+
     alertView.setupLeftButtonAction(UIAction { _ in
       alertController.dismiss(animated: true)
     })
-    
+
     alertView.setupCompleteButtonAction { textFieldText in
       alertController.dismiss(animated: true)
       completion(textFieldText)
     }
-    
+
     present(alertController, animated: true)
   }
 }
+
