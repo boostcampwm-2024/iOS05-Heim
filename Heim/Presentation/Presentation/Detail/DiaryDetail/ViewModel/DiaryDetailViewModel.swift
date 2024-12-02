@@ -22,6 +22,7 @@ final class DiaryDetailViewModel: ViewModel {
     var description: String = ""
     var content: String = ""
     var isDeleted: Bool = false
+    var isErrorPresent: Bool = true
   }
   
   @Published var state: State
@@ -64,7 +65,7 @@ private extension DiaryDetailViewModel {
       try await diaryUseCase.deleteDiary(calendarDate: diary.calendarDate)
       state.isDeleted = true
     } catch {
-      // TODO: Error Handling
+      state.isErrorPresent = true
     }
   }
   
@@ -75,7 +76,10 @@ private extension DiaryDetailViewModel {
       state.description = diary.emotion.diaryDetailDescription(with: userName)
       state.content = diary.summary.text
     } catch {
-      // TODO: Error Handling
+      userName = "User"
+      state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
+      state.description = diary.emotion.diaryDetailDescription(with: userName)
+      state.content = diary.summary.text
     }
   }
 }

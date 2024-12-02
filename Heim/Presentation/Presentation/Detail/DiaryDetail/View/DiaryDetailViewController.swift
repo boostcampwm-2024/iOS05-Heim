@@ -64,6 +64,18 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
         self?.coordinator?.didFinish()
       }
       .store(in: &cancellable)
+    
+    viewModel.$state
+      .map { $0.isErrorPresent }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.presentAlert(
+          type: .deleteError,
+          leftButtonAction: { }
+        )
+      }
+      .store(in: &cancellable)
   }
   
   @objc
