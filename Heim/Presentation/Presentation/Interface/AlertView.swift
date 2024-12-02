@@ -51,7 +51,13 @@ class AlertView: UIView {
   ) {
     titleLabel.updateTextKeepingAttributes(title)
     leftButton.setTitle(leftButtonTitle, for: .normal)
-    rightbutton?.setTitle(rightbuttonTitle, for: .normal)
+    
+    if rightbuttonTitle.isEmpty {
+      rightbutton = nil
+    } else {
+      rightbutton?.setTitle(rightbuttonTitle, for: .normal)
+    }
+    
     super.init(frame: .zero)
     
     setupViews()
