@@ -52,6 +52,7 @@ public final class ReportViewController: BaseViewController<ReportViewModel>, Co
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
+    navigationController?.navigationBar.isHidden = true
     viewModel.action(.fetchTotalDiaryCount)
     viewModel.action(.fetchContinuousCount)
     viewModel.action(.fetchMonthCount)

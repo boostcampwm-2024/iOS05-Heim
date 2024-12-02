@@ -63,7 +63,6 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
     defaultReportCoordinator.parentCoordinator = self
     
     guard let reportViewController = defaultReportCoordinator.provideReportViewController() else { return }
-    navigationController.navigationBar.isHidden = true
     addChildView(reportViewController)
   }
 }

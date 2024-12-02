@@ -34,6 +34,7 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   
   public func start(diary: Diary) {
     guard let diaryDetailViewController = createDiaryDetailViewController(diary: diary) else { return }
+    navigationController.navigationBar.isHidden = false
     navigationController.pushViewController(diaryDetailViewController, animated: true)
   }
   
