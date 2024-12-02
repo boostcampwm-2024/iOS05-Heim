@@ -144,7 +144,7 @@ extension MusicMatchViewController: UITableViewDelegate {
   }
 }
 
-extension MusicMatchViewController: UITableViewDataSource {
+extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellDelegate {
   public func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
