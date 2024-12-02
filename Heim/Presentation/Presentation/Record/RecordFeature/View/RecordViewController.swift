@@ -139,12 +139,22 @@ extension RecordViewController: RecordViewDelegate {
 }
 
 private extension RecordViewController {
+  func presentWarning() {
+    presentAlert(
+      type: .tooShortDiary,
+      leftButtonAction: {
+        self.viewModel.action(.refresh)
+      }
+    )
+  }
+  
   func moveToEmotionAnalyzeView() {
     guard let recognizedText = viewModel.recognizedTextData(),
-          let voice = viewModel.voiceData()
-    else {
-      return
-    }
+          let voice = viewModel.voiceData() else { return }
+    if recognizedText.count < 70 { presentWarning(); return }
+    
+    guard let voice = viewModel.voiceData() else { return }
+    
     removeTemporaryFiles()
     coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
   }
