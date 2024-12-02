@@ -14,13 +14,15 @@ enum AlertType {
   case updateName
   case removeCache // 캐시 삭제
   case removeData  // 데이터 삭제
-  
+  case playError
+
   var title: String {
     switch self {
     case .removeDiary: "나의 일기가 사라져요"
     case .updateName: "이름을 입력하세요"
     case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
+    case .playError: "재생 중 오류가 발생했습니다."
     }
   }
   
@@ -39,6 +41,7 @@ enum AlertType {
     case .updateName: "닫기"
     case .removeCache: "닫기"
     case .removeData: "닫기"
+    case . playError: "확인"
     }
   }
   
@@ -48,6 +51,7 @@ enum AlertType {
     case .updateName: "변경"
     case .removeCache: "확인"
     case .removeData: "확인"
+    case . playError: ""
     }
   }
 }

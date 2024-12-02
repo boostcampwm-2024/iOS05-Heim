@@ -14,10 +14,12 @@ final class MusicMatchViewModel: ViewModel {
   enum Action {
     case playMusic(String)
     case pauseMusic
+    case isError
   }
 
   struct State: Equatable {
     var isrc: String?
+    var isError: Bool
   }
 
   let useCase: MusicUseCase
@@ -26,7 +28,7 @@ final class MusicMatchViewModel: ViewModel {
   // MARK: - Initializer
   init(useCase: MusicUseCase) {
     self.useCase = useCase
-    self.state = State(isrc: nil)
+    self.state = State(isrc: nil, isError: false)
   }
 
   func action(_ action: Action) {
@@ -40,6 +42,8 @@ final class MusicMatchViewModel: ViewModel {
       Task {
         await pauseMusic()
       }
+    case .isError:
+      state.isError = false
     }
   }
 }
@@ -51,7 +55,7 @@ private extension MusicMatchViewModel {
       try await useCase.play(to: track)
       state.isrc = track
     } catch {
-      // TODO: 해당 에러에 대한 화면 출력
+      state.isError = true
     }
   }
   
@@ -59,7 +63,7 @@ private extension MusicMatchViewModel {
     do {
       try useCase.pause()
     } catch {
-      // TODO: 해당 에러에 대한 화면 출력
+      state.isError = true
     }
   }
 }

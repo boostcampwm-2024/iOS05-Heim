@@ -114,13 +114,22 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     viewModel.$state
       .map(\.isrc)
       .receive(on: DispatchQueue.main)
-      .removeDuplicates()
+      .removeDuplicatesㄴ()
       .sink { [weak self] isrc in
         self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
           guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
           let item = self?.musicDataSources[indexPath.row] else { return }
           cell.updatePlayButton(isPlaying: item.isrc == isrc.isrc)
         })
+      }
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map(\.isError)
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] isError in
+        presentPlayAlert()
       }
       .store(in: &cancellable)
   }
@@ -176,6 +185,17 @@ extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellDel
   }
 }
 
+extension MusicMatchViewController: Alertable {
+  func presentPlayAlert() {
+    presentAlert(
+      type: .playError,
+      leftButtonAction: { [weak self] in
+        self?.viewModel.action(.isError)
+      }
+    )
+  }
+}
+
 private extension MusicMatchViewController {
   enum LayoutConstants {
     static let defaultPadding: CGFloat = 16
@@ -186,7 +206,6 @@ private extension MusicMatchViewController {
     static let tableViewBottom = -75
     static let homeButtonHeight = UIApplication.screenHeight * 0.06
     static let homeButtonBottom = -32
-
   }
 
   // MARK: - Layout
