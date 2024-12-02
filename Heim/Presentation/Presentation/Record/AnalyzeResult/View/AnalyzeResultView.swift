@@ -99,14 +99,13 @@ final class AnalyzeResultView: UIView {
   
   // MARK: - Public Methods
   func configure(
-    // TODO: name: String
+    name: String,
     description: String,
     content: String
   ) {
-    // TODO: titleLabel.text = name
+    titleLabel.text = "오늘 \(name)님의 기분"
     characterImageView.image = UIImage.configureImage(emotion: description)
-    // TODO: description -> Emotion extension 적용
-    descriptionLabel.text = description
+    descriptionLabel.text = String.recordConfigureDescription(emotion: description)
     textArea.setText(content)
   }
 }

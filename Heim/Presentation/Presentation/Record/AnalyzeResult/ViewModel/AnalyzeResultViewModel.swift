@@ -17,21 +17,26 @@ final class AnalyzeResultViewModel: ViewModel {
   }
   
   struct State: Equatable {
+    var userName: String = ""
     var description: String = ""
     var content: String = ""
   }
   
   @Published var state: State
-  private let useCase: DiaryUseCase
+  private let diaryUseCase: DiaryUseCase
+  private let userUseCase: UserUseCase
+  var userName: String = ""
   private var diary: Diary
   
   // MARK: - Initializer
   init(
-    useCase: DiaryUseCase,
+    diaryUseCase: DiaryUseCase,
+    userUseCase: UserUseCase,
     diary: Diary
   ) {
     state = State()
-    self.useCase = useCase
+    self.diaryUseCase = diaryUseCase
+    self.userUseCase = userUseCase
     self.diary = diary
   }
   
@@ -39,8 +44,10 @@ final class AnalyzeResultViewModel: ViewModel {
   func action(_ action: Action) {
     switch action {
     case .fetchDiary:
-      setupInitialState()
-      handleSaveDiary()
+      Task {
+        await setupInitialState()
+        handleSaveDiary()
+      }
     }
   }
 }
@@ -51,17 +58,22 @@ private extension AnalyzeResultViewModel {
     Task.detached { [weak self] in
       do {
         guard let diary = self?.diary else { return }
-        try await self?.useCase.saveDiary(data: diary)
+        try await self?.diaryUseCase.saveDiary(data: diary)
       } catch {
         // TODO: Error Handling
       }
     }
   }
   
-  func setupInitialState() {
-    // TODO:
-    state.description = diary.emotion.rawValue
-    state.content = diary.emotionReport.text
+  func setupInitialState() async {
+    do {
+      userName = try await userUseCase.fetchUserName()
+      state.userName = userName
+      state.description = diary.emotion.rawValue
+      state.content = diary.emotionReport.text
+    } catch {
+      // TODO: Error Handling
+    }
   }
 }
 

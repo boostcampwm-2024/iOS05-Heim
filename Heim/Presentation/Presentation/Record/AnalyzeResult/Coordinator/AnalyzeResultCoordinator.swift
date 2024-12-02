@@ -59,8 +59,13 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
 private extension DefaultAnalyzeResultCoordinator {
   func analyzeResultViewController(diary: Diary) -> AnalyzeResultViewController? {
     guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    guard let userUseCase = DIContainer.shared.resolve(type: UserUseCase.self) else { return nil }
     
-    let viewModel = AnalyzeResultViewModel(useCase: diaryUseCase, diary: diary)
+    let viewModel = AnalyzeResultViewModel(
+      diaryUseCase: diaryUseCase,
+      userUseCase: userUseCase,
+      diary: diary
+    )
     let viewController = AnalyzeResultViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController
