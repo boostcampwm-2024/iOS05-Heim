@@ -34,12 +34,18 @@ final class NameAlertView: AlertView {
 
     setupViews()
     setupLayoutconstraints()
+    registerKeyboardNotification()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
+  deinit {
+    removeKeyboardNotification()
+  }
+  
+  // MARK: - Methods
   func setupCompleteButtonAction(_ completion: @escaping (String) -> Void) {
     let action = UIAction { [weak self] _ in
       completion(self?.nameTextField.text ?? "")
@@ -88,6 +94,39 @@ private extension NameAlertView {
     let index = text.index(text.startIndex, offsetBy: 5)
     let maximumText = text[text.startIndex..<index]
     nameTextField.text = String(maximumText)
+  }
+}
+
+// MARK: - Keyboard Notification
+private extension NameAlertView {
+  func registerKeyboardNotification() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillShow(notification:)),
+      name: UIResponder.keyboardWillShowNotification,
+      object: nil
+    )
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillHide(_:)),
+      name: UIResponder.keyboardWillHideNotification,
+      object: nil
+    )
+  }
+  
+  func removeKeyboardNotification() {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  @objc
+  func keyboardWillShow(notification: Notification) {
+    transform = CGAffineTransform(translationX: 0, y: -50)
+  }
+  
+  @objc
+  func keyboardWillHide(_ sender: Notification) {
+    transform = .identity
   }
 }
 
