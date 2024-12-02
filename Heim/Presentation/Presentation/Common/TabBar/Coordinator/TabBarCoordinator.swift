@@ -69,7 +69,9 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
 
 private extension DefaultTabBarCoordinator {
   func createTabBarViewController() -> CustomTabBarViewController? {
-    let viewController = CustomTabBarViewController()
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    let viewModel = CustomTabBarViewModel(useCase: diaryUseCase)
+    let viewController = CustomTabBarViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController
   }
