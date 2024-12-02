@@ -71,9 +71,11 @@ final class MusicTableViewCell: UITableViewCell {
   }
 
   @objc func buttondidTap() {
-    playButton.currentTitle == "멈춤"
-    ? delegate?.pauseButtonDidTap()
-    : delegate?.playButtonDidTap(isrc: isrc)
+    if playButton.currentTitle == "멈춤" {
+      delegate?.pauseButtonDidTap()
+    } else {
+      delegate?.playButtonDidTap(isrc: isrc)
+    }
   }
 
   func updatePlayButton(isPlaying: Bool) {

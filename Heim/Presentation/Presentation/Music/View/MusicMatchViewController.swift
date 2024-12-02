@@ -4,10 +4,11 @@
 //
 //  Created by 김미래 on 11/25/24.
 //
+
 import Domain
 import UIKit
 
-final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable{
+final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable {
   // MARK: - Properties
   private let musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
@@ -111,13 +112,14 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     super.bindState()
 
     viewModel.$state
+      .map(\.isrc)
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
-      .sink { [weak self] state in
+      .sink { [weak self] isrc in
         self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
           guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
           let item = self?.musicDataSources[indexPath.row] else { return }
-          cell.updatePlayButton(isPlaying: item.isrc == state.isrc)
+          cell.updatePlayButton(isPlaying: item.isrc == isrc.isrc)
         })
       }
       .store(in: &cancellable)
@@ -129,7 +131,7 @@ extension MusicMatchViewController: UITableViewDelegate {
     _ tableView: UITableView,
     numberOfRowsInSection section: Int)
   -> Int {
-    5
+    musicDataSources.count
   }
 }
 
@@ -147,10 +149,8 @@ extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellDel
     var imageData: Data?
 
     let musicTrack = self.musicDataSources[indexPath.row]
-    if let imageUrl = musicTrack.thumbnail {
-      if let data = try? Data(contentsOf: imageUrl) {
-        imageData = data
-      }
+    if let imageUrl = musicTrack.thumbnail,let data = try? Data(contentsOf: imageUrl) {
+      imageData = data
     }
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
