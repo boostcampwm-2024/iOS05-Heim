@@ -9,20 +9,29 @@ public protocol GenerativeSummaryPromptUseCase {
   func generate(_ input: String) async throws -> String?
 }
 
-public struct GeminiGenerativeSummaryPromptUseCase: GenerativeSummaryPromptUseCase {
-  var repository: GenerativeAIRepository
-  var generator: PromptGenerating
+public struct GeminiGenerativeSummaryPromptUseCase: GenerativeSummaryPromptUseCase, UserUseCase {
+  public var userRepository: UserRepository
+  var generativeRepository: GenerativeAIRepository
+  var generator: PromptGenerator
   
   public init(
-    repository: GenerativeAIRepository,
-    generator: PromptGenerating
+    userRepository: UserRepository,
+    generativeRepository: GenerativeAIRepository,
+    generator: PromptGenerator
   ) {
-    self.repository = repository
+    self.userRepository = userRepository
+    self.generativeRepository = generativeRepository
     self.generator = generator
   }
   
   public func generate(_ input: String) async throws -> String? {
-    let prompt = try generator.generatePrompt(for: input)
-    return try await repository.generateContent(for: prompt)
+    var username: String
+    do {
+      username = try await userRepository.fetchUserName()
+    } catch {
+      username = "User"
+    }
+    let prompt = try generator.generatePrompt(for: input, username: username)
+    return try await generativeRepository.generateContent(for: prompt)
   }
 }

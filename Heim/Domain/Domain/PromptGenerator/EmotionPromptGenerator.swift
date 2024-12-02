@@ -7,30 +7,36 @@
 
 import Foundation
 
-public protocol EmotionPromptGenerating: PromptGenerating {}
+public protocol EmotionPromptGenerating: PromptGenerator {}
 
 public struct EmotionPromptGenerator: EmotionPromptGenerating {
-  private let userName: String
-  
   public var additionalPrompt: String {
     return """
-    사용자의 이름은 \(wrapInputContext(for: userName))입니다. 답변에 사용자의 이름을 포함하여, 마치 직접 대화하는 것처럼 자연스럽게 대답해 주세요.
+    답변에 사용자의 이름을 포함하여, 마치 직접 대화하는 것처럼 자연스럽게 대답해 주세요.
     """
   }
   
-  public init(userName: String) {
-    self.userName = userName
-  }
+  public init() {}
   
-  public func generatePrompt(for input: String) throws -> String {
+  public func generatePrompt(
+    for input: String,
+    username: String
+  ) throws -> String {
     let emotion = Emotion(rawValue: input) ?? Emotion.none
-    return injectInputContext(with: try emotion.emotionPrompt)
+    return injectInputContext(
+      with: try emotion.emotionPrompt,
+      username: wrapInputContext(for: username)
+    )
   }
 }
 
 private extension EmotionPromptGenerator {
-  func injectInputContext(with input: String) -> String {
+  func injectInputContext(
+    with input: String,
+    username: String
+  ) -> String {
     return prompt.replacingOccurrences(of: "{{\\PROMPT_PAYLOAD\\}}", with: input)
+      .replacingOccurrences(of: "{{\\USERNAME\\}}", with: username)
   }
 }
 
@@ -57,9 +63,8 @@ private extension Emotion {
         현재 상황에서 힘을 얻을 수 있는 긍정적인 관점을 제시하세요. 또한, 작은 즐거움을 찾을 수 있는 일상적인 팁을 제공하세요.
         """
       case .surprise:
-        // TODO: 혼란 -> 당황으로 수정 필요
         return """
-        사용자는 지금 혼란스러워 하고 있습니다. 혼란은 결정을 내리거나 상황을 명확히 이해하지 못할 때 생길 수 있습니다. 
+        사용자는 지금 당황스러워 하고 있습니다. 혼란은 결정을 내리거나 상황을 명확히 이해하지 못할 때 생길 수 있습니다. 
         사용자가 혼란을 해결할 수 있도록, 현재 상황을 단계적으로 정리하고 명확히 바라볼 수 있는 조언을 제공하세요. 
         또한, 복잡한 문제를 해결할 수 있는 실용적인 접근 방법을 제시하세요.
         """

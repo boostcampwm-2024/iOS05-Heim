@@ -5,7 +5,7 @@
 //  Created by 정지용 on 11/13/24.
 //
 
-public protocol SummaryPromptGenerating: PromptGenerating {}
+public protocol SummaryPromptGenerating: PromptGenerator {}
 
 public struct SummaryPromptGenerator: SummaryPromptGenerating {
   public var additionalPrompt: String {
@@ -16,13 +16,23 @@ public struct SummaryPromptGenerator: SummaryPromptGenerating {
   
   public init() {}
   
-  public func generatePrompt(for input: String) throws -> String {
-    return injectInputContext(with: wrapInputContext(for: input))
+  public func generatePrompt(
+    for input: String,
+    username: String
+  ) throws -> String {
+    return injectInputContext(
+      with: wrapInputContext(for: input),
+      username: wrapInputContext(for: username)
+    )
   }
 }
 
 private extension SummaryPromptGenerator {
-  func injectInputContext(with input: String) -> String {
+  func injectInputContext(
+    with input: String,
+    username: String
+  ) -> String {
     return prompt.replacingOccurrences(of: "{{\\PROMPT_PAYLOAD\\}}", with: input)
+      .replacingOccurrences(of: "{{\\USERNAME\\}}", with: username)
   }
 }
