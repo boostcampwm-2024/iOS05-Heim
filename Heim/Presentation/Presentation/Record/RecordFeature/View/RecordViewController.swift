@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-public final class RecordViewController: BaseViewController<RecordViewModel>, Coordinatable {
+public final class RecordViewController: BaseViewController<RecordViewModel>, Coordinatable, Alertable {
   // MARK: - UIComponents
   private let contentView = RecordView()
   
@@ -125,12 +125,23 @@ extension RecordViewController: RecordViewDelegate {
 }
 
 private extension RecordViewController {
+  func presentWarning() {
+    presentAlert(
+      type: .tooShortDiary,
+      leftButtonAction: {
+        self.viewModel.action(.refresh)
+      }
+    )
+  }
+  
   func moveToEmotionAnalyzeView() {
     guard let recognizedText = viewModel.recognizedTextData(),
-          let voice = viewModel.voiceData()
-    else {
-      return
-    }
+          let voice = viewModel.voiceData() else { return }
+    if recognizedText.count < 70 { presentWarning(); return }
+    
+    guard let voice = viewModel.voiceData() else { return }
+    print(recognizedText.count)
+    
     removeTemporaryFiles()
     coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
   }
