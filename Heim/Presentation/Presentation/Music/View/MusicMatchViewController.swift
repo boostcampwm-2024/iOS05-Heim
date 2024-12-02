@@ -120,6 +120,32 @@ public final class MusicMatchViewController: BaseViewController<MusicMatchViewMo
   @objc func homeButtondidTap() {
     coordinator?.backToMainView()
   }
+
+  override func bindState() {
+    super.bindState()
+
+    viewModel.$state
+      .map(\.isrc)
+      .receive(on: DispatchQueue.main)
+      .removeDuplicates()
+      .sink { [weak self] isrc in
+        self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
+          guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
+                let item = self?.musicDataSources[indexPath.row] else { return }
+          cell.updatePlayButton(isPlaying: item.isrc == isrc)
+        })
+      }
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map(\.isError)
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] isError in
+        self?.presentPlayAlert()
+      }
+      .store(in: &cancellable)
+  }
 }
 
 extension MusicMatchViewController: UITableViewDelegate {
@@ -143,6 +169,12 @@ extension MusicMatchViewController: UITableViewDataSource {
 
     let titleText = musicDataSources[indexPath.row].title
     let subTilteText = musicDataSources[indexPath.row].artist
+    var imageData: Data?
+
+    let musicTrack = self.musicDataSources[indexPath.row]
+    if let imageUrl = musicTrack.thumbnail, let data = try? Data(contentsOf: imageUrl) {
+      imageData = data
+    }
 
     guard let cell = tableView.dequeueReusableCell(cellType: MusicTableViewCell.self, indexPath: indexPath) else { return UITableViewCell() }
 
