@@ -21,8 +21,8 @@ public final class DefaultSettingRepository: SettingRepository {
     try await localStorage.deleteAll()
   }
   
+  // MARK: - 현재 removeCache와 동일 (iCloud 연동 후 수정)
   public func resetData() async throws {
-    // TODO: 우선 removeCacheData와 동일하게 구현
     try await localStorage.deleteAll()
   }
 }
