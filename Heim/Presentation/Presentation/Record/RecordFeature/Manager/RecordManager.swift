@@ -42,7 +42,7 @@ final class RecordManager {
     self.minuteAndSeconds = 0
     
     // 임시 녹음 파일 URL 생성
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let documentsPath = FileManager.default.temporaryDirectory
     self.recordingURL = documentsPath.appendingPathComponent("temporaryRecording.wav")
   }
   

@@ -42,6 +42,11 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
     )
   }
   
+  public override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    NotificationCenter.default.removeObserver(self)
+  }
+  
   public override func setupViews() {
     super.setupViews()
     contentView.delegate = self
@@ -127,18 +132,10 @@ private extension RecordViewController {
   
   func setupNavigationBar() {
     navigationController?.navigationBar.isHidden = true
-    
-    let backButton: UIButton = {
-      let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
-      button.setImage(.backIcon, for: .normal)
-      return button
-    }()
-    self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backButton)
-    self.navigationItem.backBarButtonItem?.tintColor = .white
   }
   
   func removeTemporaryFiles() {
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let documentsPath = FileManager.default.temporaryDirectory
     let temporaryRecordingURL = documentsPath.appendingPathComponent("temporaryRecording.wav")
     
     try? FileManager.default.removeItem(at: temporaryRecordingURL)
