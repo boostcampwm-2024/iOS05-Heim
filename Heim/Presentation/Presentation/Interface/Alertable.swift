@@ -32,6 +32,7 @@ enum AlertType {
     case .updateName: ""
     case .removeCache: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     case .removeData: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
+    case .playError: "다시 시도해 주세요!"
     }
   }
   
@@ -41,7 +42,7 @@ enum AlertType {
     case .updateName: "닫기"
     case .removeCache: "닫기"
     case .removeData: "닫기"
-    case . playError: "확인"
+    case .playError: "확인"
     }
   }
   
@@ -51,7 +52,7 @@ enum AlertType {
     case .updateName: "변경"
     case .removeCache: "확인"
     case .removeData: "확인"
-    case . playError: ""
+    case .playError: ""
     }
   }
 }

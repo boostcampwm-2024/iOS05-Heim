@@ -114,12 +114,12 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     viewModel.$state
       .map(\.isrc)
       .receive(on: DispatchQueue.main)
-      .removeDuplicatesㄴ()
+      .removeDuplicates()
       .sink { [weak self] isrc in
         self?.musicTableView.indexPathsForVisibleRows?.forEach({ indexPath in
           guard let cell = self?.musicTableView.cellForRow(at: indexPath) as? MusicTableViewCell,
-          let item = self?.musicDataSources[indexPath.row] else { return }
-          cell.updatePlayButton(isPlaying: item.isrc == isrc.isrc)
+                let item = self?.musicDataSources[indexPath.row] else { return }
+          cell.updatePlayButton(isPlaying: item.isrc == isrc)
         })
       }
       .store(in: &cancellable)
@@ -129,7 +129,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
       .filter { $0 }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] isError in
-        presentPlayAlert()
+        self?.presentPlayAlert()
       }
       .store(in: &cancellable)
   }
@@ -158,7 +158,7 @@ extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellDel
     var imageData: Data?
 
     let musicTrack = self.musicDataSources[indexPath.row]
-    if let imageUrl = musicTrack.thumbnail,let data = try? Data(contentsOf: imageUrl) {
+    if let imageUrl = musicTrack.thumbnail, let data = try? Data(contentsOf: imageUrl) {
       imageData = data
     }
 
