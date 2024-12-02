@@ -38,13 +38,13 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-      return
-    }
-    
-    addChildCoordinator(defaultMusicMatchCoordinator)
-    defaultMusicMatchCoordinator.parentCoordinator = self
-    defaultMusicMatchCoordinator.start()
+//    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
+//      return
+//    }
+//    
+//    addChildCoordinator(defaultMusicMatchCoordinator)
+//    defaultMusicMatchCoordinator.parentCoordinator = self
+//    defaultMusicMatchCoordinator.start()
   }
   
   public func backToApproachView() {

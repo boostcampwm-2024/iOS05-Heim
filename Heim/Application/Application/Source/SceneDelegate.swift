@@ -130,9 +130,9 @@ private extension SceneDelegate {
       return GeminiGenerativeAIRepository(networkProvider: networkProvider)
     }
     
-    DIContainer.shared.register(type: MusicRepository.self) { _ in
-      return DefaultMusicRepository()
-    }
+//    DIContainer.shared.register(type: MusicRepository.self) { _ in
+//      return DefaultMusicRepository()
+//    }
     
     DIContainer.shared.register(type: SpotifyRepository.self) { container in
       guard let oauthNetworkProvider = container.resolve(type: OAuthNetworkProvider.self) else {
@@ -179,14 +179,14 @@ private extension SceneDelegate {
       return DefaultDiaryUseCase(diaryRepository: diaryRepository)
     }
     
-    DIContainer.shared.register(type: MusicUseCase.self) { container in
-      guard let spotifyRepository = container.resolve(type: SpotifyRepository.self),
-            let musicRepository = container.resolve(type: MusicRepository.self) else {
-        return
-      }
-      
-      return DefaultMusicUseCase(spotifyRepository: spotifyRepository, musicRepository: musicRepository)
-    }
+//    DIContainer.shared.register(type: MusicUseCase.self) { container in
+//      guard let spotifyRepository = container.resolve(type: SpotifyRepository.self),
+//            let musicRepository = container.resolve(type: MusicRepository.self) else {
+//        return
+//      }
+//      
+//      return DefaultMusicUseCase(spotifyRepository: spotifyRepository, musicRepository: musicRepository)
+//    }
     
     DIContainer.shared.register(type: SpotifyOAuthUseCase.self) { container in
       guard let spotifyOAuthRepository = container.resolve(type: SpotifyOAuthRepository.self) else {
@@ -238,10 +238,6 @@ private extension SceneDelegate {
     
     DIContainer.shared.register(type: TabBarCoordinator.self) { _ in
       return DefaultTabBarCoordinator(navigationController: navigationController)
-    }
-    
-    DIContainer.shared.register(type: MusicMatchCoordinator.self) { _ in
-      return DefaultMusicMatchCoordinator(navigationController: recordNavigationController)
     }
     
     DIContainer.shared.register(type: SettingCoordinator.self) { _ in

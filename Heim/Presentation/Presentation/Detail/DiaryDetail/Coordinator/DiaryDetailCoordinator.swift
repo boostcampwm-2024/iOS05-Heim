@@ -43,15 +43,15 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-      return
-    }
-    
-    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
-      return
-    }
-    
-    navigationController.pushViewController(musicMatchViewController, animated: true)
+//    guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
+//      return
+//    }
+//    
+//    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
+//      return
+//    }
+//    
+//    navigationController.pushViewController(musicMatchViewController, animated: true)
   }
   
   public func pushHeimReplyView(diary: Diary) {
