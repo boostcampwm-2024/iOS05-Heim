@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 
-// TODO: DiaryDetailView 내 버튼과 함께 사용하는 쪽으로 수정
 enum AnalyzeResultViewButtonItem {
   case musicRecomendation
   case moveToHome
@@ -37,8 +36,6 @@ final class AnalyzeResultView: UIView {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.font = .regularFont(ofSize: LayoutConstants.title2)
-    // TODO: 이름을 가져오는 기능이 구현되면 수정할 예정입니다.
-    label.text = "오늘 성근님의 기분은"
     label.textColor = .white
     return label
   }()
@@ -50,7 +47,6 @@ final class AnalyzeResultView: UIView {
     return label
   }()
   
-  // TODO: 감정에 맞게 이미지 변경
   private let characterImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFit

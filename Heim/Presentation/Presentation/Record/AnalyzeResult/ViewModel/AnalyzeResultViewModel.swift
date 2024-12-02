@@ -20,6 +20,7 @@ final class AnalyzeResultViewModel: ViewModel {
     var userName: String = ""
     var description: String = ""
     var content: String = ""
+    var isErrorPresent: Bool = true
   }
   
   @Published var state: State
@@ -59,7 +60,7 @@ private extension AnalyzeResultViewModel {
         guard let diary = self?.diary else { return }
         try await self?.diaryUseCase.saveDiary(data: diary)
       } catch {
-        // TODO: Error Handling
+        self?.state.isErrorPresent = true
       }
     }
   }
@@ -70,7 +71,9 @@ private extension AnalyzeResultViewModel {
       state.description = diary.emotion.rawValue
       state.content = diary.emotionReport.text
     } catch {
-      // TODO: Error Handling
+      state.userName = "User"
+      state.description = diary.emotion.rawValue
+      state.content = diary.emotionReport.text
     }
   }
 }
