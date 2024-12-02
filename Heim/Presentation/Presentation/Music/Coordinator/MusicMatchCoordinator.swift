@@ -12,6 +12,7 @@ import UIKit
 public protocol MusicMatchCoordinator: Coordinator {
   func start(musicTracks: [MusicTrack])
   func backToMainView()
+  func createMusicMatchViewController() -> MusicMatchViewController?
 }
 
 public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
@@ -43,12 +44,10 @@ public final class DefaultMusicMatchCoordinator: MusicMatchCoordinator {
     
     navigationController.dismiss(animated: true)
   }
-}
-
-// MARK: - Private
-private extension DefaultMusicMatchCoordinator {
-  func createMusicMatchViewController(musicTracks: [MusicTrack]) -> MusicMatchViewController? {
+  
+  public func createMusicMatchViewController(musicTracks: [MusicTrack]) -> MusicMatchViewController? {
     guard let useCase = DIContainer.shared.resolve(type: MusicUseCase.self) else { return nil }
+    
     let viewModel = MusicMatchViewModel(useCase: useCase)
     let viewController = MusicMatchViewController(musics: musicTracks, viewModel: viewModel)
     viewController.coordinator = self

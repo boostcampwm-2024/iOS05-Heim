@@ -24,10 +24,11 @@ final class VisualizerView: UIView {
     displayLink = nil
   }
 
-  @objc private func updateVisualizer() {
+  @objc
+  private func updateVisualizer() {
     guard let manager = viewModel?.diaryReplayManager else { return }
+    
     manager.audioPlayer.updateMeters()
-
     let power = manager.audioPlayer.averagePower(forChannel: 0)
     let amplitude = pow(10, power / 20)
     updateVisualizerPath(amplitude: CGFloat(max(CGFloat(amplitude) * 15, defaultAmplitude)))
@@ -40,7 +41,7 @@ final class VisualizerView: UIView {
     let centerY = bounds.midY
     let totalBars = 20
     let barWidth: CGFloat = bounds.width / CGFloat(totalBars)
-    let maxHeight = bounds.height / 2
+    let maxHeight = bounds.height / 5
     
     for i in 0..<totalBars {
       let normalizedAmplitude = amplitude * CGFloat.random(in: 0.5...1.5)

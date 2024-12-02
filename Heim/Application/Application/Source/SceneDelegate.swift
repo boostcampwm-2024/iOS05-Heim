@@ -30,6 +30,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
 
+    setupNavigationBar()
+
     self.navigationController = UINavigationController()
     self.recordNavigationController = UINavigationController()
     window?.rootViewController = navigationController
@@ -42,6 +44,19 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   // MARK: - Private Extenion
 private extension SceneDelegate {
+  func setupNavigationBar() {
+    let barButtonItemAppearance = UIBarButtonItem.appearance()
+    barButtonItemAppearance.setTitleTextAttributes(
+      [NSAttributedString.Key.foregroundColor: UIColor.clear],
+      for: .normal
+    )
+    barButtonItemAppearance.tintColor = .white
+    
+    let backImage = UIImage(named: "back")
+    UINavigationBar.appearance().backIndicatorImage = backImage
+    UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
+  }
+  
   func dependencyAssemble() {
     dataStorageAssemble()
     networkAssemble()
@@ -91,6 +106,14 @@ private extension SceneDelegate {
       return DefaultSettingRepository(localStorage: localStorage)
     }
     
+    DIContainer.shared.register(type: UserRepository.self) { container in
+      guard let localStorage = container.resolve(type: DataStorage.self) else {
+        return
+      }
+      
+      return DefaultUserRepository(dataStorage: localStorage)
+    }
+    
     DIContainer.shared.register(type: DiaryRepository.self) { container in
       guard let localStorage = container.resolve(type: DataStorage.self) else {
         return
@@ -130,12 +153,18 @@ private extension SceneDelegate {
   }
 
   func domainAssemble() {
+    DIContainer.shared.register(type: UserUseCase.self) { container in
+      guard let userRepository = container.resolve(type: UserRepository.self) else { return }
+      return DefaultUserUseCase(userRepository: userRepository)
+    }
+    
     DIContainer.shared.register(type: SettingUseCase.self) { container in
-      guard let settingRepository = container.resolve(type: SettingRepository.self) else {
+      guard let settingRepository = container.resolve(type: SettingRepository.self),
+            let userRepository = container.resolve(type: UserRepository.self) else {
         return
       }
 
-      return DefaultSettingUseCase(settingRepository: settingRepository)
+      return DefaultSettingUseCase(settingRepository: settingRepository, userRepository: userRepository)
     }
     
     DIContainer.shared.register(type: EmotionClassifyUseCase.self) { _ in

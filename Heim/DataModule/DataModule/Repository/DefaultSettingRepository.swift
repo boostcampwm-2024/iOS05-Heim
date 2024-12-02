@@ -11,27 +11,12 @@ public final class DefaultSettingRepository: SettingRepository {
   // MARK: - Properties
   private let localStorage: DataStorage
   
-  /* TODO: 추후 구현
-   private let networkProvider: NetworkProvidable
-   private let cloudStorage: CloudStorage
-   */
-
   // MARK: - Initializer
-  
-  // TODO: 추후 구현
-  public init(
-//    networkProvider: NetworkProvidable
-    localStorage: DataStorage
-  ) {
-//    self.networkProvider = networkProvider
+  public init(localStorage: DataStorage) {
     self.localStorage = localStorage
   }
   
-  public func fetchUserName() async throws -> String {
-    // TODO: 추후 구현
-    return "임시 테스트 닉네임"
-  }
-  
+  // MARK: - Methods
   public func removeCacheData() async throws {
     try await localStorage.deleteAll()
   }

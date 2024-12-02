@@ -6,16 +6,39 @@
 //
 
 import AVFoundation
+import Domain
 
 final class DiaryReplayManager: NSObject, AVAudioPlayerDelegate {
   let audioPlayer: AVAudioPlayer
   var onPlaybackFinished: (() -> Void)?
   
   init(data: Data) throws {
-    self.audioPlayer = try AVAudioPlayer(data: data)
-    super.init()
-    self.audioPlayer.isMeteringEnabled = true
-    self.audioPlayer.delegate = self
+    // 1. 오디오 세션 설정
+    let audioSession = AVAudioSession.sharedInstance()
+    try audioSession.setCategory(.playback, mode: .default)
+    try audioSession.setActive(true)
+    
+    do {
+      // 2. 임시 파일로 저장 후 URL로 초기화
+      let tempDir = FileManager.default.temporaryDirectory
+      let tempFile = tempDir.appendingPathComponent(UUID().uuidString + ".wav")
+      try data.write(to: tempFile)
+      
+      // 3. URL로 플레이어 초기화
+      self.audioPlayer = try AVAudioPlayer(contentsOf: tempFile)
+      super.init()
+      
+      // 4. 설정 및 준비
+      self.audioPlayer.isMeteringEnabled = true
+      self.audioPlayer.delegate = self
+      self.audioPlayer.prepareToPlay()
+      
+      // 5. 임시 파일 삭제
+      try FileManager.default.removeItem(at: tempFile)
+      
+    } catch {
+      throw RecordingError.audioError
+    }
   }
   
   var currentTime: String {

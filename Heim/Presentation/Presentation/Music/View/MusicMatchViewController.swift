@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable {
+public final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable {
   // MARK: - Properties
   private let musicDataSources: [MusicTrack]
   weak var coordinator: DefaultMusicMatchCoordinator?
@@ -49,7 +49,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   }
 
   // MARK: - LifeCycle
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
     setupLayoutConstraints()
@@ -62,7 +62,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     coordinator?.didFinish()
   }
 
-  override func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     setupTableViewGradient()
   }
 
@@ -136,7 +136,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
 }
 
 extension MusicMatchViewController: UITableViewDelegate {
-  func tableView(
+  public func tableView(
     _ tableView: UITableView,
     numberOfRowsInSection section: Int)
   -> Int {
@@ -144,8 +144,8 @@ extension MusicMatchViewController: UITableViewDelegate {
   }
 }
 
-extension MusicMatchViewController: UITableViewDataSource, MusicTableViewCellDelegate {
-  func tableView(
+extension MusicMatchViewController: UITableViewDataSource {
+  public func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
   -> UITableViewCell {

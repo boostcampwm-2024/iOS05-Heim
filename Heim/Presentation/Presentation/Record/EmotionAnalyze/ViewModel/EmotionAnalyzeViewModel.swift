@@ -30,7 +30,6 @@ final class EmotionAnalyzeViewModel: ViewModel {
   private var summary: Summary = Summary(text: "")
   
   @Published var state: State
-  // TODO: GEMINI 이용 UseCase 추가
   
   init(
     recognizedText: String,
@@ -38,7 +37,6 @@ final class EmotionAnalyzeViewModel: ViewModel {
     classifyUseCase: EmotionClassifyUseCase,
     emotionUseCase: GenerativeEmotionPromptUseCase,
     summaryUseCase: GenerativeSummaryPromptUseCase
-    // TODO: GEMINI 이용 UseCase 추가
   ) {
     self.recognizedText = recognizedText
     self.voice = voice

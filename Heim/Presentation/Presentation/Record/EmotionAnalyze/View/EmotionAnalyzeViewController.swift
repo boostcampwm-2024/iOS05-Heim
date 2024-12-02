@@ -21,7 +21,7 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
     setupViews()
     setupLayoutConstraints()
     contentView.delegate = self
-    // TODO: setupNavigationBar()
+    setupNavigationBar()
     viewModel.action(.analyze)
   }
   
@@ -59,6 +59,12 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
         self?.contentView.updateNextButton(isAnalyzing: isAnalyzing)
       }
       .store(in: &cancellable)
+  }
+}
+
+private extension EmotionAnalyzeViewController {
+  func setupNavigationBar() {
+    self.navigationController?.navigationBar.isHidden = false
   }
 }
 

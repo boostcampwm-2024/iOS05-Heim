@@ -9,21 +9,22 @@ import Combine
 import Core
 import Domain
 
-final class MusicMatchViewModel: ViewModel {
+public final class MusicMatchViewModel: ViewModel {
   // MARK: - Properties
-  enum Action {
+  public enum Action {
+    //TODO: 수정
     case playMusic(String)
     case pauseMusic
     case isError
   }
 
-  struct State: Equatable {
+  public struct State: Equatable {
     var isrc: String?
     var isError: Bool
   }
 
   let useCase: MusicUseCase
-  @Published var state: State
+  @Published public var state: State
 
   // MARK: - Initializer
   init(useCase: MusicUseCase) {
@@ -31,7 +32,7 @@ final class MusicMatchViewModel: ViewModel {
     self.state = State(isrc: nil, isError: false)
   }
 
-  func action(_ action: Action) {
+  public func action(_ action: Action) {
     switch action {
     case .playMusic(let track):
       Task {

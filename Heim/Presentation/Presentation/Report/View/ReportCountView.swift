@@ -10,9 +10,9 @@ import UIKit
 // 상단 일기 갯수 표
 final class ReportCountView: UIView {
   // MARK: - Properties
-  private let totalCount = CommonLabel(text: "30", font: .bold, size: LayoutContants.titleThree, textColor: .white)
-  private let continuousCount = CommonLabel(text: "10", font: .bold, size: LayoutContants.titleThree, textColor: .white)
-  private let monthCount = CommonLabel(text: "3", font: .bold, size: LayoutContants.titleThree, textColor: .white)
+  private let totalCount = CommonLabel(font: .bold, size: LayoutContants.titleThree, textColor: .white)
+  private let continuousCount = CommonLabel(font: .bold, size: LayoutContants.titleThree, textColor: .white)
+  private let monthCount = CommonLabel(font: .bold, size: LayoutContants.titleThree, textColor: .white)
   private let labelOne = CommonLabel(text: "전체", font: .regular, size: LayoutContants.bodyOne, textColor: .white)
   private let labelTwo = CommonLabel(text: "연속 작성", font: .regular, size: LayoutContants.bodyOne, textColor: .white)
   private let labelThree = CommonLabel(text: "지난 30일", font: .regular, size: LayoutContants.bodyOne, textColor: .white)
@@ -54,11 +54,23 @@ final class ReportCountView: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  func updateCountLabels(
+    total: String,
+    continuous: String,
+    month: String
+  ) {
+    totalCount.text = total
+    continuousCount.text = continuous
+    monthCount.text = month
+  }
 }
 
 // MARK: - Layout
 private extension ReportCountView {
   func setupViews() {
+    backgroundColor = .primaryTransparent
+    
     [totalCountStackView, continuousStackView, monthStackView].forEach {
       addSubview($0)
     }
