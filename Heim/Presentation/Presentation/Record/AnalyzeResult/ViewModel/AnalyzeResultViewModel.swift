@@ -25,7 +25,6 @@ final class AnalyzeResultViewModel: ViewModel {
   @Published var state: State
   private let diaryUseCase: DiaryUseCase
   private let userUseCase: UserUseCase
-  var userName: String = ""
   private var diary: Diary
   
   // MARK: - Initializer
@@ -67,8 +66,7 @@ private extension AnalyzeResultViewModel {
   
   func setupInitialState() async {
     do {
-      userName = try await userUseCase.fetchUserName()
-      state.userName = userName
+      state.userName = try await userUseCase.fetchUserName()
       state.description = diary.emotion.rawValue
       state.content = diary.emotionReport.text
     } catch {
