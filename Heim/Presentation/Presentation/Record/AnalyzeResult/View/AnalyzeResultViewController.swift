@@ -62,7 +62,9 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
       .sink { [weak self] _ in
         self?.presentAlert(
           type: .saveError,
-          leftButtonAction: {}
+          leftButtonAction: {
+            self?.viewModel.action(.clearError)
+          }
         )
       }
       .store(in: &cancellable)

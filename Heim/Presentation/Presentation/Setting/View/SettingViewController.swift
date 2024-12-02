@@ -75,7 +75,9 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
       .sink { [weak self] _ in
         self?.presentAlert(
           type: .deleteError,
-          leftButtonAction: { }
+          leftButtonAction: {
+            self?.viewModel.action(.clearError)
+          }
         )
       }
       .store(in: &cancellable)

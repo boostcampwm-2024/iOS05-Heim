@@ -15,6 +15,7 @@ final class DiaryDetailViewModel: ViewModel {
   enum Action {
     case fetchDiary
     case deleteDiary
+    case clearError
   }
   
   struct State: Equatable {
@@ -54,6 +55,8 @@ final class DiaryDetailViewModel: ViewModel {
       Task {
         await handleDeleteDiary()
       }
+    case .clearError:
+      state.isErrorPresent = false
     }
   }
 }

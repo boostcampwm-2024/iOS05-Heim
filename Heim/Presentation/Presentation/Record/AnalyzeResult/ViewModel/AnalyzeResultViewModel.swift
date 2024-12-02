@@ -14,6 +14,7 @@ final class AnalyzeResultViewModel: ViewModel {
   // MARK: - Properties
   enum Action {
     case fetchDiary
+    case clearError
   }
   
   struct State: Equatable {
@@ -48,6 +49,8 @@ final class AnalyzeResultViewModel: ViewModel {
         await setupInitialState()
         handleSaveDiary()
       }
+    case .clearError:
+      state.isErrorPresent = false
     }
   }
 }

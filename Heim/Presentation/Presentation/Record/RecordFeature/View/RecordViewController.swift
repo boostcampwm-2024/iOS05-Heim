@@ -103,7 +103,9 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
       .sink { [weak self] _ in
         self?.presentAlert(
           type: .recordError,
-          leftButtonAction: {}
+          leftButtonAction: {
+            self?.viewModel.action(.clearError)
+          }
         )
       }
       .store(in: &cancellable)

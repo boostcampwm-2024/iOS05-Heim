@@ -18,7 +18,7 @@ final class SettingViewModel: ViewModel {
     case updateSynchronizationState(_ isConnected: Bool)
     case removeCache
     case resetData
-    
+    case clearError
   }
   
   struct State: Equatable {
@@ -45,6 +45,7 @@ final class SettingViewModel: ViewModel {
     case .updateSynchronizationState(let isConnected): updateSynchronizationState(isConnected: isConnected)
     case .removeCache: removeCache()
     case .resetData: resetData()
+    case .clearError: state.isErrorPresent = false
     }
   }
 }

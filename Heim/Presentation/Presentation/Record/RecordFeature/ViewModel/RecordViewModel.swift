@@ -16,6 +16,7 @@ public final class RecordViewModel: ViewModel {
     case startRecording
     case stopRecording
     case refresh
+    case clearError
   }
   
   public struct State: Equatable {
@@ -52,6 +53,8 @@ public final class RecordViewModel: ViewModel {
       handleStopRecording()
     case .refresh:
       handleRefresh()
+    case .clearError:
+      state.isErrorPresent = false
     }
   }
   
