@@ -121,17 +121,7 @@ private extension NameAlertView {
   
   @objc
   func keyboardWillShow(notification: Notification) {
-    guard let userInfo = notification.userInfo,
-          let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-      return
-    }
-    let keyboardHeight = keyboardFrame.cgRectValue.height
-    let safeAreaBottomHeight = safeAreaInsets.bottom
-    
-    transform = CGAffineTransform(
-      translationX: 0,
-      y: -50
-    )
+    transform = CGAffineTransform(translationX: 0, y: -50)
   }
   
   @objc
