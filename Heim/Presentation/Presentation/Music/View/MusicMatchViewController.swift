@@ -13,7 +13,7 @@ struct Music {
   let artist: String
 }
 
-final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable{
+public final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, Coordinatable {
   // MARK: - Properties
   // TODO: let 수정
   private var musicDataSources: [Music]
@@ -66,7 +66,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
   }
 
   // MARK: - LifeCycle
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     setupViews()
     setupLayoutConstraints()
   }
@@ -75,7 +75,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
     coordinator?.didFinish()
   }
 
-  override func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     setupTableViewGradient()
   }
 
@@ -123,7 +123,7 @@ final class MusicMatchViewController: BaseViewController<MusicMatchViewModel>, C
 }
 
 extension MusicMatchViewController: UITableViewDelegate {
-  func tableView(
+  public func tableView(
     _ tableView: UITableView,
     numberOfRowsInSection section: Int)
   -> Int {
@@ -132,7 +132,7 @@ extension MusicMatchViewController: UITableViewDelegate {
 }
 
 extension MusicMatchViewController: UITableViewDataSource {
-  func tableView(
+  public func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath)
   -> UITableViewCell {

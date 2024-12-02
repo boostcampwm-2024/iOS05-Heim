@@ -9,28 +9,28 @@ import Combine
 import Core
 import Domain
 
-final class MusicMatchViewModel: ViewModel {
+public final class MusicMatchViewModel: ViewModel {
 
   // MARK: - Properties
-  enum Action {
+  public enum Action {
     //TODO: 수정
     case playMusic
     case pauseMusic
   }
 
-  struct State: Equatable {
+  public struct State: Equatable {
     var isPlaying: Bool
   }
 
 // TODO: UseCase 추가
-  @Published var state: State
+  @Published public var state: State
 
   // MARK: - Initializer
   init() {
     self.state = State(isPlaying: false)
   }
 
-  func action(_ action: Action) {
+  public func action(_ action: Action) {
     switch action {
     case .playMusic:
       playMusic()

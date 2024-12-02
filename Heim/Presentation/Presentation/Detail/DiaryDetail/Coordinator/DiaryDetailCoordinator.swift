@@ -43,10 +43,15 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   }
   
   public func pushMusicRecommendationView() {
-    // TODO: 구현 구체화 - 현재는 MusicMatchView를 띄우기 위한 기능만을 추가.
-    let musicViewModel = MusicMatchViewModel()
-    let musicViewController = MusicMatchViewController(musics: [Music(title: "Supernova", artist: "aespa")], viewModel: musicViewModel)
-    navigationController.pushViewController(musicViewController, animated: true)
+    guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
+      return
+    }
+    
+    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
+      return
+    }
+    
+    navigationController.pushViewController(musicMatchViewController, animated: true)
   }
   
   public func pushHeimReplyView(diary: Diary) {
