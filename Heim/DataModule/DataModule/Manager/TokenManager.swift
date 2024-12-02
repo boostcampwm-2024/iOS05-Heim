@@ -23,8 +23,12 @@ public struct DefaultTokenManager: TokenManager {
   }
   
   public func isAccessTokenValid() throws {
-    let expiresIn: Date = try keychainStorage.load(attrAccount: SpotifyEnvironment.expiresInAttributeKey)
-    if !(Date() < expiresIn) { throw TokenError.accessTokenExpired }
+    do {
+      let expiresIn: Date = try keychainStorage.load(attrAccount: SpotifyEnvironment.expiresInAttributeKey)
+      if !(Date() < expiresIn) { throw TokenError.accessTokenExpired }
+    } catch {
+      throw TokenError.accessTokenExpired
+    }
   }
   
   public func loadAccessToken() throws -> String {

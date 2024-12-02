@@ -47,6 +47,10 @@ public struct DefaultKeychainStorage: KeychainStorage {
     guard status == errSecSuccess,
           let tokenData = dataTypeRef as? Data else { throw StorageError.readError }
     
+    if T.self == String.self, let stringValue = String(data: tokenData, encoding: .utf8) as? T {
+      return stringValue
+    }
+    
     let decoder = JSONDecoder()
     do {
       let decodedObject = try decoder.decode(T.self, from: tokenData)
