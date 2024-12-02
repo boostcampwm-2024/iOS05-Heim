@@ -16,6 +16,7 @@ enum AlertType {
   case removeData  // 데이터 삭제
   case playError
   case authorization
+  case loginFailed
 
   var title: String {
     switch self {
@@ -24,7 +25,8 @@ enum AlertType {
     case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .playError: "재생 중 오류가 발생했습니다."
-    case .authorization: "로그인에 실패했어요. 다시 시도해주세요."
+    case .authorization: "로그인이 필요합니다."
+    case .loginFailed: "로그인에 실패했어요."
     }
   }
   
@@ -35,7 +37,8 @@ enum AlertType {
     case .removeCache: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     case .removeData: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     case .playError: "다시 시도해주세요."
-    case .authorization: "로그인에 실패했어요. 다시 시도해주세요."
+    case .authorization: "Spotify 로그인 없이 사용할 수 없어요."
+    case .loginFailed: "다시 시도해주세요."
     }
   }
   
@@ -47,6 +50,7 @@ enum AlertType {
     case .removeData: "닫기"
     case .playError: "확인"
     case .authorization: "확인"
+    case .loginFailed: "확인"
     }
   }
   
@@ -58,6 +62,7 @@ enum AlertType {
     case .removeData: "확인"
     case .playError: ""
     case .authorization: ""
+    case .loginFailed: ""
     }
   }
 }
