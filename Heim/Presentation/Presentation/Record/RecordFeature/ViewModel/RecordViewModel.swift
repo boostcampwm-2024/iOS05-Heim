@@ -38,10 +38,6 @@ public final class RecordViewModel: ViewModel {
   public init() {
     self.state = State()
     self.recordManager = RecordManager()
-    
-    Task {
-      try await recordManager.setupSpeech()
-    }
   }
   
   // MARK: - Methods
