@@ -5,27 +5,33 @@
 //  Created by 김미래 on 11/21/24.
 //
 
+import Domain
 import UIKit
 
 final class BarView: UIView {
+  // MARK: - Properties
   let contentView = UIView()
   let bar: UIView = UIView()
   let chart: Chart
 
+  // MARK: - Initializer
+  init(chart: Chart) {
+    self.chart = chart
+    super.init(frame: .zero)
+    
+    setupViews()
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  init(chart: Chart) {
-    self.chart = chart
-    super.init(frame: .zero)
-    setupViews()
-  }
-
+  // MARK: - Methods
   func setupViews() {
     addSubview(contentView)
     addSubview(bar)
     bar.backgroundColor = setBarColor(emotion: chart.emotion)
+    
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -37,7 +43,7 @@ final class BarView: UIView {
     }
   }
 
-  func setBarColor(emotion: HeimEmotion) -> UIColor {
+  func setBarColor(emotion: Emotion) -> UIColor {
     switch emotion {
     case .sadness:
       return .darkGray
@@ -53,6 +59,8 @@ final class BarView: UIView {
       return .heimGreen
     case .neutral:
       return .whiteBlue
+    case .none:
+      return .clear
     }
   }
 }

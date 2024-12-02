@@ -12,26 +12,34 @@ import Foundation
 public struct DefaultLocalStorage: DataStorage {
   // MARK: - Properties
   private let fileManager: FileManager
-  private var baseURL: URL
+  private let baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   private let encoder = JSONEncoder()
   private let decoder = JSONDecoder()
+  private let rootPath = "Heim"
+  private let diaryPath = "/Diary"
   
+  // MARK: - Initializer
   public init() {
     self.fileManager = FileManager.default
-    self.baseURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+  }
+  
+  // MARK: - Methods
+  public func readData<T: Decodable>(
+    directory: String, 
+    fileName: String
+  ) async throws -> T {
+    let url = fullPathURL(directory: rootPath + directory + "/\(fileName)")
+    
+    guard fileManager.fileExists(atPath: url.path), let data = try? Data(contentsOf: url) else {
+      throw StorageError.fileNotExist
+    }
+    
+    return try decodedData(data: data)
   }
   
   public func readData<T: Decodable>(calendarDate: CalendarDate) async throws -> T {
-    let directory = "Heim/\(calendarDate.year)/\(calendarDate.month)"
-    let fileName = calendarDate.toTimeStamp()
-    let url: URL
-    
-    if #available(iOS 16.0, *) {
-      url = baseURL.appending(path: directory, directoryHint: .isDirectory)
-    } else {
-      url = baseURL.appendingPathComponent(directory, isDirectory: true)
-    }
-    
+    let directory = rootPath + diaryPath + "/\(calendarDate.year)/\(calendarDate.month)"
+    let url = fullPathURL(directory: directory)
     guard let subfolderURLs = try? fileManager.contentsOfDirectory(
       at: url, 
       includingPropertiesForKeys: nil, 
@@ -42,69 +50,43 @@ public struct DefaultLocalStorage: DataStorage {
     
     // 모든 파일의 데이터를 결합
     guard let combinedJSON = try? makeCombinedJSON(urls: subfolderURLs) else { throw StorageError.readError }
-    
-    do {
-      let data = try decoder.decode(T.self, from: combinedJSON)
-      return data
-    } catch {
-      throw StorageError.readError
-    }
+    return try decodedData(data: combinedJSON)
+  }
+  
+  public func saveData<T: Encodable>(
+    directory: String, 
+    fileName: String, 
+    data: T
+  ) async throws {
+    let url = fullPathURL(directory: rootPath + "/\(directory)")
+    try createDirectoryIfNeeded(at: url)
+    try save(url: url, fileName: fileName, data: data)
   }
   
   public func saveData<T: Encodable>(
     calendarDate: CalendarDate,
     data: T
   ) async throws {
-    let directory = "Heim/\(calendarDate.year)/\(calendarDate.month)/\(calendarDate.day)"
+    let directory = rootPath + diaryPath + "/\(calendarDate.year)/\(calendarDate.month)/\(calendarDate.day)"
     let fileName = calendarDate.toTimeStamp() + ".json"
-    let url: URL
-    
-    if #available(iOS 16.0, *) {
-      url = baseURL.appending(path: directory, directoryHint: .isDirectory)
-      try createDirectoryIfNeeded(at: url)
-    } else {
-      url = baseURL.appendingPathComponent(directory, isDirectory: true)
-      try createDirectoryIfNeeded(at: url)
-    }
-    
-    // MARK: - Create File
-    do {
-      encoder.outputFormatting = .prettyPrinted
-      let encodingData = try encoder.encode(data)
-      let fileURL = url.appendingPathComponent(fileName)
-      fileManager.createFile(atPath: fileURL.path, contents: encodingData)
-    } catch {
-      throw StorageError.writeError
-    }
+    let url = fullPathURL(directory: directory)
+    try createDirectoryIfNeeded(at: url)
+    try save(url: url, fileName: fileName, data: data)
   }
   
   public func deleteData(calendarDate: CalendarDate) async throws {
-    let directory = "Heim/\(calendarDate.year)/\(calendarDate.month)/\(calendarDate.day)"
+    let directory = rootPath + diaryPath + "/\(calendarDate.year)/\(calendarDate.month)/\(calendarDate.day)"
     let fileName = calendarDate.toTimeStamp() + ".json"
-    let url: URL
-    
-    if #available(iOS 16.0, *) {
-      url = baseURL.appending(path: directory, directoryHint: .isDirectory)
-    } else {
-      url = baseURL.appendingPathComponent(directory, isDirectory: true)
-    }
-    
+    let url = fullPathURL(directory: directory)
     let fileURL = url.appendingPathComponent(fileName)
     
-    // 파일이 이미 없는 경우 성공
-    guard fileManager.fileExists(atPath: fileURL.path) else {
-      return
-    }
+    guard fileManager.fileExists(atPath: fileURL.path) else { return }
     
     do {
-      // 파일 삭제
       try fileManager.removeItem(at: fileURL)
     
       // 디렉토리가 비어있다면 디렉토리도 삭제
-      let directoryContents = try fileManager.contentsOfDirectory(
-        at: url,
-        includingPropertiesForKeys: nil
-      )
+      let directoryContents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
     
       if directoryContents.isEmpty {
         try fileManager.removeItem(at: url)
@@ -114,17 +96,11 @@ public struct DefaultLocalStorage: DataStorage {
     }
   }
   
-  // MARK: - baseURL을 기준으로 하위의 모든 디렉토리들 삭제
-  // TODO: 만약 현재 baseURL(documents)에 path를 추가해서
-  // documents/HeimStorage 로 baseURL을 변경한다면 HeimStorage를 한번에 지우는 방법이 더욱 효율적일 거 같습니다.
   public func deleteAll() async throws {
-    guard let heimDirectoryURL = URL(string: baseURL.absoluteString + "/Heim") else {
-      throw StorageError.deleteError
-    }
-    
+    let fullPathURL = fullPathURL(directory: "\(rootPath)" + diaryPath)
     do {
       let contents = try fileManager.contentsOfDirectory(
-        at: heimDirectoryURL,
+        at: fullPathURL,
         includingPropertiesForKeys: nil,
         options: [.skipsHiddenFiles]
       )
@@ -136,9 +112,50 @@ public struct DefaultLocalStorage: DataStorage {
       throw StorageError.deleteError
     }
   }
+  
+  public func readAll<T: Decodable>(directory: String) async throws -> T {
+    let rootDirectoryPath = fullPathURL(directory: rootPath + directory)
+    var fileURLs: [URL] = []
+    
+    func countFilesInDirectory(_ directory: URL) throws {
+      do {
+        let contents = try fileManager.contentsOfDirectory(
+          at: directory, 
+          includingPropertiesForKeys: nil, 
+          options: .skipsHiddenFiles
+        )
+        
+        for item in contents {
+          var isDirectory: ObjCBool = false
+          guard fileManager.fileExists(atPath: item.path, isDirectory: &isDirectory) else { continue } 
+          
+          if isDirectory.boolValue {
+            try countFilesInDirectory(item)
+          } else if item.path.hasSuffix(".json") {
+            fileURLs.append(item)
+          }
+        }
+      } catch {
+        throw StorageError.readError
+      }
+    }
+    
+    try countFilesInDirectory(rootDirectoryPath)
+    let datas = try fileURLs.map { try Data(contentsOf: $0) }
+    let jsonDatas = assembleJSON(datas)
+    return try decodedData(data: jsonDatas)
+  }
 }
 
 private extension DefaultLocalStorage {
+  func fullPathURL(directory: String) -> URL {
+    if #available(iOS 16.0, *) {
+      return baseURL.appending(path: directory, directoryHint: .isDirectory)
+    } else {
+      return baseURL.appendingPathComponent(directory, isDirectory: true)
+    }
+  }
+  
   func createDirectoryIfNeeded(at url: URL) throws {
     var isDirectory: ObjCBool = false
     
@@ -146,6 +163,30 @@ private extension DefaultLocalStorage {
       if !fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) {
         try fileManager.createDirectory(at: url, withIntermediateDirectories: true)
       }
+    } catch {
+      throw StorageError.writeError
+    }
+  }
+  
+  func decodedData<T: Decodable>(data: Data) throws -> T {
+    do {
+      let data = try decoder.decode(T.self, from: data)
+      return data
+    } catch {
+      throw StorageError.readError
+    }
+  }
+  
+  func save(
+    url: URL, 
+    fileName: String, 
+    data: Encodable
+  ) throws {
+    do {
+      encoder.outputFormatting = .prettyPrinted
+      let encodingData = try encoder.encode(data)
+      let fileURL = url.appendingPathComponent(fileName)
+      fileManager.createFile(atPath: fileURL.path, contents: encodingData)
     } catch {
       throw StorageError.writeError
     }
@@ -174,6 +215,10 @@ private extension DefaultLocalStorage {
       }
     }
     
+    return assembleJSON(combinedData)
+  }
+  
+  func assembleJSON(_ combinedData: [Data]) -> Data {
     // 모든 데이터를 하나의 JSON형태로 조합
     var combinedString = "["
     for (index, json) in combinedData.enumerated() {

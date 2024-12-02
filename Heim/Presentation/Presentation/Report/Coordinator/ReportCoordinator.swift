@@ -9,7 +9,6 @@ import Core
 import Domain
 import UIKit
 
-//MARK: 수정 필요
 public protocol ReportCoordinator: Coordinator {
   func provideReportViewController() -> ReportViewController?
 }
@@ -40,10 +39,10 @@ public final class DefaultReportCoordinator: ReportCoordinator {
 
 private extension DefaultReportCoordinator {
   func createReportViewController() -> ReportViewController? {
-    // TODO: 추후 사용
-//    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
+    guard let userUseCase = DIContainer.shared.resolve(type: UserUseCase.self) else { return nil }
+    guard let diaryUseCase = DIContainer.shared.resolve(type: DiaryUseCase.self) else { return nil }
     
-    let viewModel = ReportViewModel()
+    let viewModel = ReportViewModel(userUseCase: userUseCase, diaryUseCase: diaryUseCase)
     let viewController = ReportViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController

@@ -5,24 +5,15 @@
 //  Created by 김미래 on 11/22/24.
 //
 
-import UIKit
+import Domain
 
-enum HeimEmotion {
-  case sadness
-  case happiness
-  case angry
-  case surprise
-  case fear
-  case disgust
-  case neutral
-}
 struct Chart {
   // MARK: Properties
-  var value: Double
-  var emotion: HeimEmotion
+  let value: Double
+  let emotion: Emotion
 
   // MARK: - Initializer
-  init(value: Double, emotion: HeimEmotion) {
+  init(value: Double, emotion: Emotion) {
     self.value = value
     self.emotion = emotion
   }

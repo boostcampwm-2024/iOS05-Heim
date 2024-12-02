@@ -23,6 +23,10 @@ public final class DefaultDiaryRepository: DiaryRepository {
     return diaries
   }
   
+  public func readTotalDiaries() async throws -> [Diary] {
+    return try await dataStorage.readAll(directory: "/Diary")
+  }
+  
   public func saveDiary(data: Diary) async throws {
     try await dataStorage.saveData(calendarDate: data.calendarDate, data: data)
   }
