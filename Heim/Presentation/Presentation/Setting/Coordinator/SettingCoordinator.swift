@@ -27,7 +27,6 @@ public final class DefaultSettingCoordinator: SettingCoordinator {
   // MARK: - Methods
   public func start() {
     guard let settingViewController = settingViewController() else { return }
-    navigationController.navigationBar.isHidden = false
     navigationController.pushViewController(settingViewController, animated: true)
   }
   
