@@ -7,40 +7,44 @@
 
 import UIKit
 
-protocol MusicTableViewCellDelegate: AnyObject {
-  func playButtonDidTap(isrc: String?)
-  func pauseButtonDidTap()
-}
-
 final class MusicTableViewCell: UITableViewCell {
 
-  weak var delegate: MusicTableViewCellDelegate?
-  var isrc: String?
   private let albumImage: UIImageView = {
     let view = UIImageView()
     view.layer.cornerRadius = LayoutConstants.cornerRadius
     view.backgroundColor = .gray
-    view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, cornerRadius: view.layer.cornerRadius).cgPath
     view.layer.shadowColor = UIColor.gray.cgColor
-    view.layer.shadowOffset = CGSize(width: LayoutConstants.shadowOffsetWidth,
-                                     height: LayoutConstants.shadowOffsetHeight)
+    view.layer.shadowOffset = CGSize(width: LayoutConstants.shadowOffsetWidth, height: LayoutConstants.shadowOffsetHeight)
     view.layer.shadowRadius = LayoutConstants.shadowRadius
     view.layer.shadowOpacity = LayoutConstants.shadowOpacity
     return view
   }()
 
-  private let titleLabel = CommonLabel(text: "제목", font: .regular, size: LayoutConstants.titleLabel, textColor: .black)
+  private let titleLabel =  CommonLabel(text: "제목" ,font: .regular, size: LayoutConstants.titleLabel, textColor: .black)
 
-  private let subLabel = CommonLabel(text: "부제목",font: .regular, size: LayoutConstants.bodyThree, textColor: .black)
+  private let subLabel = CommonLabel(font: .regular, size: LayoutConstants.bodyThree, textColor: .black)
 
-  private let playButton: UIButton = CommonRectangleButton(title: "듣기", fontStyle: .regularFont(ofSize: LayoutConstants.bodyThree), backgroundColor: .violet, radius: LayoutConstants.cornerRadius)
-  
+  private let playButton: UIButton = {
+    let text = "듣기"
+    var configuration = UIButton.Configuration.tinted()
+    configuration.baseForegroundColor = .white
+    var container = AttributeContainer()
+    container.font = .regularFont(ofSize: LayoutConstants.bodyThree)
+    configuration.attributedTitle = AttributedString(text, attributes: container)
+
+    let button = UIButton(configuration: configuration, primaryAction: nil)
+    button.backgroundColor = .violet
+    button.layer.masksToBounds = true
+    button.layer.cornerRadius = LayoutConstants.cornerRadius
+
+    return button
+  }()
+
   // MARK: - Initializer
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupViews()
     setupLayoutconstraints()
-    playButton.addTarget(self, action: #selector(buttondidTap), for: .touchUpInside)
   }
 
   required init?(coder: NSCoder) {
@@ -56,46 +60,26 @@ final class MusicTableViewCell: UITableViewCell {
   }
 
   // MARK: - Methods
-  func configure(imageData: Data?,
-                 titleText: String,
-                 subTitle: String,
-                 track: String) {
-    if let imageData {
-      albumImage.image = UIImage(data: imageData)
-    }
-
+  // TODO: 파라미터에 앨범 이미지 추가
+  func configure(titleText: String, subTitle: String, action: UIAction) {
     contentView.backgroundColor = .clear
     titleLabel.text = titleText
     subLabel.text = subTitle
-    isrc = track
-  }
-
-  @objc func buttondidTap() {
-    if playButton.currentTitle == "멈춤" {
-      delegate?.pauseButtonDidTap()
-    } else {
-      delegate?.playButtonDidTap(isrc: isrc)
-    }
-  }
-
-  func updatePlayButton(isPlaying: Bool) {
-    playButton.setTitle(isPlaying ? "멈춤" : "듣기", for: .normal)
+    playButton.addAction(action, for: .touchUpInside)
   }
 }
 
 private extension MusicTableViewCell {
   enum LayoutConstants {
-//    static let albumImageSize: CGFloat = 80
-    static let albumImageSize: CGFloat = UIApplication.screenHeight * 0.1
+    static let albumImageSize: CGFloat = 80
     static let defaultPadding: CGFloat = 16
     static let titleThree: CGFloat = 20
     static let titleLabel: CGFloat = 20
     static let bodyThree: CGFloat = 12
-    static let labelTop: CGFloat = 4
-    static let playButtonTop: CGFloat = 4
+    static let labelTop: CGFloat = 8
     static let labelRightPadding: CGFloat = 8
     static let playButtonWidth: CGFloat = 0.2
-    static let cornerRadius: CGFloat = 13
+    static let cornerRadius: CGFloat = 15
     static let shadowOffsetHeight: CGFloat = 5
     static let shadowOffsetWidth: CGFloat = 0
     static let shadowRadius: CGFloat = 4
@@ -105,8 +89,7 @@ private extension MusicTableViewCell {
   func setupViews() {
     backgroundColor = .clear
     selectionStyle = .none
-    titleLabel.sizeToFit()
-    subLabel.sizeToFit()
+
     contentView.addSubview(albumImage)
     contentView.addSubview(titleLabel)
     contentView.addSubview(subLabel)
@@ -123,20 +106,16 @@ private extension MusicTableViewCell {
     titleLabel.snp.makeConstraints {
       $0.top.equalTo(albumImage.snp.top)
       $0.leading.equalTo(albumImage.snp.trailing).offset(12)
-      $0.trailing.equalTo(contentView).inset(LayoutConstants.defaultPadding) // Right
-      $0.height.equalTo(titleLabel.frame.height)
-
     }
 
     subLabel.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(0)
-      $0.height.equalTo(subLabel.frame.height)
+      $0.top.equalTo(titleLabel.snp.bottom).offset(LayoutConstants.labelTop)
       $0.leading.equalTo(titleLabel.snp.leading)
-      $0.trailing.equalTo(contentView).inset(LayoutConstants.defaultPadding)
+      $0.right.equalTo(contentView).offset(LayoutConstants.labelRightPadding)
     }
 
     playButton.snp.makeConstraints {
-      $0.top.equalTo(subLabel.snp.bottom).offset(8)
+      $0.top.equalTo(subLabel.snp.bottom).offset(LayoutConstants.labelTop)
       $0.leading.equalTo(subLabel.snp.leading)
       $0.width.equalTo(contentView.snp.width).multipliedBy(LayoutConstants.playButtonWidth)
       $0.bottom.equalTo(albumImage.snp.bottom)

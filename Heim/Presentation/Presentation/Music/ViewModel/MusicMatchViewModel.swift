@@ -10,61 +10,38 @@ import Core
 import Domain
 
 public final class MusicMatchViewModel: ViewModel {
+
   // MARK: - Properties
   public enum Action {
     //TODO: 수정
-    case playMusic(String)
+    case playMusic
     case pauseMusic
-    case isError
   }
 
   public struct State: Equatable {
-    var isrc: String?
-    var isError: Bool
+    var isPlaying: Bool
   }
 
-  let useCase: MusicUseCase
+// TODO: UseCase 추가
   @Published public var state: State
 
   // MARK: - Initializer
-  init(useCase: MusicUseCase) {
-    self.useCase = useCase
-    self.state = State(isrc: nil, isError: false)
+  init() {
+    self.state = State(isPlaying: false)
   }
 
   public func action(_ action: Action) {
     switch action {
-    case .playMusic(let track):
-      Task {
-        await playMusic(track: track)
-      }
-
+    case .playMusic:
+      playMusic()
     case .pauseMusic:
-      Task {
-        await pauseMusic()
-      }
-    case .isError:
-      state.isError = false
+      pauseMusic()
     }
   }
 }
 
 // MARK: - Private Extenion
 private extension MusicMatchViewModel {
-  func playMusic(track: String) async {
-    do {
-      try await useCase.play(to: track)
-      state.isrc = track
-    } catch {
-      state.isError = true
-    }
-  }
-  
-  func pauseMusic() async {
-    do {
-      try useCase.pause()
-    } catch {
-      state.isError = true
-    }
-  }
+  func playMusic() {}
+  func pauseMusic() {}
 }
