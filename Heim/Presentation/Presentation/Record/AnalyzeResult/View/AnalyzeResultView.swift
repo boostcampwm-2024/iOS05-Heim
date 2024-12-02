@@ -10,7 +10,6 @@ import SnapKit
 
 // TODO: DiaryDetailView 내 버튼과 함께 사용하는 쪽으로 수정
 enum AnalyzeResultViewButtonItem {
-  case musicRecomendation
   case moveToHome
 }
 
@@ -65,16 +64,6 @@ final class AnalyzeResultView: UIView {
     return stackView
   }()
   
-  private let musicRecomendationButton: CommonRectangleButton = {
-    let button = CommonRectangleButton(
-      title: "하임이가 추천하는 노래 듣기",
-      fontStyle: .boldFont(ofSize: LayoutConstants.buttonLabelFontSize),
-      titleColor: .white,
-      backgroundColor: .primaryTransparent
-    )
-    return button
-  }()
-  
   private let homeButton: CommonRectangleButton = {
     let button = CommonRectangleButton(
       title: "메인 화면으로 이동하기",
@@ -120,13 +109,12 @@ private extension AnalyzeResultView {
       contentView.addSubview($0)
     }
     
-    [musicRecomendationButton, homeButton].forEach {
+    [homeButton].forEach {
       buttonStackView.addArrangedSubview($0)
     }
   }
   
   func setupActions() {
-    musicRecomendationButton.addTarget(self, action: #selector(musicRecomendationButtonTapped), for: .touchUpInside)
     homeButton.addTarget(self, action: #selector(homeButtonTapped), for: .touchUpInside)
   }
   
@@ -168,7 +156,7 @@ private extension AnalyzeResultView {
       $0.bottom.equalToSuperview().offset(-LayoutConstants.padding)
     }
     
-    [musicRecomendationButton, homeButton].forEach {
+    [homeButton].forEach {
       $0.snp.makeConstraints {
         $0.height.equalTo(LayoutConstants.buttonHeight)
       }
@@ -176,10 +164,6 @@ private extension AnalyzeResultView {
   }
   
   // MARK: - Action Methods, 해당 부분도 DiaryDetailView에서의 작업과 같은데, 같이 사용할 수 있도록 수정하는 것이 좋아보임.
-  @objc func musicRecomendationButtonTapped() {
-    delegate?.buttonDidTap(self, .musicRecomendation)
-  }
-  
   @objc func homeButtonTapped() {
     delegate?.buttonDidTap(self, .moveToHome)
   }
