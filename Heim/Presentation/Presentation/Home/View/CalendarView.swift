@@ -22,7 +22,7 @@ protocol CalendarDelegate: AnyObject {
   
   func collectionViewCellDidTap(
     _ collectionView: UICollectionView, 
-    diary: Diary
+    diary: Diary?
   )
 }
 
@@ -282,17 +282,13 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
     _ collectionView: UICollectionView, 
     didSelectItemAt indexPath: IndexPath
   ) {
-    // TODO: 테스트용 임시 데이터 적용
-    delegate?.collectionViewCellDidTap(
-      collectionView, 
-      diary: Diary(
-        calendarDate: CalendarDate(year: 2024, month: 11, day: 25, hour: 3, minute: 2, second: 1),
-        emotion: .happiness,
-        emotionReport: EmotionReport(text: "emotionReport"),
-        voice: Voice(audioBuffer: Data()),
-        summary: Summary(text: "summary")
-      )
-    )
+    guard let day = Int(calendarDataSource[indexPath.row].day) else {
+      delegate?.collectionViewCellDidTap(collectionView, diary: nil)
+      return
+    }
+    
+    let diary = diaries.filter { $0.calendarDate.day == day }.first
+    delegate?.collectionViewCellDidTap(collectionView, diary: diary)
   }
 }
 
