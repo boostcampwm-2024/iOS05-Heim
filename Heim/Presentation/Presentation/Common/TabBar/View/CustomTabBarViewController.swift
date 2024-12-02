@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class CustomTabBarViewController: UIViewController, Coordinatable {
+final class CustomTabBarViewController: BaseViewController<CustomTabBarViewModel>, Alertable, Coordinatable {
   // MARK: - Properties
   weak var coordinator: DefaultTabBarCoordinator?
   let tabBarView = CustomTabBarView()
@@ -19,6 +19,26 @@ final class CustomTabBarViewController: UIViewController, Coordinatable {
     
     setupUI()
     switchView(.home)
+  }
+  
+  override func bindState() {
+    super.bindState()
+    
+    viewModel.$state
+      .map { $0.isEnableWriteDiary }
+      .dropFirst()
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] isEnable in
+        if isEnable {
+          self?.coordinator?.setRecordView()
+        } else {
+          self?.presentAlert(
+            type: .alreadyWrittenDiary, 
+            leftButtonAction: { }
+          )
+        }
+      }
+      .store(in: &cancellable)
   }
 }
 
@@ -35,7 +55,7 @@ private extension CustomTabBarViewController {
   func switchView(_ tabBarItem: TabBarItems) {
     switch tabBarItem {
     case .home: coordinator?.setHomeView()
-    case .mic: coordinator?.setRecordView()
+    case .mic: viewModel.action(.fetchTodayDiary)
     case .report: coordinator?.setReportView()
     }
   }

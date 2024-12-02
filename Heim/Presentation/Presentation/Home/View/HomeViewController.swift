@@ -31,6 +31,7 @@ public final class HomeViewController: BaseViewController<HomeViewModel>, Coordi
   
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.navigationBar.isHidden = true
     viewModel.action(.fetchDiaryData(date: calendarView.provideCurrentCalendarDate()))
   }
   

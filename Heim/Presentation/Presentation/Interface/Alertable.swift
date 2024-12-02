@@ -15,6 +15,7 @@ enum AlertType {
   case removeCache // 캐시 삭제
   case removeData  // 데이터 삭제
 //  case playError
+  case alreadyWrittenDiary
 
   var title: String {
     switch self {
@@ -23,6 +24,7 @@ enum AlertType {
     case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
 //    case .playError: "재생 중 오류가 발생했습니다."
+    case .alreadyWrittenDiary: "이미 일기를 작성했어요"
     }
   }
   
@@ -32,6 +34,7 @@ enum AlertType {
     case .updateName: ""
     case .removeCache: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     case .removeData: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
+    case .alreadyWrittenDiary: "일기는 하루에 한 개만 작성할 수 있어요.\n이미 작성한 일기를 삭제해주세요!"
     }
   }
   
@@ -42,6 +45,7 @@ enum AlertType {
     case .removeCache: "닫기"
     case .removeData: "닫기"
 //    case .playError: "확인"
+    case .alreadyWrittenDiary: "닫기"
     }
   }
   
@@ -52,6 +56,7 @@ enum AlertType {
     case .removeCache: "확인"
     case .removeData: "확인"
 //    case .playError: ""
+    case .alreadyWrittenDiary: ""
     }
   }
 }
