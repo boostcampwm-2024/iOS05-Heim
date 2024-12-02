@@ -41,13 +41,6 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
     }
   }
   
-  // TODO: override func setupNavigationBar() { }
-  
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    // coordinator?.didFinish()
-  }
-  
   override func bindState() {
     super.bindState()
     

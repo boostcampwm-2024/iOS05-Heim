@@ -102,7 +102,7 @@ extension DiaryDetailViewController: DiaryDetailViewDelegate {
     case .heimReply:
       coordinator?.pushHeimReplyView(diary: viewModel.diary)
     case .replayVoice:
-      coordinator?.pushDiaryReplayView(diary: viewModel.diary)
+      coordinator?.pushDiaryReplayView(diary: viewModel.diary, userName: viewModel.userName)
     }
   }
 }

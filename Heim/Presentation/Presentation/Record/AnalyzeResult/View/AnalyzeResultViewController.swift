@@ -8,8 +8,6 @@
 import Domain
 import UIKit
 
-// TODO: 이름을 불러오는 부분은 구현되지 않았습니다.
-// Alertable의 경우 에러가 떴을 상황을 처리하기 위해 우선 채택하였습니다.
 final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewModel>, Coordinatable, Alertable {
   // MARK: - UIComponents
   private let contentView = AnalyzeResultView()
@@ -50,6 +48,7 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
       .removeDuplicates()
       .sink { [weak self] state in
         self?.contentView.configure(
+          name: state.userName,
           description: state.description,
           content: state.content
         )

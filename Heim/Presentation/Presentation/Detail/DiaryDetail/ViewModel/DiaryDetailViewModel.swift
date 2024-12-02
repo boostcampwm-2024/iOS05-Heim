@@ -25,18 +25,20 @@ final class DiaryDetailViewModel: ViewModel {
   }
   
   @Published var state: State
-  private let useCase: DiaryUseCase
-  // TODO: 이름 가져오는 기능 추가
-  private let userName: String = "성근"
+  private let diaryUseCase: DiaryUseCase
+  private let userUseCase: UserUseCase
+  var userName: String = ""
   let diary: Diary
   
   // MARK: - Initializer
   init(
-    useCase: DiaryUseCase,
+    diaryUseCase: DiaryUseCase,
+    userUseCase: UserUseCase,
     diary: Diary
   ) {
     state = State()
-    self.useCase = useCase
+    self.diaryUseCase = diaryUseCase
+    self.userUseCase = userUseCase
     self.diary = diary
   }
   
@@ -44,7 +46,9 @@ final class DiaryDetailViewModel: ViewModel {
   func action(_ action: Action) {
     switch action {
     case .fetchDiary:
-      setupInitialState()
+      Task {
+        await setupInitialState()
+      }
     case .deleteDiary:
       Task {
         await handleDeleteDiary()
@@ -57,16 +61,21 @@ final class DiaryDetailViewModel: ViewModel {
 private extension DiaryDetailViewModel {
   func handleDeleteDiary() async {
     do {
-      try await useCase.deleteDiary(calendarDate: diary.calendarDate)
+      try await diaryUseCase.deleteDiary(calendarDate: diary.calendarDate)
       state.isDeleted = true
     } catch {
       // TODO: Error Handling
     }
   }
   
-  func setupInitialState() {
-    state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
-    state.description = diary.emotion.diaryDetailDescription(with: userName)
-    state.content = diary.summary.text
+  func setupInitialState() async {
+    do {
+      userName = try await userUseCase.fetchUserName()
+      state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
+      state.description = diary.emotion.diaryDetailDescription(with: userName)
+      state.content = diary.summary.text
+    } catch {
+      // TODO: Error Handling
+    }
   }
 }
