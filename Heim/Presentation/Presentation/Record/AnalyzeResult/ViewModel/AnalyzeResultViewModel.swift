@@ -20,7 +20,7 @@ final class AnalyzeResultViewModel: ViewModel {
     var userName: String = ""
     var description: String = ""
     var content: String = ""
-    var isErrorPresent: Bool = true
+    var isErrorPresent: Bool = false
   }
   
   @Published var state: State

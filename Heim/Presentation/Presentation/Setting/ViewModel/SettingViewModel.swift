@@ -33,7 +33,7 @@ final class SettingViewModel: ViewModel {
   // MARK: - Initializer
   init(useCase: SettingUseCase) {
     self.useCase = useCase
-    state = State(userName: "", isConnectedCloud: false, isErrorPresent: true)
+    state = State(userName: "", isConnectedCloud: false, isErrorPresent: false)
   }
   
   // MARK: - Methods

@@ -22,7 +22,7 @@ public final class RecordViewModel: ViewModel {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
-    var isErrorPresent: Bool = true
+    var isErrorPresent: Bool = false
   }
   
   @Published public var state: State

@@ -22,7 +22,7 @@ final class DiaryDetailViewModel: ViewModel {
     var description: String = ""
     var content: String = ""
     var isDeleted: Bool = false
-    var isErrorPresent: Bool = true
+    var isErrorPresent: Bool = false
   }
   
   @Published var state: State
