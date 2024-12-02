@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-public final class RecordViewController: BaseViewController<RecordViewModel>, Coordinatable {
+public final class RecordViewController: BaseViewController<RecordViewModel>, Coordinatable, Alertable {
   // MARK: - UIComponents
   private let contentView = RecordView()
   
@@ -98,6 +98,20 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
       .removeDuplicates()
       .sink { [weak self] isEnabled in
         self?.contentView.updateNextButton(isEnabled: isEnabled)
+      }
+      .store(in: &cancellable)
+    
+    viewModel.$state
+      .map { $0.isErrorPresent }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.presentAlert(
+          type: .recordError,
+          leftButtonAction: {
+            self?.viewModel.action(.clearError)
+          }
+        )
       }
       .store(in: &cancellable)
   }

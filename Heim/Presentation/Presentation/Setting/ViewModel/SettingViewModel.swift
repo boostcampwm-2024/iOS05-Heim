@@ -18,12 +18,13 @@ final class SettingViewModel: ViewModel {
     case updateSynchronizationState(_ isConnected: Bool)
     case removeCache
     case resetData
-    
+    case clearError
   }
   
   struct State: Equatable {
     var userName: String
     var isConnectedCloud: Bool
+    var isErrorPresent: Bool
   }
   
   let useCase: SettingUseCase
@@ -32,7 +33,7 @@ final class SettingViewModel: ViewModel {
   // MARK: - Initializer
   init(useCase: SettingUseCase) {
     self.useCase = useCase
-    state = State(userName: "", isConnectedCloud: false)
+    state = State(userName: "", isConnectedCloud: false, isErrorPresent: false)
   }
   
   // MARK: - Methods
@@ -44,6 +45,7 @@ final class SettingViewModel: ViewModel {
     case .updateSynchronizationState(let isConnected): updateSynchronizationState(isConnected: isConnected)
     case .removeCache: removeCache()
     case .resetData: resetData()
+    case .clearError: state.isErrorPresent = false
     }
   }
 }
@@ -63,8 +65,7 @@ private extension SettingViewModel {
   func fetchSynchronizationState() {
     Task {
       do {
-        let isConnectedCloud = try await useCase.isConnectedCloud()
-        state.isConnectedCloud = isConnectedCloud
+        state.isConnectedCloud = try await useCase.isConnectedCloud()
       } catch(let error) {
         state.isConnectedCloud = false
         Logger.log(message: "fetchSynchronizationState Error: \(error)")
@@ -76,8 +77,8 @@ private extension SettingViewModel {
     Task.detached { [weak self] in
       do {
         self?.state.userName = try await self?.useCase.updateUserName(to: name) ?? "User"
-      } catch(let error) {
-        Logger.log(message: "updateUserName Error: \(error)")
+      } catch {
+        self?.state.isErrorPresent = true
       }
     }
   }
@@ -87,8 +88,9 @@ private extension SettingViewModel {
       do {
         try await useCase.updateCloudState(isConnected: isConnected)
         state.isConnectedCloud = isConnected 
-      } catch(let error) {
-        Logger.log(message: "updateSynchronizationState Error: \(error)")
+      } catch {
+        // TODO: iCloud 연동 이후 error 분리
+        state.isErrorPresent = true
       }
     }
   }
@@ -98,7 +100,7 @@ private extension SettingViewModel {
       do {
         try await useCase.removeCacheData()
       } catch {
-        // TODO: 에러 처리
+        state.isErrorPresent = true
       }
     }
   }
@@ -108,7 +110,7 @@ private extension SettingViewModel {
       do {
         try await useCase.resetData() 
       } catch {
-        // TODO: 에러 처리
+        state.isErrorPresent = true
       }
     }
   }

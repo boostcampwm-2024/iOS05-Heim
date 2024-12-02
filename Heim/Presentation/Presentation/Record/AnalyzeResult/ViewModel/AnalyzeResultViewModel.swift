@@ -14,12 +14,14 @@ final class AnalyzeResultViewModel: ViewModel {
   // MARK: - Properties
   enum Action {
     case fetchDiary
+    case clearError
   }
   
   struct State: Equatable {
     var userName: String = ""
     var description: String = ""
     var content: String = ""
+    var isErrorPresent: Bool = false
   }
   
   @Published var state: State
@@ -47,6 +49,8 @@ final class AnalyzeResultViewModel: ViewModel {
         await setupInitialState()
         handleSaveDiary()
       }
+    case .clearError:
+      state.isErrorPresent = false
     }
   }
 }
@@ -59,7 +63,7 @@ private extension AnalyzeResultViewModel {
         guard let diary = self?.diary else { return }
         try await self?.diaryUseCase.saveDiary(data: diary)
       } catch {
-        // TODO: Error Handling
+        self?.state.isErrorPresent = true
       }
     }
   }
@@ -70,7 +74,9 @@ private extension AnalyzeResultViewModel {
       state.description = diary.emotion.rawValue
       state.content = diary.emotionReport.text
     } catch {
-      // TODO: Error Handling
+      state.userName = "User"
+      state.description = diary.emotion.rawValue
+      state.content = diary.emotionReport.text
     }
   }
 }

@@ -66,7 +66,6 @@ private extension DefaultEmotionAnalyzeCoordinator {
       return nil
     }
     
-    // TODO: - viewModel에 추가로 인자를 생성 후 넣어줘야함.
     let viewModel = EmotionAnalyzeViewModel(
       recognizedText: text,
       voice: voice,

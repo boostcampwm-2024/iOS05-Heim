@@ -54,6 +54,20 @@ final class AnalyzeResultViewController: BaseViewController<AnalyzeResultViewMod
         )
       }
       .store(in: &cancellable)
+    
+    viewModel.$state
+      .map { $0.isErrorPresent }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.presentAlert(
+          type: .saveError,
+          leftButtonAction: {
+            self?.viewModel.action(.clearError)
+          }
+        )
+      }
+      .store(in: &cancellable)
   }
 }
 

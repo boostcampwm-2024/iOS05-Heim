@@ -14,7 +14,10 @@ enum AlertType {
   case updateName
   case removeCache // 캐시 삭제
   case removeData  // 데이터 삭제
-//  case playError
+  case deleteError
+  case saveError
+  case recordError
+  case settingError
   case alreadyWrittenDiary
 
   var title: String {
@@ -23,7 +26,10 @@ enum AlertType {
     case .updateName: "이름을 입력하세요"
     case .removeCache: "현재 기기에 저장된 일기가\n모두 사라져요"
     case .removeData: "현재 기기에 저장된 일기가\n모두 사라져요"
-//    case .playError: "재생 중 오류가 발생했습니다."
+    case .deleteError: "일기 삭제중\n 오류가 발생했어요"
+    case .saveError: "일기 저장중\n 오류가 발생했어요"
+    case .recordError: "음성 녹음중\n 오류가 발생했어요"
+    case .settingError: "설정 중\n 오류가 발생했어요"
     case .alreadyWrittenDiary: "이미 일기를 작성했어요"
     }
   }
@@ -34,6 +40,10 @@ enum AlertType {
     case .updateName: ""
     case .removeCache: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
     case .removeData: "현재 기기에 저장된 일기가 사라져요,\n정말 삭제하시겠어요?"
+    case .deleteError: "일기 삭제 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요"
+    case .saveError: "일기 저장 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요"
+    case .recordError: "음성 녹음 중 오류가 발생했습니다.\n앱을 재시작해주세요"
+    case .settingError: "설정 변경 중 오류가 발생했습니다.\n앱을 재시작해주세요"
     case .alreadyWrittenDiary: "일기는 하루에 한 개만 작성할 수 있어요.\n이미 작성한 일기를 삭제해주세요!"
     }
   }
@@ -44,7 +54,10 @@ enum AlertType {
     case .updateName: "닫기"
     case .removeCache: "닫기"
     case .removeData: "닫기"
-//    case .playError: "확인"
+    case .deleteError: "닫기"
+    case .saveError: "닫기"
+    case .recordError: "닫기"
+    case .settingError: "닫기"
     case .alreadyWrittenDiary: "닫기"
     }
   }
@@ -55,7 +68,10 @@ enum AlertType {
     case .updateName: "변경"
     case .removeCache: "확인"
     case .removeData: "확인"
-//    case .playError: ""
+    case .deleteError: ""
+    case .saveError: ""
+    case .recordError: ""
+    case .settingError: ""
     case .alreadyWrittenDiary: ""
     }
   }

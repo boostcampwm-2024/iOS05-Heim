@@ -16,12 +16,14 @@ public final class RecordViewModel: ViewModel {
     case startRecording
     case stopRecording
     case refresh
+    case clearError
   }
   
   public struct State: Equatable {
     var isRecording: Bool = false
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
+    var isErrorPresent: Bool = false
   }
   
   @Published public var state: State
@@ -51,11 +53,16 @@ public final class RecordViewModel: ViewModel {
       handleStopRecording()
     case .refresh:
       handleRefresh()
+    case .clearError:
+      state.isErrorPresent = false
     }
   }
   
   func voiceData() -> Voice? {
-    // TODO: nil 일때 에러 처리
+    guard let voice = voice else {
+      state.isErrorPresent = true
+      return nil
+    }
     return voice
   }
   
@@ -74,7 +81,8 @@ private extension RecordViewModel {
       state.canMoveToNext = false
       startTimeObservation()
     } catch {
-      // TODO: 사용자에게 에러 전달
+      state.isErrorPresent = true
+      recordManager.resetAll()
     }
   }
   

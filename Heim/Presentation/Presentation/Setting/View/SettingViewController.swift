@@ -67,6 +67,20 @@ final class SettingViewController: BaseViewController<SettingViewModel>, Coordin
         nameCell.updateUserName(userName)
       }
       .store(in: &cancellable)
+    
+    viewModel.$state
+      .map { $0.isErrorPresent }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.presentAlert(
+          type: .deleteError,
+          leftButtonAction: {
+            self?.viewModel.action(.clearError)
+          }
+        )
+      }
+      .store(in: &cancellable)
   }
 }
 
@@ -140,24 +154,20 @@ extension SettingViewController: Alertable {
       self?.viewModel.action(.updateUserName(textFieldText))
     }
   }
-  // TODO: 캐시삭제 구현 예정
-//  func presentRemoveCacheAlert() {
-//    presentAlert(
-//      type: .removeCache,
-//      leftButtonAction: {},
-//      rightButtonAction: { [weak self] in
-//        self?.viewModel.action(.removeCache)
-//      }
-//    )
-//  }
   
   func presentDataResetAlert() {
     presentAlert(
       type: .removeData,
-      leftButtonAction: {},
-      rightButtonAction: { [weak self] in
+      leftButtonAction: { [weak self] in
         self?.viewModel.action(.resetData)
       }
+    )
+  }
+  
+  func presentResetErrorAlert() {
+    presentAlert(
+      type: .settingError,
+      leftButtonAction: {}
     )
   }
 }
