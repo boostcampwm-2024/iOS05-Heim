@@ -39,6 +39,10 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
   }
   
   public func setHomeView() {
+    if let lastViewController = tabBarViewController?.children.last, lastViewController is HomeViewController {
+      return
+    }
+    
     guard let defaultHomeCoordinator = DIContainer.shared.resolve(type: HomeCoordinator.self) else { return }
     addChildCoordinator(defaultHomeCoordinator)
     defaultHomeCoordinator.parentCoordinator = self
@@ -58,6 +62,10 @@ public final class DefaultTabBarCoordinator: TabBarCoordinator {
   }
   
   public func setReportView() {
+    if let lastViewController = tabBarViewController?.children.last, lastViewController is ReportViewController {
+      return
+    }
+    
     guard let defaultReportCoordinator = DIContainer.shared.resolve(type: ReportCoordinator.self) else { return }
     addChildCoordinator(defaultReportCoordinator)
     defaultReportCoordinator.parentCoordinator = self
