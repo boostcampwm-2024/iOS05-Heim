@@ -11,6 +11,12 @@ import UIKit
 import Speech
 
 final class RecordManager {
+  enum PermissionStatus {
+    case authorized
+    case notDetermined
+    case denied
+  }
+  
   // MARK: - 음성 인식을 위한 Properties
   private let speechRecognizer: SFSpeechRecognizer
   private let audioEngine: AVAudioEngine
@@ -46,21 +52,26 @@ final class RecordManager {
     self.recordingURL = documentsPath.appendingPathComponent("temporaryRecording.wav")
   }
   
-  // MARK: - 녹음과정 준비
-  func setupSpeech() async throws {
-    let authStatus = await withCheckedContinuation { continuation in
+  // MARK: - 권한 확인
+  static func checkUserPermission() async -> PermissionStatus {
+    // 음성 인식 권한 확인
+    let speechStatus = await withCheckedContinuation { continuation in
       SFSpeechRecognizer.requestAuthorization { status in
         continuation.resume(returning: status)
       }
     }
     
-    switch authStatus {
-    case .authorized:
-      return
-    case .denied, .restricted, .notDetermined:
-      throw RecordingError.permissionError
-    @unknown default:
-      throw RecordingError.permissionError
+    // 마이크 권한 확인
+    let micStatus = await AVCaptureDevice.requestAccess(for: .audio)
+    let micAuthStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+    
+    switch (speechStatus, micStatus, micAuthStatus) {
+    case (.authorized, true, _):
+      return .authorized
+    case (.notDetermined, _, _), (_, _, .notDetermined):
+      return .notDetermined
+    default:
+      return .denied
     }
   }
   
@@ -135,19 +146,19 @@ private extension RecordManager {
       // 오디오 세션 설정
       let audioSession = AVAudioSession.sharedInstance()
       try audioSession.setCategory(.playAndRecord,
-                                 mode: .default,
-                                 options: [.defaultToSpeaker, .allowBluetooth])
+                                   mode: .default,
+                                   options: [.defaultToSpeaker, .allowBluetooth])
       try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-
+      
       // PCM 설정
       let settings: [String: Any] = [
-          AVFormatIDKey: Int(kAudioFormatLinearPCM),
-          AVSampleRateKey: 44100.0,
-          AVNumberOfChannelsKey: 2,  // 스테레오로 변경
-          AVLinearPCMBitDepthKey: 16,
-          AVLinearPCMIsFloatKey: false,
-          AVLinearPCMIsBigEndianKey: false,
-          AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+        AVFormatIDKey: Int(kAudioFormatLinearPCM),
+        AVSampleRateKey: 44100.0,
+        AVNumberOfChannelsKey: 2,  // 스테레오로 변경
+        AVLinearPCMBitDepthKey: 16,
+        AVLinearPCMIsFloatKey: false,
+        AVLinearPCMIsBigEndianKey: false,
+        AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
       ]
       
       // 기존 파일이 있다면 제거

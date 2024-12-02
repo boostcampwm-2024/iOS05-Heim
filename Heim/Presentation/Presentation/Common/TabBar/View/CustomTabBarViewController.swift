@@ -25,16 +25,28 @@ final class CustomTabBarViewController: BaseViewController<CustomTabBarViewModel
     super.bindState()
     
     viewModel.$state
+      .map(\.recordPermissionStatus)
+      .compactMap { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] status in
+        self?.handleRecordPermission(status)
+      }
+      .store(in: &cancellable)
+    
+    viewModel.$state
       .map { $0.isEnableWriteDiary }
       .dropFirst()
+      .filter { _ in
+        self.viewModel.state.recordPermissionStatus != .denied
+      }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] isEnable in
-        if isEnable {
+        if !isEnable {
           self?.coordinator?.setRecordView()
         } else {
           self?.presentAlert(
             type: .alreadyWrittenDiary, 
-            leftButtonAction: { }
+            leftButtonAction: {}
           )
         }
       }
@@ -55,8 +67,28 @@ private extension CustomTabBarViewController {
   func switchView(_ tabBarItem: TabBarItems) {
     switch tabBarItem {
     case .home: coordinator?.setHomeView()
-    case .mic: viewModel.action(.fetchTodayDiary)
+    case .mic: viewModel.action(.startRecording)
     case .report: coordinator?.setReportView()
+    }
+  }
+  
+  private func handleRecordPermission(_ status: RecordManager.PermissionStatus) {
+    switch status {
+    case .authorized:
+      // 권한이 있는 경우 아무 것도 하지 않음 (일기 작성 가능 여부 확인 대기)
+      break
+    case .notDetermined:
+      coordinator?.setRecordView() // 녹음 화면에서 권한 요청
+    case .denied:
+      presentAlert(
+        type: .permissionDenied,
+        leftButtonAction: { },
+        rightButtonAction: { [weak self] in
+          guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+          UIApplication.shared.open(url)
+          self?.viewModel.state.recordPermissionStatus = nil
+        }
+      )
     }
   }
 }

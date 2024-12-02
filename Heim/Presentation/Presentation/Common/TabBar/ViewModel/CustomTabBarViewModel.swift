@@ -12,11 +12,12 @@ import Domain
 public final class CustomTabBarViewModel: ViewModel {
   // MARK: - Properties
   public enum Action {
-    case fetchTodayDiary
+    case startRecording
   }
   
   public struct State: Equatable {
     var isEnableWriteDiary: Bool
+    var recordPermissionStatus: RecordManager.PermissionStatus?
   }
   
   let useCase: DiaryUseCase
@@ -25,28 +26,42 @@ public final class CustomTabBarViewModel: ViewModel {
   // MARK: - Initializer
   init(useCase: DiaryUseCase) {
     self.useCase = useCase
-    state = State(isEnableWriteDiary: false)
+    state = State(isEnableWriteDiary: true)
   }
   
   // MARK: - Methods
   public func action(_ action: Action) {
     switch action {
-    case .fetchTodayDiary: fetchTodayDiary()
+    case .startRecording:
+      Task {
+        await checkPermissionAndFetchDiary()
+      }
     }
   }
 }
 
 private extension CustomTabBarViewModel {
-  func fetchTodayDiary() {
-    Task.detached { [weak self] in
-      do {
-        let date = Date()
-        let todayDiary = try await self?.useCase.readDiaries(calendarDate: date.calendarDate()) ?? []
-        let isEnable = todayDiary.filter { $0.calendarDate.day == date.calendarDate().day }.isEmpty
-        self?.state.isEnableWriteDiary = isEnable
-      } catch {
-        self?.state.isEnableWriteDiary = true
-      }
+  func checkPermissionAndFetchDiary() async {
+    // 1. 권한 체크
+    let status = await RecordManager.checkUserPermission()
+    
+    // 2. authorized가 아닌 경우 조기에 종료
+    if status != .authorized {
+      state.recordPermissionStatus = status
+      return
+    }
+    
+    // 3. 마이크, 음성 권한이 authorized인 경우 -> 일기 작성 가능 여부 확인
+    do {
+      let date = Date()
+      let todayDiary = try await useCase.readDiaries(calendarDate: date.calendarDate())
+      let isEnable = todayDiary.filter { $0.calendarDate.day == date.calendarDate().day }.isEmpty
+      
+      state.recordPermissionStatus = status
+      state.isEnableWriteDiary = isEnable
+    } catch {
+      state.recordPermissionStatus = status
+      state.isEnableWriteDiary = true
     }
   }
 }
