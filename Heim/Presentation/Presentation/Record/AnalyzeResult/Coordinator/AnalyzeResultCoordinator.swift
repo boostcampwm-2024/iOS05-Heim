@@ -37,15 +37,7 @@ public final class DefaultAnalyzeResultCoordinator: AnalyzeResultCoordinator {
     parentCoordinator?.removeChild(self)
   }
   
-  public func pushMusicRecommendationView() {
-//    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
-//      return
-//    }
-//    
-//    addChildCoordinator(defaultMusicMatchCoordinator)
-//    defaultMusicMatchCoordinator.parentCoordinator = self
-//    defaultMusicMatchCoordinator.start()
-  }
+  public func pushMusicRecommendationView() {}
   
   public func backToApproachView() {
     parentCoordinator?.removeChild(self)
