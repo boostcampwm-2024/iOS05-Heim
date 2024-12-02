@@ -26,6 +26,11 @@ final class DiaryReplayView: UIView {
   weak var delegate: DiaryReplayViewDelegate?
   private let visualizerView: VisualizerView
   
+  private let descriptionLabel: CommonLabel = {
+    let label = CommonLabel(font: .bold, size: LayoutConstants.descriptionLabelFontSize)
+    return label
+  }()
+  
   // MARK: - UI Components
   private let timeLabel: UILabel = {
     let label = UILabel()
@@ -58,9 +63,13 @@ final class DiaryReplayView: UIView {
   }()
   
   // MARK: - Initialize
-  init(visualizerView: VisualizerView) {
+  init(
+    visualizerView: VisualizerView,
+    userName: String
+  ) {
     self.visualizerView = visualizerView
     super.init(frame: .null)
+    setupUserName(userName: userName)
     setupViews()
     setupLayoutConstraints()
     setupActions()
@@ -81,8 +90,12 @@ final class DiaryReplayView: UIView {
 
 private extension DiaryReplayView {
   // MARK: - Setup
+  private func setupUserName(userName: String) {
+    self.descriptionLabel.text = "하임이가 \(userName)님의 목소리를 가지고 왔어요!"
+  }
+  
   private func setupViews() {
-    [visualizerView, timeLabel, buttonStackView].forEach {
+    [descriptionLabel, visualizerView, timeLabel, buttonStackView].forEach {
       addSubview($0)
     }
     
@@ -94,9 +107,17 @@ private extension DiaryReplayView {
   private func setupLayoutConstraints() {
     let screenHeight = UIApplication.screenHeight
     
+    descriptionLabel.snp.makeConstraints {
+      $0.top.equalTo(safeAreaLayoutGuide).offset(LayoutConstants.topPadding)
+      $0.leading.equalToSuperview().offset(LayoutConstants.horizontalPadding)
+      $0.trailing.equalToSuperview().inset(LayoutConstants.horizontalPadding)
+    }
+    
     visualizerView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalToSuperview().offset(screenHeight * LayoutConstants.microphoneAnimationImageTopRatio)
+      $0.top.equalTo(descriptionLabel.snp.bottom).offset(
+        screenHeight * LayoutConstants.microphoneAnimationImageTopRatio
+      )
       $0.width.height.equalTo(LayoutConstants.microphoneAnimationImageSize)
     }
     
@@ -123,11 +144,13 @@ private extension DiaryReplayView {
   }
   
   // MARK: - Actions
-  @objc private func playButtonTapped() {
+  @objc
+  private func playButtonTapped() {
     delegate?.buttonDidTap(self, .replayToggle)
   }
   
-  @objc private func refreshButtonTapped() {
+  @objc
+  private func refreshButtonTapped() {
     delegate?.buttonDidTap(self, .refresh)
   }
 }
@@ -153,11 +176,12 @@ private extension DiaryReplayView {
     static let microphoneAnimationImageSize: CGFloat = 256
     
     // Screen ratio
-    static let microphoneAnimationImageTopRatio: CGFloat = 0.2
+    static let microphoneAnimationImageTopRatio: CGFloat = 0.1
     static let timeLabelTopRatio: CGFloat = 0.07
     
     // Font size
     static let timeLabelFontSize: CGFloat = 30
     static let buttonLabelFontSize: CGFloat = 18
+    static let descriptionLabelFontSize: CGFloat = 20
   }
 }

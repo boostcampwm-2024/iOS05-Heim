@@ -11,15 +11,18 @@ import UIKit
 final class DiaryReplayViewController: BaseViewController<DiaryReplayViewModel> {
   // MARK: - UIComponents
   private let visualizerView = VisualizerView()
-  private lazy var contentView = DiaryReplayView(visualizerView: visualizerView)
+  private lazy var contentView = DiaryReplayView(visualizerView: visualizerView, userName: userName)
   var diary: Diary
+  let userName: String
   
   // MARK: - Initiaizer
   init(
     viewModel: DiaryReplayViewModel,
-    diary: Diary
+    diary: Diary,
+    userName: String
   ) {
     self.diary = diary
+    self.userName = userName
     super.init(viewModel: viewModel)
   }
   
