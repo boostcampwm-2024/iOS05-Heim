@@ -12,4 +12,11 @@ public struct MusicTrack: Equatable {
   public let title: String
   public let artist: String
   public let isrc: String
+
+  public init(thumbnail: URL?, title: String, artist: String, isrc: String) {
+    self.thumbnail = thumbnail
+    self.title = title
+    self.artist = artist
+    self.isrc = isrc
+  }
 }
