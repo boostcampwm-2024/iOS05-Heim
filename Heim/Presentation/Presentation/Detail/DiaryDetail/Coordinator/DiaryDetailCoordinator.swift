@@ -23,7 +23,7 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   public weak var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
-
+  
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -39,16 +39,19 @@ public final class DefaultDiaryDetailCoordinator: DiaryDetailCoordinator {
   
   public func didFinish() {
     parentCoordinator?.removeChild(self)
+    navigationController.popViewController(animated: true)
   }
   
   public func pushMusicRecommendationView() {
-    guard let defaultMusicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
+    guard let musicMatchCoordinator = DIContainer.shared.resolve(type: MusicMatchCoordinator.self) else {
       return
     }
     
-    addChildCoordinator(defaultMusicMatchCoordinator)
-    defaultMusicMatchCoordinator.parentCoordinator = self
-    defaultMusicMatchCoordinator.start()
+    guard let musicMatchViewController = musicMatchCoordinator.createMusicMatchViewController() else {
+      return
+    }
+    
+    navigationController.pushViewController(musicMatchViewController, animated: true)
   }
   
   public func pushHeimReplyView(diary: Diary) {

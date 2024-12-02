@@ -10,7 +10,7 @@
 ///
 /// 단, `none`이라는 감정은 `init(rawValue:)`에서 발생하는 오류를 위한 기본 값이며,
 /// 이 값이 발생하는 경우 예외처리를 해야 함을 참고해주세요.
-public enum Emotion: String, Codable, Equatable {
+public enum Emotion: String, CaseIterable, Codable, Equatable {
   case sadness
   case happiness
   case angry
@@ -20,6 +20,21 @@ public enum Emotion: String, Codable, Equatable {
   case neutral
   case none
   
+  // MARK: - Properties
+  public var title: String {
+    switch self {
+    case .sadness: "슬픔"
+    case .happiness: "기쁨"
+    case .angry: "분노"
+    case .surprise: "당황"
+    case .fear: "공포"
+    case .disgust: "혐오"
+    case .neutral: "중립"
+    case .none: ""
+    }
+  }
+  
+  // MARK: - Initializer
   public init(from decoder: Decoder) throws {
     self = try Emotion(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .none
   }

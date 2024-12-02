@@ -53,7 +53,6 @@ final class AnalyzeResultView: UIView {
   // TODO: 감정에 맞게 이미지 변경
   private let characterImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .angryIcon
     imageView.contentMode = .scaleAspectFit
     return imageView
   }()
@@ -100,11 +99,13 @@ final class AnalyzeResultView: UIView {
   
   // MARK: - Public Methods
   func configure(
-    // TODO: name: String,
+    // TODO: name: String
     description: String,
     content: String
   ) {
     // TODO: titleLabel.text = name
+    characterImageView.image = UIImage.configureImage(emotion: description)
+    // TODO: description -> Emotion extension 적용
     descriptionLabel.text = description
     textArea.setText(content)
   }
@@ -132,14 +133,13 @@ private extension AnalyzeResultView {
   
   func setupLayoutConstraints() {
     scrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.bottom.equalTo(safeAreaLayoutGuide)
+      $0.leading.trailing.equalToSuperview()
     }
     
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
       $0.width.equalToSuperview()
-      // TODO: Layout 다시 점검
-      $0.height.greaterThanOrEqualToSuperview().priority(.low)
     }
     
     titleLabel.snp.makeConstraints {
