@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Application/Application.xcodeproj">
+      location = "group:Application/Heim.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:DataStorage/DataStorageModule.xcodeproj">
