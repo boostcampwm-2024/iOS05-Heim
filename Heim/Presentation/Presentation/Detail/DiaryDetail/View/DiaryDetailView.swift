@@ -98,10 +98,12 @@ final class DiaryDetailView: UIView {
   // MARK: - Public Methods
   func configure(
     date: String,
+    emotion: String,
     description: String,
     content: String
   ) {
     dateLabel.text = date
+    characterImageView.image = UIImage.configureImage(emotion: emotion)
     descriptionLabel.text = description
     textArea.setText(content)
   }

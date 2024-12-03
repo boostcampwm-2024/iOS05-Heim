@@ -20,6 +20,7 @@ final class DiaryDetailViewModel: ViewModel {
   
   struct State: Equatable {
     var calendarDate: String = ""
+    var emotion: String = ""
     var description: String = ""
     var content: String = ""
     var isDeleted: Bool = false
@@ -76,11 +77,13 @@ private extension DiaryDetailViewModel {
     do {
       userName = try await userUseCase.fetchUserName()
       state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
+      state.emotion = diary.emotion.rawValue
       state.description = diary.emotion.diaryDetailDescription(with: userName)
       state.content = diary.summary.text
     } catch {
       userName = "User"
       state.calendarDate = "\(diary.calendarDate.year)년 \(diary.calendarDate.month)월 \(diary.calendarDate.day)일"
+      state.emotion = diary.emotion.rawValue
       state.description = diary.emotion.diaryDetailDescription(with: userName)
       state.content = diary.summary.text
     }
