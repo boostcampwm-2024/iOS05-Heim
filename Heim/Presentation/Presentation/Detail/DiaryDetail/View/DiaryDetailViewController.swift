@@ -50,6 +50,7 @@ final class DiaryDetailViewController: BaseViewController<DiaryDetailViewModel>,
       .sink { [weak self] state in
         self?.contentView.configure(
           date: state.calendarDate,
+          emotion: state.emotion,
           description: state.description,
           content: state.content
         )
