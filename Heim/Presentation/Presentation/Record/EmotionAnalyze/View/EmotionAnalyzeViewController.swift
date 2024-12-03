@@ -59,6 +59,7 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
       .removeDuplicates()
       .receive(on: DispatchQueue.main)
       .sink { [weak self] isErrorPresent in
+        guard isErrorPresent else { return }
         self?.presentAlert(
           type: .analyzeError,
           leftButtonAction: {
