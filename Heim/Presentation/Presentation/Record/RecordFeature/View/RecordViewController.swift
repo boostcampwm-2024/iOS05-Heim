@@ -172,8 +172,6 @@ private extension RecordViewController {
           let voice = viewModel.voiceData() else { return }
     if recognizedText.count < 70 { presentWarning(); return }
     
-    guard let voice = viewModel.voiceData() else { return }
-    
     removeTemporaryFiles()
     coordinator?.pushEmotionAnalyzeView(recognizedText: recognizedText, voice: voice)
   }

@@ -49,6 +49,13 @@ public final class DefaultEmotionAnalyzeCoordinator: EmotionAnalyzeCoordinator {
     defaultAnalyzeResultCoordinator.parentCoordinator = self
     defaultAnalyzeResultCoordinator.start(diary: diary)
   }
+  
+  public func backToApproachView() {
+    parentCoordinator?.removeChild(self)
+    parentCoordinator?.parentCoordinator?.removeChild(parentCoordinator)
+    
+    navigationController.dismiss(animated: true)
+  }
 }
 
 // MARK: - Private

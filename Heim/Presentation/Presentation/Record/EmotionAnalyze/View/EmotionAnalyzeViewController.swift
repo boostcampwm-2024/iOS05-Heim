@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewModel>, Coordinatable {
+final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewModel>, Coordinatable, Alertable {
   // MARK: - UIComponents
   private let contentView = EmotionAnalyzeView()
   
@@ -46,10 +46,25 @@ final class EmotionAnalyzeViewController: BaseViewController<EmotionAnalyzeViewM
     
     viewModel.$state
       .map(\.isAnalyzing)
+      .removeDuplicates()
       .receive(on: DispatchQueue.main)
       .sink { [weak self] isAnalyzing in
         self?.contentView.updatedescriptionLabel(isAnalyzing: isAnalyzing)
         self?.contentView.updateNextButton(isAnalyzing: isAnalyzing)
+      }
+      .store(in: &cancellable)
+    
+    viewModel.$state
+      .map(\.isErrorPresent)
+      .removeDuplicates()
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] isErrorPresent in
+        self?.presentAlert(
+          type: .analyzeError,
+          leftButtonAction: {
+            self?.coordinator?.backToApproachView()
+          }
+        )
       }
       .store(in: &cancellable)
   }
