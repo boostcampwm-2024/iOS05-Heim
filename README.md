@@ -8,12 +8,15 @@
 
 하임이가 당신만의 특별한 감정을 따뜻하게 보듬어주고, 숨겨진 마음의 이야기를 들려드릴 거에요  💫
 
-그리고 당신의 감정에 어울리는 특별한 멜로디로 위로해 드릴게요  🎵
 
 <br/>
 
   
 **` "진실된 감정을 표현하는 용기가 있다면, 그것은 이미 절반의 치유다." - Carl Jung `**
+
+![1](https://github.com/user-attachments/assets/f8db841b-7383-400d-8939-8eefc3bade2d)
+![2](https://github.com/user-attachments/assets/ce843ce3-e4ec-450b-ad1f-979c8f76d61b)
+
 
 
 <br/>
@@ -25,7 +28,7 @@
 - Swift: **5.9**
 - 배포타겟: **iOS 15+**
 - 의존성 관리: **SPM**
-- 작업 일정관리: **Github WiKi / Projects**
+- 작업 일정관리: **Github WiKi / Projects / Notion**
 
 <br>
 
@@ -38,9 +41,10 @@
 
 ### 🔑 핵심 기술 스택
 
-- UI: **UIKit** + **SwiftUI**
+- UI: **UIKit**
 - AI: **CoreML**
-- Persistent: **CloudKit**
+- Generative AI: **Gemini**
+- Persistent: **FileManager**
 - Media: **AVFoundation**, **Speech**
 - Test: **XCTest**
 - Reactive Programming: **Combine**
@@ -52,11 +56,12 @@
 
 - Layout: **SnapKit**
 - Lint: **SwiftLint**
+- Animation: **Lottie**
 
 <br>
 
 ## 📚 설계도
-![Heim-설계도](https://github.com/user-attachments/assets/cde0c955-cefa-4534-a26d-929fddc85211)
+![설계도](https://github.com/user-attachments/assets/04211272-a063-42d6-800a-61cb226d88e2)
 
 <br>
 
