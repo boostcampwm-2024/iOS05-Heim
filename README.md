@@ -15,8 +15,7 @@
 **` "진실된 감정을 표현하는 용기가 있다면, 그것은 이미 절반의 치유다." - Carl Jung `**
 
 ![1](https://github.com/user-attachments/assets/f8db841b-7383-400d-8939-8eefc3bade2d)
-![2](https://github.com/user-attachments/assets/ce843ce3-e4ec-450b-ad1f-979c8f76d61b)
-
+![2](https://github.com/user-attachments/assets/44acd0f3-3dd8-4ec8-a831-cfa0c2ce43c2)
 
 
 <br/>
