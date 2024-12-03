@@ -114,6 +114,25 @@ public final class RecordViewController: BaseViewController<RecordViewModel>, Co
         )
       }
       .store(in: &cancellable)
+    
+    viewModel.$state
+      .map { $0.isAuthorized }
+      .filter { !$0 }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.presentAlert(
+          type: .permissionDenied,
+          leftButtonAction: {
+            self?.coordinator?.didFinish()
+            self?.dismiss(animated: true)
+          },
+          rightButtonAction: {
+            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+            UIApplication.shared.open(url)
+          }
+        )
+      }
+      .store(in: &cancellable)
   }
 }
 
