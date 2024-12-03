@@ -21,6 +21,7 @@ enum AlertType {
   case alreadyWrittenDiary
   case tooShortDiary
   case permissionDenied
+  case analyzeError
 
   var title: String {
     switch self {
@@ -35,6 +36,7 @@ enum AlertType {
     case .alreadyWrittenDiary: "이미 일기를 작성했어요"
     case .tooShortDiary: "일기가 너무 짧아요!"
     case .permissionDenied: "마이크와 음성 권한이\n필요해요"
+    case .analyzeError: "분석이 실패했어요!"
     }
   }
   
@@ -51,6 +53,7 @@ enum AlertType {
     case .alreadyWrittenDiary: "일기는 하루에 한 개만 작성할 수 있어요.\n이미 작성한 일기를 삭제해주세요!"
     case .tooShortDiary: "하임이가 분석을 하기 어려워요.\n더 길게 오늘의 하루를 남겨주시겠어요?"
     case .permissionDenied: "설정에서 권한을 허용해주세요!\n 설정 -> 마이크, 음성인식"
+    case .analyzeError: "네트워크 요청에 실패했어요!\n다시 시도해주세요."
     }
   }
   
@@ -67,6 +70,7 @@ enum AlertType {
     case .alreadyWrittenDiary: "닫기"
     case .tooShortDiary: "닫기"
     case .permissionDenied: "닫기"
+    case .analyzeError: "닫기"
     }
   }
   
@@ -83,6 +87,7 @@ enum AlertType {
     case .alreadyWrittenDiary: ""
     case .tooShortDiary: ""
     case .permissionDenied: "설정으로 이동"
+    case .analyzeError: ""
     }
   }
 }

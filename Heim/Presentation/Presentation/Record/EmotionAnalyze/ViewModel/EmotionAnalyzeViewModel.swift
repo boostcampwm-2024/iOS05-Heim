@@ -18,6 +18,7 @@ final class EmotionAnalyzeViewModel: ViewModel {
   
   struct State {
     var isAnalyzing: Bool
+    var isErrorPresent: Bool = false
   }
   
   private let recognizedText: String // RecordView에서 넘어온 인식된 텍스트
@@ -66,6 +67,7 @@ final class EmotionAnalyzeViewModel: ViewModel {
         state.isAnalyzing = false
       } catch {
         state.isAnalyzing = false
+        state.isErrorPresent = true
       }
     }
   }
