@@ -24,6 +24,7 @@ public final class RecordViewModel: ViewModel {
     var canMoveToNext: Bool = false
     var timeText: String = "00:00"
     var isErrorPresent: Bool = false
+    var isAuthorized: Bool = true
   }
   
   @Published public var state: State
@@ -48,8 +49,10 @@ public final class RecordViewModel: ViewModel {
   public func action(_ action: Action) {
     switch action {
     case .startRecording:
+      checkAuthorization()
       handleStartRecording()
     case .stopRecording:
+      checkAuthorization()
       handleStopRecording()
     case .refresh:
       handleRefresh()
@@ -74,6 +77,19 @@ public final class RecordViewModel: ViewModel {
 
 // MARK: - Private Extenion
 private extension RecordViewModel {
+  func checkAuthorization() {
+    Task {
+      do {
+        try await recordManager.setupSpeech()
+        state.isAuthorized = true
+      } catch {
+        handleRefresh()
+        state.isRecording = false
+        state.isAuthorized = false
+      }
+    }
+  }
+  
   func handleStartRecording() {
     do {
       try recordManager.startRecording()

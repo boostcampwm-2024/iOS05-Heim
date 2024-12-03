@@ -48,18 +48,22 @@ final class RecordManager {
   
   // MARK: - 녹음과정 준비
   func setupSpeech() async throws {
-    let authStatus = await withCheckedContinuation { continuation in
+    let speechStatus = await withCheckedContinuation { continuation in
       SFSpeechRecognizer.requestAuthorization { status in
         continuation.resume(returning: status)
       }
     }
     
-    switch authStatus {
-    case .authorized:
+    // 마이크 권한 확인
+    let micStatus = await AVCaptureDevice.requestAccess(for: .audio)
+    let micAuthStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+    
+    switch (speechStatus, micStatus, micAuthStatus) {
+    case (.authorized, true, _):
       return
-    case .denied, .restricted, .notDetermined:
-      throw RecordingError.permissionError
-    @unknown default:
+    case (.notDetermined, _, _), (_, _, .notDetermined):
+      return
+    default:
       throw RecordingError.permissionError
     }
   }
