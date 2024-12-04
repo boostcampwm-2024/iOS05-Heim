@@ -181,7 +181,7 @@ private extension ReportViewController {
       return
     }
     
-    let fullText = "그동안 \(userName)께서 \n가장 많이 느끼신 감정은 \(emotionTitle)이군요"
+    let fullText = "그동안 \(userName)님께서 \n가장 많이 느끼신 감정은 \(emotionTitle)이군요"
     let attributedString = NSMutableAttributedString(string: fullText)
     let emotionFont = UIFont.boldFont(ofSize: LayoutConstants.titleThree)
     let range = (fullText as NSString).range(of: emotionTitle)
