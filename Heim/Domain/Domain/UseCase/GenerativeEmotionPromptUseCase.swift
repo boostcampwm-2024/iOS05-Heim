@@ -9,29 +9,20 @@ public protocol GenerativeEmotionPromptUseCase {
   func generate(_ input: String) async throws -> String?
 }
 
-public struct GeminiGenerativeEmotionPromptUseCase: GenerativeEmotionPromptUseCase, UserUseCase {
-  public var userRepository: UserRepository
+public struct GeminiGenerativeEmotionPromptUseCase: GenerativeEmotionPromptUseCase {
   var generativeRepository: GenerativeAIRepository
   var generator: PromptGenerator
   
   public init(
-    userRepository: UserRepository,
     generativeRepository: GenerativeAIRepository,
     generator: PromptGenerator
   ) {
-    self.userRepository = userRepository
     self.generativeRepository = generativeRepository
     self.generator = generator
   }
   
   public func generate(_ input: String) async throws -> String? {
-    var username: String
-    do {
-      username = try await userRepository.fetchUserName()
-    } catch {
-      username = "User"
-    }
-    let prompt = try generator.generatePrompt(for: input, username: username)
+    let prompt = try generator.generatePrompt(for: input)
     return try await generativeRepository.generateContent(for: prompt)
   }
 }

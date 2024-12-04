@@ -12,31 +12,27 @@ public protocol EmotionPromptGenerating: PromptGenerator {}
 public struct EmotionPromptGenerator: EmotionPromptGenerating {
   public var additionalPrompt: String {
     return """
-    답변에 사용자의 이름을 포함하여, 마치 직접 대화하는 것처럼 자연스럽게 대답해 주세요.
+    마치 직접 대화하는 것처럼 자연스럽게 대답해 주세요.
     """
   }
   
   public init() {}
   
   public func generatePrompt(
-    for input: String,
-    username: String
+    for input: String
   ) throws -> String {
     let emotion = Emotion(rawValue: input) ?? Emotion.none
     return injectInputContext(
-      with: try emotion.emotionPrompt,
-      username: wrapInputContext(for: username)
+      with: try emotion.emotionPrompt
     )
   }
 }
 
 private extension EmotionPromptGenerator {
   func injectInputContext(
-    with input: String,
-    username: String
+    with input: String
   ) -> String {
     return prompt.replacingOccurrences(of: "{{\\PROMPT_PAYLOAD\\}}", with: input)
-      .replacingOccurrences(of: "{{\\USERNAME\\}}", with: username)
   }
 }
 
