@@ -6,6 +6,6 @@
 //
 
 public protocol UserRepository {
-  func fetchUserName() async throws -> String
-  func updateUserName(to name: String) async throws
+  func fetchUsername() async throws -> String
+  func updateUsername(to name: String) async throws
 }
