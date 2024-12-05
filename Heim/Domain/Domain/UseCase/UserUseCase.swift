@@ -16,12 +16,12 @@ public protocol UserUseCase {
 
 public extension UserUseCase {
   func fetchUserName() async throws -> String {
-    return try await userRepository.fetchUserName()
+    return try await userRepository.fetchUsername()
   }
   
   func updateUserName(to name: String) async throws -> String {
     do {
-      try await userRepository.updateUserName(to: name)
+      try await userRepository.updateUsername(to: name)
       return name
     }
   }

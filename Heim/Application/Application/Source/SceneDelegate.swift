@@ -130,8 +130,15 @@ private extension SceneDelegate {
       return GeminiGenerativeAIRepository(networkProvider: networkProvider)
     }
     
-//    DIContainer.shared.register(type: MusicRepository.self) { _ in
-//      return DefaultMusicRepository()
+//    DIContainer.shared.register(type: AVPlayerManager.self) { _ in
+//      return DefaultAVPlayerManager()
+//    }
+//    
+//    DIContainer.shared.register(type: MusicRepository.self) { container in
+//      guard let avPlayerManager = container.resolve(type: AVPlayerManager.self) else {
+//        return
+//      }
+//      return DefaultMusicRepository(avPlayerManager: avPlayerManager)
 //    }
     
     DIContainer.shared.register(type: SpotifyRepository.self) { container in

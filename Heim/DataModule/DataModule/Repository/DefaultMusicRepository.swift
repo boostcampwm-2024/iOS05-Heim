@@ -11,9 +11,11 @@ import MusicKit
 
 public struct DefaultMusicRepository: MusicRepository {
   private var musicKitPlayer = ApplicationMusicPlayer.shared
-  private var avPlayerManager = AVPlayerManager()
+  private var avPlayerManager: AVPlayerManager
   
-  public init() {}
+  public init(avPlayerManager: AVPlayerManager) {
+    self.avPlayerManager = avPlayerManager
+  }
   
   public func hasMusicAccess() async throws -> Bool {
     let status = await MusicAuthorization.request()

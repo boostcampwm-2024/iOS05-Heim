@@ -9,18 +9,26 @@ import AVFoundation
 import Domain
 import MusicKit
 
-final class AVPlayerManager {
+public protocol AVPlayerManager {
+  var isPlaying: Bool { get }
+  func play(url: URL) async
+  func pause()
+  func setVolume(_ volume: Float)
+  func setupAudioSession() throws
+}
+
+public final class DefaultAVPlayerManager: AVPlayerManager {
   // MARK: - Properties
   private var player: AVPlayer?
   private var playerItem: AVPlayerItem?
   private var timeObserver: Any?
 
-  var isPlaying: Bool {
+  public var isPlaying: Bool {
     return player?.timeControlStatus == .playing
   }
 
   // MARK: - Initialization
-  init() {}
+  public init() {}
 
   deinit {
     if let timeObserver = timeObserver {
@@ -30,7 +38,7 @@ final class AVPlayerManager {
   }
 
   // MARK: - Public Methods
-  func play(url: URL) async {
+  public func play(url: URL) async {
     // 기존 플레이어 정리
     cleanup()
 
@@ -52,15 +60,15 @@ final class AVPlayerManager {
     await player?.play()
   }
 
-  func pause() {
+  public func pause() {
     player?.pause()
   }
 
-  func setVolume(_ volume: Float) {
+  public func setVolume(_ volume: Float) {
     player?.volume = max(0.0, min(1.0, volume))
   }
 
-  func setupAudioSession() throws {
+  public func setupAudioSession() throws {
     do {
       try AVAudioSession.sharedInstance().setCategory(
         .playback,
