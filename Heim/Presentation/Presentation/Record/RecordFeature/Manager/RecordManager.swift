@@ -10,7 +10,19 @@ import Domain
 import UIKit
 import Speech
 
-final class RecordManager {
+public protocol RecordManagerProtocol {
+  var recognizedText: String { get }
+  var minuteAndSeconds: Int { get }
+  var voice: Voice? { get }
+  var formattedTime: String { get }
+  
+  func setupSpeech() async throws
+  func startRecording() throws
+  func stopRecording()
+  func resetAll()
+}
+
+public final class DefaultRecordManager: RecordManagerProtocol {
   // MARK: - 음성 인식을 위한 Properties
   private let speechRecognizer: SFSpeechRecognizer
   private let audioEngine: AVAudioEngine
@@ -18,8 +30,8 @@ final class RecordManager {
   private var recognitionTask: SFSpeechRecognitionTask?
   
   // MARK: - 인식된 텍스트, 경과한 시간
-  private(set) var recognizedText: String
-  private(set) var minuteAndSeconds: Int
+  private(set) public var recognizedText: String
+  private(set) public var minuteAndSeconds: Int
   
   // MARK: - 음성 녹음을 위한 Properties
   private var audioRecorder: AVAudioRecorder?
@@ -27,15 +39,15 @@ final class RecordManager {
   private var timer: Timer?
   
   // MARK: - 음성 데이터
-  private(set) var voice: Voice?
+  private(set) public var voice: Voice?
   
-  var formattedTime: String {
+  public var formattedTime: String {
     let minutes = minuteAndSeconds / 60
     let seconds = minuteAndSeconds % 60
     return String(format: "%02d:%02d", minutes, seconds)
   }
   
-  init(locale: Locale = Locale(identifier: "ko-KR")) {
+  public init(locale: Locale = Locale(identifier: "ko-KR")) {
     self.speechRecognizer = SFSpeechRecognizer(locale: locale)!
     self.audioEngine = AVAudioEngine()
     self.recognizedText = ""
@@ -47,7 +59,7 @@ final class RecordManager {
   }
   
   // MARK: - 녹음과정 준비
-  func setupSpeech() async throws {
+  public func setupSpeech() async throws {
     let speechStatus = await withCheckedContinuation { continuation in
       SFSpeechRecognizer.requestAuthorization { status in
         continuation.resume(returning: status)
@@ -68,7 +80,7 @@ final class RecordManager {
     }
   }
   
-  func startRecording() throws {
+  public func startRecording() throws {
     if recognitionRequest == nil {
       // MARK: - 새로운 녹음 시작
       try setupNewRecording()
@@ -79,7 +91,7 @@ final class RecordManager {
   }
   
   // MARK: - 일시중지
-  func stopRecording() {
+  public func stopRecording() {
     audioEngine.pause()
     audioRecorder?.stop()
     
@@ -93,7 +105,7 @@ final class RecordManager {
     timer = nil
   }
   
-  func resetAll() {
+  public func resetAll() {
     audioEngine.stop()
     
     audioEngine.inputNode.removeTap(onBus: 0)
@@ -116,7 +128,7 @@ final class RecordManager {
   }
 }
 
-private extension RecordManager {
+private extension DefaultRecordManager {
   // MARK: - 녹음 재개
   func resumeRecording() throws {
     do {
@@ -139,19 +151,19 @@ private extension RecordManager {
       // 오디오 세션 설정
       let audioSession = AVAudioSession.sharedInstance()
       try audioSession.setCategory(.playAndRecord,
-                                 mode: .default,
-                                 options: [.defaultToSpeaker, .allowBluetooth])
+                                   mode: .default,
+                                   options: [.defaultToSpeaker, .allowBluetooth])
       try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-
+      
       // PCM 설정
       let settings: [String: Any] = [
-          AVFormatIDKey: Int(kAudioFormatLinearPCM),
-          AVSampleRateKey: 44100.0,
-          AVNumberOfChannelsKey: 2,  // 스테레오로 변경
-          AVLinearPCMBitDepthKey: 16,
-          AVLinearPCMIsFloatKey: false,
-          AVLinearPCMIsBigEndianKey: false,
-          AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+        AVFormatIDKey: Int(kAudioFormatLinearPCM),
+        AVSampleRateKey: 44100.0,
+        AVNumberOfChannelsKey: 2,  // 스테레오로 변경
+        AVLinearPCMBitDepthKey: 16,
+        AVLinearPCMIsFloatKey: false,
+        AVLinearPCMIsBigEndianKey: false,
+        AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
       ]
       
       // 기존 파일이 있다면 제거
@@ -219,3 +231,4 @@ private extension RecordManager {
     }
   }
 }
+

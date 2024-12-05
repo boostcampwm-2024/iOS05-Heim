@@ -58,7 +58,11 @@ public final class DefaultRecordCoordinator: RecordCoordinator {
 // MARK: - Private
 private extension DefaultRecordCoordinator {
   func createRecordViewController() -> RecordViewController? {
-    let viewModel = RecordViewModel()
+    guard let recordManager = DIContainer.shared.resolve(type: RecordManagerProtocol.self) else {
+      return nil
+    }
+    
+    let viewModel = RecordViewModel(recordManager: recordManager)
     let viewController = RecordViewController(viewModel: viewModel)
     viewController.coordinator = self
     return viewController

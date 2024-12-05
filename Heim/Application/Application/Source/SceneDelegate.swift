@@ -241,6 +241,10 @@ private extension SceneDelegate {
       return DefaultSettingCoordinator(navigationController: navigationController)
     }
     
+    DIContainer.shared.register(type: RecordManagerProtocol.self) { _ in
+        return DefaultRecordManager()
+    }
+    
     DIContainer.shared.register(type: RecordCoordinator.self) { _ in
       return DefaultRecordCoordinator(navigationController: recordNavigationController)
     }
