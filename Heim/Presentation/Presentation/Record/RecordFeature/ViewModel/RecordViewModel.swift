@@ -28,7 +28,7 @@ public final class RecordViewModel: ViewModel {
   }
   
   @Published public var state: State
-  private var recordManager: RecordManager
+  private var recordManager: RecordManagerProtocol
   private var timer: Timer?
   
   private var isPaused: Bool = false
@@ -36,9 +36,9 @@ public final class RecordViewModel: ViewModel {
   private var recognizedText: String?
   
   // MARK: - Initializer
-  public init() {
+  public init(recordManager: RecordManagerProtocol) {
     self.state = State()
-    self.recordManager = RecordManager()
+    self.recordManager = recordManager
     
     Task {
       try await recordManager.setupSpeech()
@@ -133,3 +133,4 @@ private extension RecordViewModel {
     timer = nil
   }
 }
+
