@@ -102,7 +102,8 @@
 <br>
 
 ## 📚 설계도
-![설계도](https://github.com/user-attachments/assets/04211272-a063-42d6-800a-61cb226d88e2)
+![설계도1](https://github.com/user-attachments/assets/db469d07-d09b-411d-b273-e372ffea3fad)
+
 
 <br>
 
