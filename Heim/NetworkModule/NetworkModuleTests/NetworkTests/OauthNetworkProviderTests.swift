@@ -21,7 +21,7 @@ final class OAuthNetworkProviderTest: XCTestCase {
     let name: String
     let age: Int
   }
-  
+
   let mockData: Data? = """
     {
       "name": "Heim",

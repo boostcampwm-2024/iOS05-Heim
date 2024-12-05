@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import Domain
 @testable import NetworkModule
 
@@ -75,7 +76,6 @@ final class NetworkProviderTests: XCTestCase {
     do {
       try await networkProvider.request(target: mockTarget, type: Int.self)
       XCTFail("Error가 발생하지 않음")
-
     } catch(let error) {
       guard let error = error as? NetworkError else {
         XCTFail("error가 NetworkError이 아님")

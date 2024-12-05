@@ -5,9 +5,9 @@
 //  Created by 김미래 on 12/5/24.
 //
 
+@testable import Domain
+@testable import NetworkModule
 import Foundation
-import NetworkModule
-import Domain
 
 final class MockNetworkRequestor: NetworkRequestable {
   // MARK: - Properties
