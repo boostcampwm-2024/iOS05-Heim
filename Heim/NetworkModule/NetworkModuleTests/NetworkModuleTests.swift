@@ -85,7 +85,7 @@ final class NetworkModuleTests: XCTestCase {
       }
 
       // Then
-      XCTAssertEqual(error, NetworkError.interalServerError)
+      XCTAssertEqual(error, NetworkError.serverError)
     }
   }
 
@@ -103,7 +103,7 @@ final class NetworkModuleTests: XCTestCase {
       }
 
       // THen
-      XCTAssertEqual(error, NetworkError.interalServerError)
+      XCTAssertEqual(error, NetworkError.serverError)
     }
   }
 
@@ -129,7 +129,7 @@ final class NetworkModuleTests: XCTestCase {
       }
 
       // Then
-      XCTAssertEqual(error, NetworkError.interalServerError)
+      XCTAssertEqual(error, NetworkError.serverError)
     }
   }
 }
