@@ -5,11 +5,11 @@
 //  Created by 박성근 on 11/28/24.
 //
 
-public protocol GenerativeEmotionPromptUseCase {
+public protocol GenerativeEmotionUseCase {
   func generate(_ input: String) async throws -> String?
 }
 
-public struct GeminiGenerativeEmotionPromptUseCase: GenerativeEmotionPromptUseCase {
+public struct GeminiGenerativeEmotionUseCase: GenerativeEmotionUseCase {
   var generativeRepository: GenerativeAIRepository
   var generator: PromptGenerator
   

@@ -24,8 +24,8 @@ final class EmotionAnalyzeViewModel: ViewModel {
   private let recognizedText: String // RecordView에서 넘어온 인식된 텍스트
   private let voice: Voice // RecordView에서 넘어온 음성 녹음
   private let classifyUseCase: EmotionClassifyUseCase
-  private let emotionUseCase: GenerativeEmotionPromptUseCase
-  private let summaryUseCase: GenerativeSummaryPromptUseCase
+  private let emotionUseCase: GenerativeEmotionUseCase
+  private let summaryUseCase: GenerativeSummaryUseCase
   private var emotion: Emotion = .none
   private var heimReply: EmotionReport = EmotionReport(text: "")
   private var summary: Summary = Summary(text: "")
@@ -36,8 +36,8 @@ final class EmotionAnalyzeViewModel: ViewModel {
     recognizedText: String,
     voice: Voice,
     classifyUseCase: EmotionClassifyUseCase,
-    emotionUseCase: GenerativeEmotionPromptUseCase,
-    summaryUseCase: GenerativeSummaryPromptUseCase
+    emotionUseCase: GenerativeEmotionUseCase,
+    summaryUseCase: GenerativeSummaryUseCase
   ) {
     self.recognizedText = recognizedText
     self.voice = voice

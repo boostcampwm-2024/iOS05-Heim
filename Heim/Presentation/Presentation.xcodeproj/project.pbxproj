@@ -11,6 +11,7 @@
 		4093ABB52CDB9CCA00F7E060 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		807206302CDB50F100123BFB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8072062F2CDB50F100123BFB /* SnapKit */; };
 		B307B3FE2CD9B4B7001C5040 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B3F32CD9B4B7001C5040 /* Presentation.framework */; };
+		B370D4722D01631F0029A02C /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B370D4712D01631F0029A02C /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B307B3FE2CD9B4B7001C5040 /* Presentation.framework in Frameworks */,
+				B370D4722D01631F0029A02C /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +163,7 @@
 			);
 			name = PresentationTests;
 			packageProductDependencies = (
+				B370D4712D01631F0029A02C /* Lottie */,
 			);
 			productName = PresentationTests;
 			productReference = B307B3FD2CD9B4B7001C5040 /* PresentationTests.xctest */;
@@ -197,6 +200,7 @@
 			packageReferences = (
 				8072062E2CDB50F100123BFB /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B307B6BC2CDC7D48001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				B370D4702D01631F0029A02C /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B307B3F42CD9B4B7001C5040 /* Products */;
@@ -559,6 +563,14 @@
 				minimumVersion = 0.57.0;
 			};
 		};
+		B370D4702D01631F0029A02C /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -566,6 +578,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8072062E2CDB50F100123BFB /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		B370D4712D01631F0029A02C /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B370D4702D01631F0029A02C /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -200,13 +200,13 @@ private extension SceneDelegate {
       return SummaryPromptGenerator()
     }
     
-    DIContainer.shared.register(type: GenerativeSummaryPromptUseCase.self) { container in
+    DIContainer.shared.register(type: GenerativeSummaryUseCase.self) { container in
       guard let generativeAIRepository = container.resolve(type: GenerativeAIRepository.self),
             let summaryPromptGenerator = container.resolve(type: SummaryPromptGenerating.self) else {
         return
       }
       
-      return GeminiGenerativeSummaryPromptUseCase(
+      return GeminiGenerativeSummaryUseCase(
         generativeRepository: generativeAIRepository,
         generator: summaryPromptGenerator
       )
@@ -216,13 +216,13 @@ private extension SceneDelegate {
       return EmotionPromptGenerator()
     }
     
-    DIContainer.shared.register(type: GenerativeEmotionPromptUseCase.self) { container in
+    DIContainer.shared.register(type: GenerativeEmotionUseCase.self) { container in
       guard let generativeAIRepository = container.resolve(type: GenerativeAIRepository.self),
             let emotionPromptGenerator = container.resolve(type: EmotionPromptGenerating.self) else {
         return
       }
       
-      return GeminiGenerativeEmotionPromptUseCase(
+      return GeminiGenerativeEmotionUseCase(
         generativeRepository: generativeAIRepository,
         generator: emotionPromptGenerator
       )

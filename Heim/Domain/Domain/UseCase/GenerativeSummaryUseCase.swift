@@ -5,11 +5,11 @@
 //  Created by 박성근 on 11/28/24.
 //
 
-public protocol GenerativeSummaryPromptUseCase {
+public protocol GenerativeSummaryUseCase {
   func generate(_ input: String) async throws -> String?
 }
 
-public struct GeminiGenerativeSummaryPromptUseCase: GenerativeSummaryPromptUseCase {
+public struct GeminiGenerativeSummaryUseCase: GenerativeSummaryUseCase {
   var generativeRepository: GenerativeAIRepository
   var generator: PromptGenerator
   
