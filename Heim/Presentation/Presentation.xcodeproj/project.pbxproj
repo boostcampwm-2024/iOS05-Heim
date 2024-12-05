@@ -10,6 +10,7 @@
 		4093ABB42CDB9CCA00F7E060 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; };
 		4093ABB52CDB9CCA00F7E060 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B307B4C02CD9B76A001C5040 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		807206302CDB50F100123BFB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8072062F2CDB50F100123BFB /* SnapKit */; };
+		80920C562D0192050068C81A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 80920C552D0192050068C81A /* Lottie */; };
 		B307B3FE2CD9B4B7001C5040 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B307B3F32CD9B4B7001C5040 /* Presentation.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B307B3FE2CD9B4B7001C5040 /* Presentation.framework in Frameworks */,
+				80920C562D0192050068C81A /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +163,7 @@
 			);
 			name = PresentationTests;
 			packageProductDependencies = (
+				80920C552D0192050068C81A /* Lottie */,
 			);
 			productName = PresentationTests;
 			productReference = B307B3FD2CD9B4B7001C5040 /* PresentationTests.xctest */;
@@ -182,6 +185,7 @@
 					};
 					B307B3FC2CD9B4B7001C5040 = {
 						CreatedOnToolsVersion = 16.0;
+						LastSwiftMigration = 1600;
 					};
 				};
 			};
@@ -197,6 +201,7 @@
 			packageReferences = (
 				8072062E2CDB50F100123BFB /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B307B6BC2CDC7D48001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				80920C542D0192050068C81A /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B307B3F42CD9B4B7001C5040 /* Products */;
@@ -481,32 +486,45 @@
 		B307B40C2CD9B4B7001C5040 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		B307B40D2CD9B4B7001C5040 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.Heim.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -551,6 +569,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		80920C542D0192050068C81A /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 		B307B6BC2CDC7D48001C5040 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/SwiftLint";
@@ -566,6 +592,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8072062E2CDB50F100123BFB /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		80920C552D0192050068C81A /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80920C542D0192050068C81A /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
