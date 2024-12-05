@@ -65,11 +65,11 @@ private extension DefaultEmotionAnalyzeCoordinator {
       return nil
     }
   
-    guard let summaryUseCase = DIContainer.shared.resolve(type: GenerativeSummaryPromptUseCase.self) else {
+    guard let summaryUseCase = DIContainer.shared.resolve(type: GenerativeSummaryUseCase.self) else {
       return nil
     }
     
-    guard let emotionUseCase = DIContainer.shared.resolve(type: GenerativeEmotionPromptUseCase.self) else {
+    guard let emotionUseCase = DIContainer.shared.resolve(type: GenerativeEmotionUseCase.self) else {
       return nil
     }
     
