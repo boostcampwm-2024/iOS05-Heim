@@ -6,31 +6,130 @@
 //
 
 import XCTest
+@testable import Domain
 @testable import NetworkModule
 
 final class NetworkModuleTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+  // MARK: - Properties
+  var networkProvider: DefaultNetworkProvider!
+  var mockNetworkRequestor: MockNetworkRequestor!
+  struct MockData: Codable {
+    let name: String
+    let age: Int
+  }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+  let mockData: Data? = """
+    {
+      "name": "Heim",
+      "age": 1
     }
+""".data(using: .utf8)
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+
+  // MARK: - TestCycle
+  override func setUp() {
+    mockNetworkRequestor = MockNetworkRequestor()
+    networkProvider = DefaultNetworkProvider(requestor: mockNetworkRequestor)
+
+    super.setUp()
+  }
+
+  override func tearDown() {
+    networkProvider = nil
+    mockNetworkRequestor = nil
+
+    super.tearDown()
+  }
+
+  func test_request_sucess() async throws {
+    // Given
+    let urlReponse = HTTPURLResponse(url: URL(string: "http://mock.example.com")!,
+                                     statusCode: 404,
+                                     httpVersion: nil,
+                                     headerFields: nil)
+
+    mockNetworkRequestor.setURLResponse(urlReponse)
+    mockNetworkRequestor.setResponseData(mockData)
+
+    let mockTarget = MockTarget.get.request
+
+    // When
+    let response = try await networkProvider.request(target: mockTarget, type: MockData.self)
+
+    // then
+    XCTAssertEqual(response.age, 1)
+    XCTAssertEqual(response.name, "Heim")
+  }
+
+  func test_DecodingError() async throws {
+    // Given
+    let urlReponse = HTTPURLResponse(url: URL(string: "http://mock.example.com")!,
+                                     statusCode: 200,
+                                     httpVersion: nil,
+                                     headerFields: nil)
+    mockNetworkRequestor.setURLResponse(urlReponse)
+    mockNetworkRequestor.setResponseData(mockData)
+
+    let mockTarget = MockTarget.get.request
+
+    // When
+    do {
+      try await networkProvider.request(target: mockTarget, type: Int.self)
+      XCTFail("Error가 발생하지 않음")
+
+    } catch(let error) {
+      guard let error = error as? NetworkError else {
+        XCTFail("error가 NetworkError이 아님")
+        return
+      }
+
+      // Then
+      XCTAssertEqual(error, NetworkError.interalServerError)
     }
+  }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+  func test_invalidUrl() async throws {
+    let mockTarget = MockTarget.get.request
+
+    do {
+      try await networkProvider.request(target: mockTarget, type: MockData.self)
+      XCTFail("Error가 발생하지 않음")
+
+    } catch(let error) {
+      guard let error = error as? NetworkError else {
+        XCTFail("error가 NetworkError이 아님")
+        return
+      }
+
+      // THen
+      XCTAssertEqual(error, NetworkError.interalServerError)
     }
+  }
 
+  func test_NetworkProvider_Return_invalidStatuscode() async throws{
+    // Given
+    let urlReponse = HTTPURLResponse(url: URL(string: "http://mock.example.com")!,
+                                     statusCode: 404,
+                                     httpVersion: nil,
+                                     headerFields: nil)
+
+    mockNetworkRequestor.setURLResponse(urlReponse)
+    mockNetworkRequestor.setResponseData(mockData)
+    let mockTarget = MockTarget.get.request
+
+    // When
+    do {
+      try await networkProvider.request(target: mockTarget, type: MockData.self)
+      XCTFail("Error가 발생하지 않았습니다.")
+    } catch(let error) {
+      guard let error = error as? NetworkError else {
+        XCTFail("Error 객체가 NetworkError 타입으로 캐스팅 되지 않음")
+        return
+      }
+
+      // Then
+      XCTAssertEqual(error, NetworkError.interalServerError)
+    }
+  }
 }
