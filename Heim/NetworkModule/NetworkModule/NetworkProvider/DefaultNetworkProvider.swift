@@ -30,6 +30,7 @@ public struct DefaultNetworkProvider: NetworkProvider {
   public func request<T: Decodable>(target: RequestTarget, type: T.Type) async throws -> T {
     let request = try target.makeURLRequest()
     let (data, response) = try await requestor.data(for: request)
+    try handleNetworkStatus(response: response)
     
     guard let responseDTO = try? JSONDecoder().decode(T.self, from: data) else {
       if let body = request.httpBody,
@@ -39,7 +40,7 @@ public struct DefaultNetworkProvider: NetworkProvider {
       if let responseBody = String(data: data, encoding: .utf8) {
         Logger.log(message: "Response Body: \(responseBody)")
       }
-      throw NetworkError.interalServerError
+      throw NetworkError.serverError
     }
     
     return responseDTO
@@ -47,5 +48,18 @@ public struct DefaultNetworkProvider: NetworkProvider {
   
   public func makeURL(target: any RequestTarget) throws -> URL? {
     return try target.makeURLRequest().url
+  }
+}
+
+private extension DefaultNetworkProvider {
+  func handleNetworkStatus(response: URLResponse) throws {
+    guard let response = response as? HTTPURLResponse else { throw NetworkError.invalidURL }
+    switch response.statusCode {
+    case 200...299: break
+    case 300...399: break
+    case 400...499: throw NetworkError.clientError
+    case 500...599: throw NetworkError.serverError
+    default: throw NetworkError.serverError
+    }
   }
 }
