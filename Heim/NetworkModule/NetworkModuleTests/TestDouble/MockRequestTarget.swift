@@ -42,5 +42,4 @@ enum MockTarget {
     )
     }
   }
-
 }

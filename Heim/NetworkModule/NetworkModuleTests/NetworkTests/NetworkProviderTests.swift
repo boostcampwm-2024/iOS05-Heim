@@ -1,16 +1,15 @@
 //
-//  NetworkModuleTests.swift
-//  NetworkModuleTests
+//  NetworkProviderTests.swift
+//  NetworkProviderTests
 //
-//  Created by 정지용 on 11/5/24.
+//  Created by 김미래 on 12/5/24
 //
 
 import XCTest
 @testable import Domain
 @testable import NetworkModule
 
-final class NetworkModuleTests: XCTestCase {
-
+final class NetworkProviderTests: XCTestCase {
   // MARK: - Properties
   var networkProvider: DefaultNetworkProvider!
   var mockNetworkRequestor: MockNetworkRequestor!
