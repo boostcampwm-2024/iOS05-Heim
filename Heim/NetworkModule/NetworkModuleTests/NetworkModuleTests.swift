@@ -26,7 +26,6 @@ final class NetworkModuleTests: XCTestCase {
     }
 """.data(using: .utf8)
 
-
   // MARK: - TestCycle
   override func setUp() {
     mockNetworkRequestor = MockNetworkRequestor()
@@ -45,7 +44,7 @@ final class NetworkModuleTests: XCTestCase {
   func test_request_sucess() async throws {
     // Given
     let urlReponse = HTTPURLResponse(url: URL(string: "http://mock.example.com")!,
-                                     statusCode: 404,
+                                     statusCode: 200,
                                      httpVersion: nil,
                                      headerFields: nil)
 
@@ -95,7 +94,6 @@ final class NetworkModuleTests: XCTestCase {
     do {
       try await networkProvider.request(target: mockTarget, type: MockData.self)
       XCTFail("Error가 발생하지 않음")
-
     } catch(let error) {
       guard let error = error as? NetworkError else {
         XCTFail("error가 NetworkError이 아님")
@@ -107,7 +105,7 @@ final class NetworkModuleTests: XCTestCase {
     }
   }
 
-  func test_NetworkProvider_Return_invalidStatuscode() async throws{
+  func test_NetworkProvider_Return_invalidStatuscode() async throws {
     // Given
     let urlReponse = HTTPURLResponse(url: URL(string: "http://mock.example.com")!,
                                      statusCode: 404,
@@ -122,6 +120,29 @@ final class NetworkModuleTests: XCTestCase {
     do {
       try await networkProvider.request(target: mockTarget, type: MockData.self)
       XCTFail("Error가 발생하지 않았습니다.")
+    } catch(let error) {
+      guard let error = error as? NetworkError else {
+        XCTFail("Error 객체가 NetworkError 타입으로 캐스팅 되지 않음")
+        return
+      }
+
+      // Then
+      XCTAssertEqual(error, NetworkError.clientError)
+    }
+  }
+
+  func test_EmptyData() async throws {
+    // Given
+    let urlResponse = HTTPURLResponse(url: URL(string: "http://mock.example.com")!,
+                                      statusCode: 200,
+                                      httpVersion: nil,
+                                      headerFields: nil)
+    mockNetworkRequestor.setURLResponse(urlResponse)
+    let mockTarget = MockTarget.get.request
+    
+    // When
+    do {
+      try await networkProvider.request(target: mockTarget, type: MockData.self)
     } catch(let error) {
       guard let error = error as? NetworkError else {
         XCTFail("Error 객체가 NetworkError 타입으로 캐스팅 되지 않음")

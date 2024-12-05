@@ -21,7 +21,7 @@ final class MockNetworkRequestor: NetworkRequestable {
       throw error
     }
     guard let data = data, let response = response else {
-      throw NetworkError.interalServerError
+      throw NetworkError.serverError
     }
 
     return (data, response)
