@@ -10,17 +10,17 @@ import XCTest
 import Domain
 
 final class RecordViewModelTest: XCTestCase {
-  private var viewModel: RecordViewModel!
+  private var sut: RecordViewModel!
   private var mockRecordManager: MockRecordManager!
   
   override func setUp() {
     super.setUp()
     mockRecordManager = MockRecordManager()
-    viewModel = RecordViewModel(recordManager: mockRecordManager)
+    sut = RecordViewModel(recordManager: mockRecordManager)
   }
   
   override func tearDown() {
-    viewModel = nil
+    sut = nil
     mockRecordManager = nil
     super.tearDown()
   }
@@ -28,62 +28,62 @@ final class RecordViewModelTest: XCTestCase {
   // MARK: - Initial State Tests
   func test_givenNewViewModel_whenInitialized_thenStateIsCorrectlySet() {
     // Then
-    XCTAssertFalse(viewModel.state.isRecording)
-    XCTAssertFalse(viewModel.state.canMoveToNext)
-    XCTAssertEqual(viewModel.state.timeText, "00:00")
-    XCTAssertFalse(viewModel.state.isErrorPresent)
-    XCTAssertTrue(viewModel.state.isAuthorized)
+    XCTAssertFalse(sut.state.isRecording)
+    XCTAssertFalse(sut.state.canMoveToNext)
+    XCTAssertEqual(sut.state.timeText, "00:00")
+    XCTAssertFalse(sut.state.isErrorPresent)
+    XCTAssertTrue(sut.state.isAuthorized)
   }
   
   // MARK: - Recording State Tests
   func test_givenViewModel_WhenStartRecording_ThenStateUpdatesCorrectly() {
     // When
-    viewModel.action(.startRecording)
+    sut.action(.startRecording)
     
     // Then
     XCTAssertTrue(mockRecordManager.startRecordingCalled)
-    XCTAssertTrue(viewModel.state.isRecording)
-    XCTAssertFalse(viewModel.state.canMoveToNext)
+    XCTAssertTrue(sut.state.isRecording)
+    XCTAssertFalse(sut.state.canMoveToNext)
   }
   
   func test_GivenRecordingState_WhenStopRecording_ThenStateUpdatesCorrectly() {
     // Given
-    viewModel.action(.startRecording)
+    sut.action(.startRecording)
     
     // When
-    viewModel.action(.stopRecording)
+    sut.action(.stopRecording)
     
     // Then
     XCTAssertTrue(mockRecordManager.stopRecordingCalled)
-    XCTAssertFalse(viewModel.state.isRecording)
-    XCTAssertTrue(viewModel.state.canMoveToNext)
+    XCTAssertFalse(sut.state.isRecording)
+    XCTAssertTrue(sut.state.canMoveToNext)
   }
   
   func test_GivenRecordedState_WhenRefresh_ThenStateResetsToInitial() {
     // Given
-    viewModel.action(.startRecording)
-    viewModel.action(.stopRecording)
+    sut.action(.startRecording)
+    sut.action(.stopRecording)
     
     // When
-    viewModel.action(.refresh)
+    sut.action(.refresh)
     
     // Then
     XCTAssertTrue(mockRecordManager.resetAllCalled)
-    XCTAssertFalse(viewModel.state.isRecording)
-    XCTAssertFalse(viewModel.state.canMoveToNext)
-    XCTAssertEqual(viewModel.state.timeText, "00:00")
+    XCTAssertFalse(sut.state.isRecording)
+    XCTAssertFalse(sut.state.canMoveToNext)
+    XCTAssertEqual(sut.state.timeText, "00:00")
   }
   
   // MARK: - Error Handling Tests
   func test_GivenErrorState_WhenClearError_ThenErrorStateIsFalse() {
     // Given
-    viewModel.state.isErrorPresent = true
+    sut.state.isErrorPresent = true
     
     // When
-    viewModel.action(.clearError)
+    sut.action(.clearError)
     
     // Then
-    XCTAssertFalse(viewModel.state.isErrorPresent)
+    XCTAssertFalse(sut.state.isErrorPresent)
   }
   
   func test_GivenNoVoiceData_WhenRequestVoiceData_ThenErrorStateIsTrue() {
@@ -91,11 +91,11 @@ final class RecordViewModelTest: XCTestCase {
     mockRecordManager.voice = nil
     
     // When
-    let voice = viewModel.voiceData()
+    let voice = sut.voiceData()
     
     // Then
     XCTAssertNil(voice)
-    XCTAssertTrue(viewModel.state.isErrorPresent)
+    XCTAssertTrue(sut.state.isErrorPresent)
   }
   
   func test_GivenViewModel_WhenRequestRecognizedText_ThenReturnsManagerText() {
@@ -104,7 +104,7 @@ final class RecordViewModelTest: XCTestCase {
     mockRecordManager.recognizedText = testText
     
     // When
-    let recognizedText = viewModel.recognizedTextData()
+    let recognizedText = sut.recognizedTextData()
     
     // Then
     XCTAssertEqual(recognizedText, testText)
@@ -113,24 +113,24 @@ final class RecordViewModelTest: XCTestCase {
   // MARK: - Complete Recording Flow Test
   func test_GivenInitialState_WhenPerformRecordingSequence_ThenStateTransitionsCorrectly() async {
     // Given
-    XCTAssertFalse(viewModel.state.isRecording)
-    XCTAssertFalse(viewModel.state.canMoveToNext)
+    XCTAssertFalse(sut.state.isRecording)
+    XCTAssertFalse(sut.state.canMoveToNext)
     
     // When
-    viewModel.action(.startRecording)
+    sut.action(.startRecording)
     
     // Then
     XCTAssertTrue(mockRecordManager.setupSpeechCalled)
     XCTAssertTrue(mockRecordManager.startRecordingCalled)
-    XCTAssertTrue(viewModel.state.isRecording)
-    XCTAssertFalse(viewModel.state.canMoveToNext)
+    XCTAssertTrue(sut.state.isRecording)
+    XCTAssertFalse(sut.state.canMoveToNext)
     
     // When
-    viewModel.action(.stopRecording)
+    sut.action(.stopRecording)
     
     // Then
     XCTAssertTrue(mockRecordManager.stopRecordingCalled)
-    XCTAssertFalse(viewModel.state.isRecording)
-    XCTAssertTrue(viewModel.state.canMoveToNext)
+    XCTAssertFalse(sut.state.isRecording)
+    XCTAssertTrue(sut.state.canMoveToNext)
   }
 }
